@@ -13,16 +13,32 @@ var adminRouter = require('./routes/admin');
 var recruiterRouter=require('./routes/recruiter')
 var employeeRouter = require('./routes/employee');
 
+//google auth
+
+const passport=require('passport')
+const googleAuth=require('passport-google-oauth20');
+const { Passport } = require('passport');
+
+
+
+
+
 var hbs=require('express-handlebars')
 var session=require('express-session')
 var app = express();
 var fileUpload=require('express-fileupload')
 var publicDir = require('path').join(__dirname,'/public'); 
 app.use(express.static(publicDir));
+
+
+
 app.use(session({
   secret: 'keyboard cat',
  cookie:{maxAge:5000000}
 }))
+
+app.use(passport.initialize());
+app.use(passport.session())
 
 app.use(function (req, res, next) {
   res.set(
@@ -31,6 +47,11 @@ app.use(function (req, res, next) {
   );
   next();
 });
+
+
+
+
+
 
 isOnline().then(online => {
   if(online){
@@ -70,6 +91,7 @@ app.use('/', adminRouter);
 
 
 
+
 app.use(express.static('public'))
 app.use(express.static('public/css'))
 app.use(express.static('public/images'))
@@ -95,5 +117,11 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 module.exports = app;
