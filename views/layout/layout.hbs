@@ -2,12 +2,14 @@
 <!-- //js -->
 {{#if admin}}
 {{>admin-header}}
+{{/if}}
 
+{{#if recruiter}}
+{{>recruiter-header}}
+{{/if}}
 
-
-{{else}}
+{{#if user}}
 {{>user-header}}
-
 {{/if}}
 
   

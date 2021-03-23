@@ -1,129 +1,167 @@
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
-<div class="container">
-	<div class="row">
-		<form class="form-signin mg-btm">
-    	<h3 class="heading-desc">
-		<button type="button" class="close pull-right" aria-hidden="true">×</button>
-		Login to Bootsnipp</h3>
-		<div class="social-box">
-			<div class="row mg-btm">
-             <div class="col-md-12">
-                <a href="/auth/google" class="btn btn-primary btn-block">
-                  <i class="icon-google"></i>    Login with google
-                </a>
-			</div>
-			</div>
-			<div class="row">
-			<div class="col-md-12">
-                <a href="#" class="btn btn-info btn-block" >
-                  <i class="icon-twitter"></i>    Login with Twitter
-                </a>
-            </div>
-          </div>
-		</div>
-		<div class="main">	
-        
-		<input type="text" class="form-control" placeholder="Email" autofocus>
-        <input type="password" class="form-control" placeholder="Password">
-		 
-        Are you a business? <a href=""> Get started here</a>
-		<span class="clearfix"></span>	
-        </div>
-		<div class="login-footer">
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css'
+	integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
+
+<div class="">
+	<div class="container d-flex justify-content-center">
 		<div class="row">
-                        <div class="col-xs-6 col-md-6">
-                            <div class="left-section">
-								<a href="">Forgot your password?</a>
-								<a href="">Sign up now</a>
+			<div class="card">
+				<div class="card-header">
+					<strong>Login</strong>
+				</div>
+				<div class="card-body">
+					{{#if signupSuccess}}
+					<h4 style="text-align: center; color: green;">Signup Successfull Login Now</h4>
+					{{/if}}
+					<form name="my_form" id="my_form">
+						<div class="row">
+							<div class="col">
+								<span class="profile-img">
+									<i class='fas fa-user-circle' style='font-size:120px'></i>
+								</span>
 							</div>
-                        </div>
-                        <div class="col-xs-6 col-md-6 pull-right">
-                            <button type="submit" class="btn btn-large btn-danger pull-right">Login</button>
-                        </div>
-                    </div>
-		
+						</div>
+						<div class="row">
+							<div class="col">
+								<hr> <!-- other content  -->
+							</div>
+						</div>
+						<span id="invalid" class="text-danger d-flex justify-content-center"
+                        style="display: none !important;">Invalid Username or password</span>
+	<span id="invalid2" class="text-danger d-flex justify-content-center"
+                        style="display: none !important;"> password Incorrect please check again</span>
+						<div class="row">
+							<div class="col">
+								<div class="form-group">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon1">
+												<i class='fas fa-user-shield'></i>
+											</span>
+										</div>
+										<input class="form-control" placeholder="Email" id="email" name="email"
+											type="email" autofocus>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon1">
+												<i class='fas fa-user-secret'></i>
+											</span>
+										</div>
+										<input class="form-control" placeholder="Password" id="password" name="password"
+											type="password">
+									</div>
+								</div>
+								<div class="form-group">
+									<button type="submit" class="btn btn-lg btn-success btn-block submit">Login</button>
+									
+								</div>
+							</div>
+						</div>
+						 
+					</form>
+				</div>
+			</div>
 		</div>
-      </form>
 	</div>
 </div>
+ <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+
+
+	$(document).ready(function () {
+
+
+console.log("sdkfj")
+
+
+
+  $("#my_form").validate({
+            rules: {
+				password:{
+                      required:true,
+					  minlength:3
+				}
+			}
+  })
+
+
+
+		$("#my_form").submit(function (e) {
+			console.log('jhgjh')
+			e.preventDefault()
+			var form_data = $(this).serialize();
+			console.log("data is", form_data)
+			$.ajax({
+				url: '/login',
+				method: 'post',
+				data: form_data,
+				success: (response) => {
+					if (response.status == 3) {
+						console.log("no user")
+						$('#invalid').show()
+					}
+					else if(response.status==2){
+						$('#invalid2').show()
+					}
+					else if(response.type=="recruiter")
+					{
+						window.location.href='/'
+console.log("its recriter")
+					}
+					else if(response.type=='employee'){
+						window.location.href="/"
+console.log("employee")
+					}
+				}
+
+
+			})
+		})
+
+	});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
 
 <style>
-    .form-signin {
-  max-width: 400px; 
-  display:block;
-  background-color: #f7f7f7;
-  -moz-box-shadow: 0 0 3px 3px #888;
-    -webkit-box-shadow: 0 0 3px 3px #888;
-	box-shadow: 0 0 3px 3px #888;
-  border-radius:2px;
-}
-.main{
-	padding: 38px;
-}
-.social-box{
-  margin: 0 auto;
-  padding: 38px;
-  border-bottom:1px #ccc solid;
-}
-.social-box a{
-  font-weight:bold;
-  font-size:18px;
-  padding:8px;
-}
-.social-box a i{
-  font-weight:bold;
-  font-size:20px;
-}
-.heading-desc{
-	font-size:20px;
-	font-weight:bold;
-	padding:38px 38px 0px 38px;
-	
-}
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-}
-.form-signin .checkbox {
-  font-weight: normal;
-}
-.form-signin .form-control {
-  position: relative;
-  font-size: 16px;
-  height: 20px;
-  padding: 20px;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-}
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-.form-signin input[type="text"] {
-  margin-bottom: 10px;
-  border-radius: 5px;
-  
-}
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-.login-footer{
-	background:#f0f0f0;
-	margin: 0 auto;
-	border-top: 1px solid #dadada;
-	padding:20px;
-}
-.login-footer .left-section a{
-	font-weight:bold;
-	color:#8a8a8a;
-	line-height:19px;
-}
-.mg-btm{
-	margin-bottom:20px;
-}
+	body {
+		background-color: #F9F9F9;
+
+	}
+
+	.container {
+		margin-top: 2%;
+	}
+
+	.card-header {
+		padding: 5px 15px;
+	}
+
+	.profile-img {
+		width: 96px;
+		height: 96px;
+		margin: 0 auto 10px;
+		display: block;
+		-moz-border-radius: 50%;
+		-webkit-border-radius: 50%;
+		border-radius: 50%;
+	}
 </style>

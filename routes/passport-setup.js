@@ -4,10 +4,12 @@ const passport=require('passport')
 const auth =require('../routes/passport-setup')
 const userhelper=require('../helpers/userHelper')
 
+const app = require('../app');
+
 //google auth
     const {Strategy}=require('passport-google-oauth2');
 
-
+    var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
     var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
     
     passport.use(new GoogleStrategy({
@@ -17,8 +19,7 @@ const userhelper=require('../helpers/userHelper')
         passReqToCallback   : true
       },
      async function (request, accessToken, refreshToken, profile, done) {
-    console.log("haskd");
-    console.log("######",profile);
+   
         let userdata={
             first_name:profile.given_name,
             last_name:profile.family_name,
@@ -27,9 +28,14 @@ const userhelper=require('../helpers/userHelper')
             picture:profile.picture,
             
         }
-await userhelper.doSignUp(userdata)
-console.log("this is the profile and it is to be extracted",profile);
-    return done(null,profile)
+await userhelper.googleSignup(userdata).then((response)=>{
+
+  console.log("##########",response);  
+  
+
+  return done(null,profile,response)
+})
+
 
 
         // userhelper.findOrCreate({ googleId: profile.id }, function (err, user) {
@@ -53,3 +59,23 @@ console.log("this is the profile and it is to be extracted",profile);
     
 
 
+//linkedin
+
+passport.use(new LinkedInStrategy({
+    clientID: "86jv8q0oesgohc",
+    clientSecret: "AwEg5adWb5d33inR",
+    callbackURL: "http://localhost:3000/auth/linkedin/callback",
+    scope: ['r_emailaddress', 'r_liteprofile'],
+  }, function(accessToken, refreshToken, profile, done) {
+console.log("linkedin profile ##############",profile);
+
+userhelper.doSignUp(userdata)
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      // To keep the example simple, the user's LinkedIn profile is returned to
+      // represent the logged-in user. In a typical application, you would want
+      // to associate the LinkedIn account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile);
+    });
+  }));

@@ -88,6 +88,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', employeeRouter);
 app.use('/', adminRouter);
+app.use('/', recruiterRouter);
 
 
 
