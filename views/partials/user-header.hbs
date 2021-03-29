@@ -4,7 +4,6 @@
 <html lang="en">
  <!--<![endif]-->
 <head>
-
     <!-- Basic Page Needs
     ================================================== -->
     <meta charset="utf-8">
@@ -109,7 +108,7 @@
 
  <ul class="float-right">
                          
-                                <li><a href="/signupRecruiter"><i class="fa fa-user"></i> User Home</a></li>
+                     {{#if result.premium}}  <li><a href="/signupRecruiter"><i class="fa fa-user"></i> Premium User</a></li>   {{else}}     <li><a href="/checkout"><i class="fa fa-user"></i> Upgrade to premium</a></li>{{/if}}
                                    <li><a href=""><i class="fa fa-user"></i>{{userfound.full_name}}</a></li>
                             <li><a href="/logout"><i class="fa fa-lock"></i> Logout</a></li>
                         </ul>

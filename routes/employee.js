@@ -63,7 +63,7 @@ console.log("req.bodyyy",req.user.email);
 
 //to home
 
-router.get('/',(req,res)=>{
+router.get('/',async(req,res)=>{
    
    let userfound=req.session.user
 
@@ -71,12 +71,16 @@ router.get('/',(req,res)=>{
    {
        if(userfound.type=="employee")
        {
-     
-    res.render('employee/index',{user:true,userfound})
+     let premium=await userHelper.isPremium(userfound._id).then((result)=>{
+         console.log("premium",result);
+       
+    res.render('employee/home',{user:true,userfound,result})
+})
        }
        else if(userfound.type=="recruiter")
        {
-           res.render('recruiter/home',{recruiter:true,userfound})
+          let home=1
+           res.render('recruiter/home',{recruiter:true,userfound,home})
        }
    }
    else{
@@ -341,9 +345,63 @@ client.verify.services(config.serviceID).verificationChecks.create({
 
 })
 
+router.get('/checkout',verifyLoggedIn,(req,res)=>{
+    
+res.render('employee/checkout',{user:true})
+
+})
 
 
 
+router.get('/checkout',verifyLoggedIn,(req,res)=>{
+
+    let userfound=req.session.user
+    res.render('recruiter/checkout',{recruiter:true,userfound})
+    
+    })
+    
+    router.post('/checkout',verifyLoggedIn,(req,res)=>{
+    let response={}
+    let value=req.body.type
+    let userid=req.body.userid
+    console.log("userid is",userid);
+    if(value=="razorpay")
+    {
+        userHelper.generateRazorPay(userid).then((response)=>{
+    
+            response.type="razorpay"
+            console.log("the resposne is here catched",response);
+            res.send(response)
+        })
+      
+    }
+    else
+    {
+        response.type="paypal"
+        res.send(response)
+    }
+    })
+    
+    
+    router.post('/verify-payment',verifyLoggedIn,(req,res)=>{
+    
+        console.log("reqqq body of veify ",req.body);
+    
+    let userid=req.session.user._id
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!",userid);
+        userHelper.verifyPayment(req.body,userid).then(()=>{
+            
+            
+        }).catch(()=>{
+          let  response={}
+            response.success=true
+            res.send(response)
+            console.log("#############################");
+        })
+    
+    
+    })
+    
 
 
 

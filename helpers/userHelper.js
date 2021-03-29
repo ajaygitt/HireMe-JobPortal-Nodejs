@@ -3,6 +3,13 @@ var collection = require("../config/dbcollections");
 var bcrypt = require("bcrypt");
 const { USER_COLLECTION } = require("../config/dbcollections");
 const { response } = require("express");
+const Razorpay=require('razorpay');
+const { ObjectId } = require("bson");
+var instance=new Razorpay({
+
+  key_id:'rzp_test_3URBQ8j8qtsLhB',
+  key_secret: 'U8nhJZH5oxQoudiSGQVWYSw5'
+})
 
 module.exports = {
   doSignUp: (userData) => {
@@ -142,8 +149,72 @@ return new Promise(async(resolve,reject)=>{
       reject()
     }
     })
-  }
+  },
 
+
+
+  generateRazorPay:(Userid)=>{
+return new Promise((resolve,reject)=>{
+
+  var options={
+    amount:199*100,
+    currency:"INR",
+    receipt:""+Userid
+  };
+  instance.orders.create(options,function(err,order){
+
+    if(err){
+      console.log("err",err);
+    }
+    else{
+      console.log("order iiss",order);
+      resolve(order)
+    }
+  })
+})
+
+  },
+
+  verifyPayment: (details,userid) => {
+    console.log("hopee",details);
+    return new Promise(async(resolve, reject) => {
+let premium=await db.get().collection(USER_COLLECTION).updateOne({_id:ObjectId(userid)},{$set:{
+  premium:true
+}})
+
+        const crypto = require('crypto');
+        let hmac = crypto.createHmac('sha256', 'Mf0VLj5ZCqBtTObi3Zy79LO3');
+        hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]'])
+        hmac = hmac.digest('hex')
+        if (hmac == details['payment[razorpay_signature]'])
+         {
+
+
+            resolve()
+        }
+        else {
+
+
+            reject()
+        }
+    })
+
+},
+
+isPremium:(userid)=>{
+return new Promise(async(resolve,reject)=>{
+
+  let user= await db.get().collection(USER_COLLECTION).findOne({_id:ObjectId(userid)})
+  if(user)
+  {
+    resolve(user)
+  }
+  else{
+    reject
+  }
+})
+
+}
 
 
 

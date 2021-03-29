@@ -36,7 +36,7 @@
 
                         <div class="caption sfb" data-x="center" data-y="400" data-speed="400" data-start="1600" data-easing="easeOutExpo">
                             <a href="add-job.html" class="slider-button">Hire</a>
-                            <a href="browse-jobs.html" class="slider-button">Work</a>
+                            {{!-- <a href="browse-jobs.html" class="slider-button">Work</a> --}}
                         </div>
                     </li>
 
@@ -51,7 +51,7 @@
             <!-- Recent Jobs -->
             <div class="eleven columns">
                 <div class="padding-right">
-                    <h3 class="margin-bottom-25">Recent Jobs</h3>
+                    <h3 class="margin-bottom-25">MY JOBS</h3>
                     <ul class="job-list">
 
                         <li class="highlighted">
@@ -244,26 +244,51 @@
 
 
         <!-- Recent Posts -->
-        <div class="container">
+      
+{{#if userfound.premium}}
+
+  <div class="container">
             <div class="sixteen columns">
-                <h3 class="margin-bottom-25">Job Plans & Pricing</h3>
+                <h3 class="margin-bottom-25">Current Plan</h3>
             </div>
 
-
-            <!-- Plan #1 -->
-            <div class="plan color-1 one-third column">
+  <div class="plan color-2 one-third column">
                 <div class="plan-price">
-                    <h3>Start Up</h3>
-                    <span class="plan-currency">$</span>
-                    <span class="value">19</span>
-
+                    <h3>Premium User</h3>
+                    <span class="plan-currency">₹</span>
+                    <span class="value">199/-</span>
                 </div>
                 <div class="plan-features">
                     <ul>
                         <li>One Time Fee</li>
-                        <li>This Plan Includes 1 Job</li>
-                        <li>Non-Highlighted Post</li>
-                        <li>Posted For 30 Days</li>
+                        <li>This Plan Includes Unlimited Job posting</li>
+                        <li>post unlimited offers</li>
+                        <li>view employers contact</li>
+                    </ul>
+                    {{!-- <a class="button" href="/checkout"><i class="fa fa-shopping-cart"></i> Upgrade Now</a> --}}
+                </div>
+            </div>
+
+
+{{else}}
+<div class="container">
+            <div class="sixteen columns">
+                <h3 class="margin-bottom-25">Job Plans & Pricing</h3>
+            </div
+            <!-- Plan #1 -->
+            <div class="plan color-1 one-third column">
+                <div class="plan-price">
+                    <h3>Free Plan</h3>
+                    <span class="plan-currency">$</span>
+                    <span class="value">FREE</span>
+
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li>Trial Pack</li>
+                        <li>This Plan Includes 1 Job Posting</li>
+                        <li>no unlimited job postings</li>
+                        <li>can't see employers phonenumber</li>
                     </ul>
                     <a class="button" href="#"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
                 </div>
@@ -273,22 +298,22 @@
             <div class="plan color-2 one-third column">
                 <div class="plan-price">
                     <h3>Company</h3>
-                    <span class="plan-currency">$</span>
-                    <span class="value">59</span>
+                    <span class="plan-currency">₹</span>
+                    <span class="value">199/-</span>
                 </div>
                 <div class="plan-features">
                     <ul>
                         <li>One Time Fee</li>
-                        <li>This Plan Includes 2 Jobs</li>
-                        <li>Highlighted Job Post</li>
-                        <li>Posted For 60 Days</li>
+                        <li>This Plan Includes Unlimited Job posting</li>
+                        <li>post unlimited offers</li>
+                        <li>view employers contact</li>
                     </ul>
-                    <a class="button" href="#"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
+                    <a class="button" href="/checkout"><i class="fa fa-shopping-cart"></i> Upgrade Now</a>
                 </div>
             </div>
-
+{{/if}}
             <!-- Plan #3 -->
-            <div class="plan color-1 one-third column">
+            {{!-- <div class="plan color-1 one-third column">
                 <div class="plan-price">
                     <h3>Enterprise</h3>
                     <span class="plan-currency">$</span>
@@ -303,7 +328,7 @@
                     </ul>
                     <a class="button" href="#"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
 
