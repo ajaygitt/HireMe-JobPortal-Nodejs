@@ -1,0 +1,65 @@
+<section id="main-content">
+	<section class="wrapper">
+		<div class="table-agile-info">
+ <div class="panel panel-default">
+    <div class="panel-heading">
+     Basic table
+    </div>
+    <div>
+      <table class="table" ui-jq="footable" ui-options='{
+        "paging": {
+          "enabled": true
+        },
+        "filtering": {
+          "enabled": true
+        },
+        "sorting": {
+          "enabled": true
+        }}'>
+        <thead>
+          <tr>
+            <th data-breakpoints="xs">ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th data-breakpoints="xs">Job Title</th>
+           
+            <th data-breakpoints="xs sm md" data-title="DOB">Date of Birth</th>
+          </tr>
+        </thead>
+        <tbody>
+            {{#each jobs}}
+          <tr data-expanded="true">
+            <td>{{this.jobTitle}}</td>
+            <td>{{this.jobtype}}</td>
+            <td>{{this.company}}</td>
+            <td>High School History Teacher</td>
+            
+            <td>July 25th 1960</td>
+          </tr>
+         {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+ <!-- footer -->
+		  <div class="footer">
+			<div class="wthree-copyright">
+			  <p>© 2017 Visitors. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
+			</div>
+		  </div>
+  <!-- / footer -->
+</section>
+
+<!--main content end-->
+</section>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.dcjqaccordion.2.7.js"></script>
+<script src="js/scripts.js"></script>
+<script src="js/jquery.slimscroll.js"></script>
+<script src="js/jquery.nicescroll.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
+<script src="js/jquery.scrollTo.js"></script>
+</body>
+</html>

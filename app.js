@@ -30,7 +30,7 @@ var fileUpload=require('express-fileupload')
 var publicDir = require('path').join(__dirname,'/public'); 
 app.use(express.static(publicDir));
 
-
+app.use(express.json())
 
 app.use(session({
   secret: 'keyboard cat',
@@ -87,7 +87,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.bodyParser());
 
 app.use('/', employeeRouter);
-app.use('/', adminRouter);
+app.use('/admin', adminRouter);
 app.use('/', recruiterRouter);
 
 

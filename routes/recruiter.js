@@ -110,5 +110,55 @@ console.log("!!!!!!!!!!!!!!!!!!!!!!!!!",userid);
 })
 
 
+router.get('/add-job',verifyLoggedIn,(req,res)=>{
+let recruiterfound=req.session.user
+console.log("mm",recruiterfound);
+if(recruiterfound.premium)
+{
+   res.render('recruiter/add-job',{recruiterfound,recruiter:true})
+}
+else
+{
+console.log("not a premium member");
+}
+})
+
+router.post('/add-job',verifyLoggedIn,(req,res)=>{
+
+    let alert=require('alert')
+    console.log("daata",req.body);
+    let image=req.files.image
+
+console.log(image);
+
+let recruiterid=req.session.user._id
+
+recruiterHelper.postJob(req.body,recruiterid).then((response)=>{
+    console.log("response formaskheloper",response);
+let image=req.files.image
+let id=response
+image.mv('./public/icons/'+id+'.jpg',(err,done)=>{
+    if(!err)
+    {
+        res.redirect('/')
+    }
+    else
+    {
+        console.log("errrer");
+    }
+})
+
+
+
+    
+})
+
+
+// console.log("the added image is ",req.files.image);
+
+})
+
+
+
 
 module.exports = router;

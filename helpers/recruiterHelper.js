@@ -1,7 +1,7 @@
 var db = require('../config/connection')
 var collection = require('../config/dbcollections')
 var bcrypt = require('bcrypt')
-const { USER_COLLECTION } = require('../config/dbcollections')
+const { USER_COLLECTION, JOB_COLLECTION } = require('../config/dbcollections')
 const { response } = require('express')
 
 
@@ -41,6 +41,7 @@ db.get().collection(collection.USER_COLLECTION).insertOne({company_name:recruite
     city:recruiterData.city,
     password:password,
     type:"recruiter",
+    credit:2
 
 
 }).then((response)=>{
@@ -58,20 +59,44 @@ db.get().collection(collection.USER_COLLECTION).insertOne({company_name:recruite
 })
 
 
+},
+
+
+postJob:(jobdata,recruiterid)=>{
+   
+    return new Promise(async(resolve,reject)=>{
+
+  
+
+let job=    db.get().collection(JOB_COLLECTION).insertOne({email:jobdata.email,jobTitle:jobdata.jobTitle,location:jobdata.location,
+
+    jobType:jobdata.jobType,
+    category:jobdata.category,
+    tags:jobdata.tags,
+    description:jobdata.description,
+    closingDate:jobdata.closingDate,
+    website:jobdata.website,
+    tagline:jobdata.tagline,
+    recruiter:recruiterid,
+    sallary:jobdata.sallary
+    }).then((data)=>{
+        resolve(data.ops[0]._id)
+        console.log("adsf",data.ops[0]._id);
+    })
+})
+},
+
+
+
+
+
+
+
 
 
 
 }
 
-
-
-
-
-
-
-
-
-}
 
 
 

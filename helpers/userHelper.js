@@ -1,10 +1,11 @@
 var db = require("../config/connection");
 var collection = require("../config/dbcollections");
 var bcrypt = require("bcrypt");
-const { USER_COLLECTION } = require("../config/dbcollections");
+const { USER_COLLECTION, JOB_COLLECTION } = require("../config/dbcollections");
 const { response } = require("express");
 const Razorpay=require('razorpay');
 const { ObjectId } = require("bson");
+const { resource } = require("../app");
 var instance=new Razorpay({
 
   key_id:'rzp_test_3URBQ8j8qtsLhB',
@@ -214,6 +215,23 @@ return new Promise(async(resolve,reject)=>{
   }
 })
 
+},
+
+viewAllJobs:()=>{
+
+  return new Promise(async(resolve,reject)=>{
+
+    let jobs=await db.get().collection(JOB_COLLECTION).find().toArray()
+if(jobs)
+{
+  resolve(jobs)
+}
+else
+{
+  reject()
+}
+
+  })
 }
 
 

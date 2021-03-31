@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "alert": "^5.0.10",
     "base-64": "^1.0.0",
     "base64-img": "^1.0.4",
     "base64-to-file": "^1.1.0",
@@ -32,6 +33,7 @@
     "jquery": "^3.5.1",
     "js-base64": "^3.6.0",
     "js-image-zoom": "^0.7.0",
+    "jsonwebtoken": "^8.5.1",
     "just-handlebars-helpers": "^1.0.18",
     "moment": "^2.29.1",
     "mongo": "^0.1.0",

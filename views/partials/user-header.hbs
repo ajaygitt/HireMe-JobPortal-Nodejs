@@ -68,10 +68,10 @@
                             </li>
 
                             <li>
-                                <a href="#">Pages</a>
+                                <a href="#">Jobs</a>
                                 <ul>
-                                    <li><a href="job-page.html">Job Page</a></li>
-                                    <li><a href="job-page-alt.html">Job Page Alternative</a></li>
+                                    <li><a href="/viewjobs">View all Jobs</a></li>
+                                    <li><a href="job-page-alt.html">View r</a></li>
                                     <li><a href="resume-page.html">Resume Page</a></li>
                                     <li><a href="shortcodes.html">Shortcodes</a></li>
                                     <li><a href="icons.html">Icons</a></li>
@@ -104,23 +104,26 @@
                             <li><a href="blog.html">Blog</a></li>
                         </ul>
 
-{{#if userfound}}
+{{#if nouser}}
 
- <ul class="float-right">
-                         
-                     {{#if result.premium}}  <li><a href="/signupRecruiter"><i class="fa fa-user"></i> Premium User</a></li>   {{else}}     <li><a href="/checkout"><i class="fa fa-user"></i> Upgrade to premium</a></li>{{/if}}
-                                   <li><a href=""><i class="fa fa-user"></i>{{userfound.full_name}}</a></li>
-                            <li><a href="/logout"><i class="fa fa-lock"></i> Logout</a></li>
-                        </ul>
-
-
-{{else}}
                         <ul class="float-right">
                             <li><a href="/signup"><i class="fa fa-user"></i> Sign Up as Employee</a></li>
                                 <li><a href="/signupRecruiter"><i class="fa fa-user"></i> Sign Up as Recruiter</a></li>
                             <li><a href="/login"><i class="fa fa-lock"></i> Log In</a></li>
                         </ul>
+
+{{else}}
+
+ <ul class="float-right">
+                      {{#if home}}
+                   {{#if result.premium}}  <li><a href="/signupRecruiter"><i class="fa fa-user"></i> Premium User</a></li>   {{else}}     <li><a href="/checkout"><i class="fa fa-user"></i> Upgrade to premium</a></li>{{/if}}
+{{/if}}   
+                                   <li><a href=""><i class="fa fa-user"></i>{{userfound.full_name}}</a></li>
+                            <li><a href="/logout"><i class="fa fa-lock"></i> Logout</a></li>
+                        </ul>
 {{/if}}
+  
+
                     </nav>
 
                     <!-- Navigation -->
