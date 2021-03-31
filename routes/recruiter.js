@@ -5,7 +5,8 @@ const passport=require('passport')
 const auth =require('../routes/passport-setup')
 const app = require('../app');
 const userHelper = require('../helpers/userHelper');
-const recruiterHelper=require('../helpers/recruiterHelper')
+const recruiterHelper=require('../helpers/recruiterHelper');
+const { myJobs } = require('../helpers/recruiterHelper');
 require('./passport-setup')
 
 
@@ -147,18 +148,34 @@ image.mv('./public/icons/'+id+'.jpg',(err,done)=>{
         console.log("errrer");
     }
 })
-
-
-
     
 })
 
 
-// console.log("the added image is ",req.files.image);
-
 })
 
 
 
+router.get('/myJobs',verifyLoggedIn,(req,res)=>{
+
+    let userfound=req.session.user
+    console.log("usr",userfound);
+let myJobs=recruiterHelper.myJobs(userfound._id).then((myJobs)=>{
+let viewonly=true
+    console.log("myJobs",myJobs);
+    res.render('recruiter/manageJobs',{recruiter:true,viewonly,myJobs,userfound})
+})
+
+})
+
+router.get('/manage-jobs',(req,res)=>{
+
+    let userfound=req.session.user
+    console.log("urr",userfound);
+    let myJobs=recruiterHelper.myJobs(userfound._id).then((myJobs)=>{
+console.log("err",myJobs);
+        res.render('recruiter/manageJobs',{recruiter:true,myJobs,userfound})
+    })
+})
 
 module.exports = router;

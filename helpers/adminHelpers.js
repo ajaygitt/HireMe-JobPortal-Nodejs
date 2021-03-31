@@ -52,6 +52,16 @@ unblockUser:(id)=>{
         
                 })
 
+},
+
+findRecruiter:(id)=>{
+    return new Promise((resolve,reject)=>{
+
+        db.get().collection(collection.USER_COLLECTION).findOne({_id:ObjectId(id)}).then((result)=>{
+console.log("the result is",result);
+            resolve(result)
+        })
+    })
 }
 
 

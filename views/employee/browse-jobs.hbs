@@ -14,7 +14,7 @@
 
 		<ul class="job-list full">
 {{#each jobs}}
-			<li><a href="job-page.html">
+			<li><a href="/jobPage?job={{this._id}}">
 				<img src="icons/{{this._id}}.jpg" alt="">
 				<div class="job-list-content">
 					<h4>{{this.jobTitle}} <span class="full-time">{{this.jobType}}</span></h4>
@@ -31,20 +31,7 @@
 
 		{{/each}}
 
-			<li><a href="job-page-alt.html">
-				<img src="images/job-list-logo-05.png" alt="">
-				<div class="job-list-content">
-					<h4> {{this.jobTitle}}<span class="temporary">Temporary</span></h4>
-					<div class="job-icons">
-						<span><i class="fa fa-briefcase"></i> Mates</span>
-						<span><i class="fa fa-map-marker"></i> New York</span>
-						<span><i class="fa fa-money"></i> $115 / hour</span>
-					</div>
-					<p>Sodales mollis metus eget egestas. Duis sit amet sem pretium, facilisis libero ut, lobortis arcu. Cras ipsum libero, suscipit ut nisl vitae, commodo pretium mauris.</p>
-				</div>
-				</a>
-				<div class="clearfix"></div>
-			</li>
+			
 		</ul>
 		<div class="clearfix"></div>
 

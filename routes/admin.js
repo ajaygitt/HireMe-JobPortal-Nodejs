@@ -45,7 +45,7 @@ res.json(response)
 //unblock user
 
 router.post('/unblockUser',(req,res)=>{
-    console.log("kk");
+
 
     adminHelpers.unblockUser(req.body.id).then((response)=>{
         res.json(response)
@@ -53,11 +53,27 @@ router.post('/unblockUser',(req,res)=>{
 })
 
 router.get('/job-management',(req,res)=>{
-    console.log("da");
+
+
 userHelpers.viewAllJobs().then((jobs)=>{
 
     res.render('admin/jobmanagement',{admin:true,jobs})
 })
 })
+
+
+
+
+router.get('/viewRecruiter',(req,res)=>{
+    let log=req.query.recrutier
+ 
+    adminHelpers.findRecruiter(log).then((recruiteris)=>{
+        console.log("reached",recruiteris );
+      
+        res.render('admin/profiles',{admin:true,recruiteris})
+    })
+   
+})
+
 
 module.exports = router;

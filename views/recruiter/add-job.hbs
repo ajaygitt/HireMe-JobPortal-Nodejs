@@ -5,6 +5,10 @@
 
 <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css'
 	integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
+ 
+ {{!-- egg --}}
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
 <div id="titlebar" class="single submit-page">
@@ -62,6 +66,18 @@
 				</select>
 			</div>
 
+				<!-- Job Type -->
+			<div class="form">
+				<h5>Minimum Experience</h5>
+				<select data-placeholder="Full-Time" name="experience" id="experience" class="chosen-select-no-single">
+				  <option value="0">fresher</option>
+					<option value="1">0-1</option>
+					<option value="2">1-2</option>
+					<option value="3">3-4</option>
+					<option value="4">>4</option>
+				</select>
+			</div>
+
 
 			<!-- Choose Category -->
 			<div class="form">
@@ -76,6 +92,20 @@
 						<option value="customer">Customer Service Agents</option>
 						<option value="sales">Sales & Marketing Experts</option>
 						<option value="accountant">Accountants & Consultants</option>
+					</select>
+				</div>
+			</div>
+
+
+			<div class="form">
+				<div class="select">
+					<h5>Minimum Qualification</h5>
+					<select data-placeholder="Choose quaification" id="category" name="qualification" class="chosen-select" multiple>
+						<option value="webdev">PG(Any)</option>
+						<option value="mobiledev">UG</option>
+						<option value="design">+2</option>
+						<option value="writers">SSLC</option>
+						
 					</select>
 				</div>
 			</div>
@@ -102,8 +132,9 @@
 
 			<!-- TClosing Date -->
 			<div class="form">
-				<h5>Closing Date <span>(optional)</span></h5>
-				<input data-role="date" type="date" name="closingDate" id="closingDate" placeholder="yyyy-mm-dd">
+				<h5>Closing Date(maximum date valid is 15 ) <span></span></h5>
+				{{!-- <input data-role="date" type="date" name="closingDate" min="2021-03-31" max="2021-04-20" id="closingDate" placeholder="yyyy-mm-dd"> --}}
+				<input type="text" id="datepicker" name="closingDate">
 				<p class="note">Deadline for new applicants.</p>
 			</div>
 	
@@ -120,38 +151,17 @@
 
 			<!-- Website -->
 			<div class="form">
-				<h5>Website <span>(optional)</span></h5>
+				<h5>Website <span></span></h5>
 				<input type="text" name="website" id="website" placeholder="http://">
 			</div>
 
 			<!-- Teagline -->
 			<div class="form">
-				<h5>Tagline <span>(optional)</span></h5>
+				<h5>Tagline <span></span></h5>
 				<input type="text" name="tagline" id="tagline" placeholder="Briefly describe your company">
 			</div>
 
-			<!-- Video -->
-			{{!-- <div class="form">
-				<h5>Video <span>(optional)</span></h5>
-				<input type="text" placeholder="A link to a video about your company">
-			</div> --}}
-
-			<!-- Twitter -->
-			{{!-- <div class="form">
-				<h5>Twitter Username <span>(optional)</span></h5>
-				<input type="text" placeholder="@yourcompany">
-			</div> --}}
-
-			{{!-- <!-- Logo -->
-			<div class="form">
-				<h5>Logo <span>(optional)</span></h5>
-				<label class="upload-btn">
-				    <input type="file" name="image" multiple />
-				    <i class="fa fa-upload"></i> Browse
-				</label>
-				<span class="fake-input">No files</span>
-			</div> --}}
-			
+		
 <div>
   <label for="Image" style="color: white;">IMAGE 1</label>
   <input type="file" name="image" id="image" class="form-control" required>
@@ -169,10 +179,22 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+
 <script>
 
 
 	$(document).ready(function () {
+
+
+  $( "#datepicker" ).datepicker({
+
+changeYear:true,
+minDate:'-0D',
+maxDate:'+15D',
+
+  });
+
 
 
 console.log("sdkfj")
@@ -208,6 +230,9 @@ console.log("sdkfj")
 				},
 				image:{
 					required:true
+				},
+				qualification:{
+					required:true
 				}
 				
 			}
@@ -217,6 +242,8 @@ console.log("sdkfj")
 	})
 		  
 </script>
+
+
 
 <!-- Scripts
 ================================================== -->
@@ -238,5 +265,5 @@ console.log("sdkfj")
 
 <!-- WYSIWYG Editor -->
 <script type="text/javascript" src="scripts/jquery.sceditor.bbcode.min.js"></script>
-<script type="text/javascript" src="scripts/jquery.sceditor.js"></script> --}}
+<script type="text/javascript" src="scripts/jquery.sceditor.js"></script> 
 

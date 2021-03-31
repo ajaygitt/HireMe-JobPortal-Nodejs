@@ -3,7 +3,7 @@ var collection = require('../config/dbcollections')
 var bcrypt = require('bcrypt')
 const { USER_COLLECTION, JOB_COLLECTION } = require('../config/dbcollections')
 const { response } = require('express')
-
+const moment =require('moment')
 
 module.exports={
 
@@ -67,7 +67,7 @@ postJob:(jobdata,recruiterid)=>{
     return new Promise(async(resolve,reject)=>{
 
   
-
+let newdate=moment(new Date()).format('DD/MM/YYYY')
 let job=    db.get().collection(JOB_COLLECTION).insertOne({email:jobdata.email,jobTitle:jobdata.jobTitle,location:jobdata.location,
 
     jobType:jobdata.jobType,
@@ -78,7 +78,12 @@ let job=    db.get().collection(JOB_COLLECTION).insertOne({email:jobdata.email,j
     website:jobdata.website,
     tagline:jobdata.tagline,
     recruiter:recruiterid,
-    sallary:jobdata.sallary
+    sallary:jobdata.sallary,
+    company_name:jobdata.company_name,
+    qualification:jobdata.qualification,
+    experience:jobdata.experience,
+    dateposted:newdate,
+    
     }).then((data)=>{
         resolve(data.ops[0]._id)
         console.log("adsf",data.ops[0]._id);
@@ -86,6 +91,15 @@ let job=    db.get().collection(JOB_COLLECTION).insertOne({email:jobdata.email,j
 })
 },
 
+
+myJobs:(id)=>{
+
+    return new Promise(async(resolve,reject)=>{
+        await db.get().collection(JOB_COLLECTION).find({recruiter:id}).toArray().then((response)=>{
+            resolve(response)
+        })
+    })
+},
 
 
 

@@ -18,23 +18,23 @@
         }}'>
         <thead>
           <tr>
-            <th data-breakpoints="xs">ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th data-breakpoints="xs">Job Title</th>
+            <th data-breakpoints="xs">Jpb</th>
+            <th>Job type</th>
+            <th>Job category</th>
+            <th data-breakpoints="xs">Recruiter</th>
            
-            <th data-breakpoints="xs sm md" data-title="DOB">Date of Birth</th>
+            <th data-breakpoints="xs sm md" data-title="DOB">Action</th>
           </tr>
         </thead>
         <tbody>
             {{#each jobs}}
           <tr data-expanded="true">
             <td>{{this.jobTitle}}</td>
-            <td>{{this.jobtype}}</td>
-            <td>{{this.company}}</td>
-            <td>High School History Teacher</td>
+            <td>{{this.jobType}}</td>
+            <td>{{this.category}}</td>
+            <td><button class="btn btn-primary">view recruiter</button></td>
             
-            <td>July 25th 1960</td>
+            <td><a href="/admin/viewRecruiter?recrutier={{this.recruiter}}"> <button class="btn btn-danger">delete job </button></a></td>
           </tr>
          {{/each}}
         </tbody>

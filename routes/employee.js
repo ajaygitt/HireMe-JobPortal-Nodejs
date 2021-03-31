@@ -316,4 +316,28 @@ router.get("/viewjobs", verifyLoggedIn, (req, res) => {
   });
 });
 
+router.get('/jobPage',(req,res)=>{
+  let id=req.query.job
+
+  userHelper.viewSingleJob(id).then((jobs)=>{
+  let userfound=req.session.user
+    res.render('employee/job-single',{user:true,jobs,userfound})
+  })
+
+})
+
+router.post('/searchJob',(req,res)=>{
+
+let keyword=req.body.keyword
+let location=req.body.city
+userHelper.seachJob(keyword,location).then((jobs)=>{
+
+  res.render('employee/browse-jobs',{user:true,jobs})
+
+
+})
+})
+
+
+
 module.exports = router;

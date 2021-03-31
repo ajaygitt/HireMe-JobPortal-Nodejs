@@ -6,6 +6,9 @@ const { response } = require("express");
 const Razorpay=require('razorpay');
 const { ObjectId } = require("bson");
 const { resource } = require("../app");
+const { resolve } = require("path");
+var lodash=require('lodash')
+
 var instance=new Razorpay({
 
   key_id:'rzp_test_3URBQ8j8qtsLhB',
@@ -232,7 +235,69 @@ else
 }
 
   })
+},
+
+viewSingleJob:(id)=>{
+
+  return new Promise((resolve,reject)=>{
+
+ let job=   db.get().collection(JOB_COLLECTION).findOne({_id:ObjectId(id)}).then((response)=>{
+   resolve(response)
+ })
+  })
+},
+
+seachJob:(keyword,location)=>{
+  return new Promise(async(resolve,reject)=>{
+ console.log("key");
+   
+
+ await db.get().collection(JOB_COLLECTION).find({$or:[{jobTitle:{$regex:keyword}},{tags:{$regex:keyword}},{description:{$regex:keyword}},{company_name:{$regex:keyword}}]}).toArray().then((result)=>{
+
+  console.log("result is ",result);
+
+if(location)
+{
+if(result[0])
+{
+  
+  var picked = lodash.filter(result, x => x.location === location);
+
+  console.log("location isisis sorted form",picked);
+
+  resolve(picked);
 }
+else
+{
+  resolve(result)
+}
+}
+else
+{
+  resolve(result)
+}
+ })
+
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
