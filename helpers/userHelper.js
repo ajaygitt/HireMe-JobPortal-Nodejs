@@ -7,7 +7,8 @@ const Razorpay=require('razorpay');
 const { ObjectId } = require("bson");
 const { resource } = require("../app");
 const { resolve } = require("path");
-var lodash=require('lodash')
+var lodash=require('lodash');
+const { reject } = require("lodash");
 
 var instance=new Razorpay({
 
@@ -279,16 +280,57 @@ else
  })
 
   })
+},
+
+filterJobsbyDate:(keyword)=>{
+
+  return new Promise(async(resolve,reject)=>{
+
+ let res=  await db.get().collection(JOB_COLLECTION).find().sort({dateposted:keyword}).toArray()
+
+ if(res)
+ {
+   resolve(res)
+   console.log("reslut is",res);
+ }
+else
+{
+  reject()
 }
+    // db.restaurants.find().sort( { "borough": 1, "_id": 1 } )
+  })
+},
 
+filterBysalary:(keyword)=>{
+  return new Promise(async(resolve,reject)=>{
 
+    let res=await db.get().collection(JOB_COLLECTION).find().sort({sallary:keyword}).toArray()
 
+    if(res)
+    {
+      resolve(res)
+    }
+    else
+    {
+      reject()
+    }
+  })
+},
 
+findByCity:(keyword)=>{
+  return new Promise(async(resolve,reject)=>{
+  let res=  await db.get().collection(JOB_COLLECTION).find({ location: { $regex:keyword } }).toArray()
 
-
-
-
-
+  if(res)
+  {
+    resolve(res)
+  }
+  else
+  {
+    reject()
+  }
+  })
+}
 
 
 

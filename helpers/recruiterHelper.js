@@ -66,7 +66,7 @@ postJob:(jobdata,recruiterid)=>{
    
     return new Promise(async(resolve,reject)=>{
 
-  
+ let salary=parseInt(jobdata.sallary)
 let newdate=moment(new Date()).format('DD/MM/YYYY')
 let job=    db.get().collection(JOB_COLLECTION).insertOne({email:jobdata.email,jobTitle:jobdata.jobTitle,location:jobdata.location,
 
@@ -78,7 +78,7 @@ let job=    db.get().collection(JOB_COLLECTION).insertOne({email:jobdata.email,j
     website:jobdata.website,
     tagline:jobdata.tagline,
     recruiter:recruiterid,
-    sallary:jobdata.sallary,
+    sallary:salary,
     company_name:jobdata.company_name,
     qualification:jobdata.qualification,
     experience:jobdata.experience,

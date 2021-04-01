@@ -7,6 +7,7 @@ const app = require("../app");
 const userHelper = require("../helpers/userHelper");
 require("./passport-setup");
 const config = require("../config/twilio");
+const { static } = require("express");
 const client = require("twilio")(config.accountSID, config.authToken);
 
 //middlevare for session checking
@@ -308,14 +309,45 @@ router.post("/verify-payment", verifyLoggedIn, (req, res) => {
     });
 });
 
+//view all jobs 
 router.get("/viewjobs", verifyLoggedIn, (req, res) => {
   userHelper.viewAllJobs().then((jobs) => {
+
+   
+    let length = jobs.length
+    console.log("legth is ", length);
+    let pageNumber = [{ page: 1 }, { page: 2 }, { page: 3 }, { page: 4 }, { page: 5 },{page:6}]
+
+
+    const page = parseInt(req.query.page)
+
+
+    const limit = parseInt(req.query.limit)
+
+    const startIndex = (page - 1) * limit
+    const endIndex = page * limit
+    jobs = jobs.slice(startIndex, endIndex)
+
+    if (!jobs[0]) {
+      console.log("end");
+    }
+
     console.log("jobs are", jobs);
     let userfound = req.session.email;
-    res.render("employee/browse-jobs", { user: true, jobs, userfound });
+    let prev=page-1
+    let next=page+1
+    if(prev==0)
+    {
+      prev=1
+    }
+    res.render("employee/browse-jobs", { user: true, jobs, userfound,pageNumber,prev,next });
   });
 });
 
+
+
+
+//single jobview 
 router.get('/jobPage',(req,res)=>{
   let id=req.query.job
 
@@ -326,16 +358,70 @@ router.get('/jobPage',(req,res)=>{
 
 })
 
+
+
 router.post('/searchJob',(req,res)=>{
 
 let keyword=req.body.keyword
 let location=req.body.city
 userHelper.seachJob(keyword,location).then((jobs)=>{
-
+var stat=jobs;
   res.render('employee/browse-jobs',{user:true,jobs})
 
 
 })
+})
+
+router.post('/filter',(req,res)=>{
+
+  console.log("reached here",req.body);
+
+  if(req.body.keyword=="oldest"|| req.body.keyword=="recent")
+  {
+  if(req.body.keyword=="oldest")
+  {
+  var  keyword=-1
+  }
+  else if(req.body.keyword=="recent")
+  {
+ var   keyword=1
+  }
+
+  console.log("keyword is ",keyword);
+  userHelper.filterJobsbyDate(keyword).then((result)=>{
+
+let jobs=result
+res.render("employee/browse-jobs", { user: true, jobs });
+
+  })
+  }
+
+  else{
+   
+if(req.body.keyword=="high"){
+  var keyword=-1
+}
+else{
+  var keyword=1
+}
+
+  userHelper.filterBysalary(keyword).then((result)=>{
+
+    console.log("result",result);
+    let jobs=result
+    res.render("employee/browse-jobs", { user: true, jobs });
+  })
+
+  }
+
+})
+
+router.post('/searchByCity',(req,res)=>{
+
+  userHelper.findByCity(req.body.city).then((jobs)=>{
+
+    res.render("employee/browse-jobs", { user: true, jobs });
+  })
 })
 
 
