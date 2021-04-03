@@ -45,7 +45,8 @@ module.exports = {
             education: userData.education,
             experience: userData.experience,
             gender: userData.gender,
-            qualification: userData.qualification,
+            skills:[userData.skill],
+            areaOfIntrest: userData.interest,
             city: userData.city,
             password: password,
             type: "employee",
@@ -330,11 +331,171 @@ findByCity:(keyword)=>{
     reject()
   }
   })
+},
+
+ViewMyProfile:(id)=>{
+
+  return new Promise((resolve,reject)=>{
+
+   db.get().collection(USER_COLLECTION).findOne({_id:ObjectId(id)}).then((myProfile)=>{
+
+      resolve(myProfile)
+    })
+  }).catch((err)=>{
+res.send("err",err)
+  })
+},
+
+addSkill:(skill,userid)=>{
+console.log("skill",skill,userid);
+  return new Promise(async(resolve,reject)=>{
+
+  let user=await  db.get().collection(USER_COLLECTION).updateOne({_id:ObjectId(userid)},{$push:{skills:{skills:skill}}}).then(()=>{
+
+    let response={
+      status:true
+    }
+    resolve(response)
+  })
+  })
+}
+,
+
+addBio:(data,id)=>{
+return new Promise(async(resolve,reject)=>{
+
+  let useris=await db.get().collection(USER_COLLECTION).findOne({_id:ObjectId(id)})
+  if(useris.bio)
+  {
+    resolve()
+  }
+  else{
+
+ 
+  let user=await db.get().collection(USER_COLLECTION).updateOne({_id:ObjectId(id)},{
+    $push:{
+      bio:{
+        careerBio:data.ca,
+        personalBio:data.va
+      }
+    }
+  })
+  let response={
+    user:useris,
+    status:true
+  }
+  resolve(response)
+}
+})
+
+},
+
+addEmployment:(data,id)=>{
+  return new Promise(async(resolve,reject)=>{
+    let employment=data.emp;
+    let company=data.cmp
+
+    db.get().collection(USER_COLLECTION).updateOne({_id:ObjectId(id)},{
+      $push:{
+        employment:{employment,
+        company:company
+        }
+      }
+    })
+ let useris=await   db.get().collection(USER_COLLECTION).findOne({_id:ObjectId(id)})
+
+ let response={
+   user:useris,
+   status:true
+ }
+ resolve(response)
+  })
+},
+
+
+addResume:(data,id)=>{
+return new Promise(async(resolve,reject)=>{
+console.log("here");
+
+let userexist=await db.get().collection(collection.RESUME_COLLECTION).findOne({userid:id})
+
+if(userexist)
+{
+  db.get().collection(collection.RESUME_COLLECTION).updateOne({userid:id},{
+$set:{
+
+  full_name:data.full_name,
+  description:data.description,
+  language:data.language,
+  education:data.ed1,
+  education2:data.ed2,
+  college:data.college,
+  experience:data.experience,
+  company:data.companyy,
+  address:data.address,
+  fb:data.fb,
+  insta:data.insta,
+  linkedin:data.linkedin,
+  skype:data.skype,
+  dob:data.dob
 }
 
 
 
+  })
+  resolve()
+}
 
+else{
+  
+ await db.get().collection(collection.RESUME_COLLECTION).insertOne({
+    
+  userid:id,
+  full_name:data.full_name,
+  description:data.description,
+  language:data.language,
+  education:data.ed1,
+  education2:data.ed2,
+  college:data.college,
+  experience:data.experience,
+  company:data.companyy,
+  address:data.address,
+  fb:data.fb,
+  insta:data.insta,
+  linkedin:data.linkedin,
+  skype:data.skype,
+  dob:data.dob
+
+  })
+
+  resolve()
+}
+})
+
+
+
+},
+
+viewResume:(id)=>{
+  return new Promise(async(resolve,reject)=>{
+await db.get().collection(collection.RESUME_COLLECTION).findOne({userid:id}).then((cv)=>{
+  resolve(cv)
+})
+
+  })
+},
+
+addProPic:(id)=>{
+console.log("k got");
+  return new Promise((resolve,reject)=>{
+    db.get().collection(USER_COLLECTION).updateOne({_id:ObjectId(id)},{
+      $set:{
+        proPic:true
+      }
+    })
+    resolve()
+  })
+}
 
 
 

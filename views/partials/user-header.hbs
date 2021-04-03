@@ -118,7 +118,7 @@
                       {{#if home}}
                    {{#if result.premium}}  <li><a href="/signupRecruiter"><i class="fa fa-user"></i> Premium User</a></li>   {{else}}     <li><a href="/checkout"><i class="fa fa-user"></i> Upgrade to premium</a></li>{{/if}}
 {{/if}}   
-                                   <li><a href=""><i class="fa fa-user"></i>{{userfound.full_name}}</a></li>
+                                   <li><a href="/myProfile?id={{userfound._id}}"><i class="fa fa-user"></i>{{userfound.full_name}}</a></li>
       {{#if userfound}}                      <li><a href="/logout"><i class="fa fa-lock"></i> Logout</a></li>{{/if}}
                         </ul>
 {{/if}}

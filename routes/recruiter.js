@@ -112,11 +112,11 @@ console.log("!!!!!!!!!!!!!!!!!!!!!!!!!",userid);
 
 
 router.get('/add-job',verifyLoggedIn,(req,res)=>{
-let recruiterfound=req.session.user
-console.log("mm",recruiterfound);
-if(recruiterfound.premium)
+let userfound=req.session.user
+console.log("mm",userfound);
+if(userfound.premium)
 {
-   res.render('recruiter/add-job',{recruiterfound,recruiter:true})
+   res.render('recruiter/add-job',{recruiter:true,userfound})
 }
 else
 {

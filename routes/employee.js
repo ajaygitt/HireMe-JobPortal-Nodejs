@@ -1,5 +1,5 @@
 var express = require("express");
-const { response, resource, render } = require("../app");
+const { response, resource, render, request } = require("../app");
 var router = express.Router();
 const passport = require("passport");
 const auth = require("../routes/passport-setup");
@@ -423,6 +423,118 @@ router.post('/searchByCity',(req,res)=>{
     res.render("employee/browse-jobs", { user: true, jobs });
   })
 })
+
+
+router.get('/myProfile',async(req,res)=>{
+let userfound=req.session.user
+  let id= req.query.id
+  console.log("id ",id);
+  if(userfound)
+  {
+    id=userfound._id
+  }
+ await userHelper.ViewMyProfile(id).then(async(profile)=>{
+let resume=await userHelper.viewResume(id)
+    console.log("profile is ",profile);
+    console.log("c v is",resume);
+    res.render('employee/myprofile',{user:true,profile,resume,userfound,message:req.flash('message')})
+  })
+})
+
+router.post('/addNewSkill',async(req,res)=>{
+  console.log("req",req.body);
+let userfound=req.session.user
+  var str = req.body.form_data; 
+  var rest = str.slice(6);
+  console.log("data is",res,userfound);
+
+await  userHelper.addSkill(rest,userfound._id).then((response)=>{
+console.log("this is response",response);
+    res.send(response)
+  })
+})
+
+router.post("/addBio",(req,res)=>{
+let userfound=req.session.user
+  console.log("req",req.body);
+  userHelper.addBio(req.body,userfound._id).then((response)=>{
+console.log("res",response);
+
+    res.send(response.status)
+  })
+})
+
+
+router.post("/addthisEmployment",(req,res)=>{
+  let userfound=req.session.user
+  console.log("data is",req.body);
+  userHelper.addEmployment(req.body,userfound._id).then((response)=>{
+    console.log("heheh",response);
+    req.session.user=response.user
+    console.log("ses",req.session.user);
+  res.send(response.status)
+  })
+
+})
+
+
+router.post('/addResume',(req,res)=>{
+let userfound=req.session.user
+console.log("re",req.body);
+userHelper.addResume(req.body,userfound._id).then((response)=>{
+req.flash('message','saved successfully');
+res.redirect('/myProfile')
+  
+})
+})
+
+router.post('/uploadCv',async(req,res)=>{
+
+  console.log("req.body isisi",req.files);
+
+  let userfound=req.session.user
+let id=userfound._id
+  let cv=req.files.image
+console.log("cvv",cv);
+  cv.mv('./public/resumes/users-cv/' + id + '.pdf', (err, done) => {
+
+    if(err)
+    {
+      console.log("pdf upload err",err);
+    }
+    else
+    {
+      req.flash('message','saved successfully');
+res.redirect('/myProfile')
+    }
+
+  })
+
+})
+
+router.post('/uploadProfilepicture',(req,res)=>{
+  let image=req.files.profilepic
+  console.log("pro",image);
+  let userfound=req.session.user
+  let id=userfound._id
+image.mv('./public/images/profilePic/'+id+'.jpg',async(err,done)=>{
+
+  if(err)
+  {
+    console.log("err");
+  }
+  else
+  {
+  await  userHelper.addProPic(id)
+    req.flash('message','Profile Pic uploaded Successfully');
+    res.redirect('/myProfile')
+  }
+})
+
+})
+
+
+
 
 
 

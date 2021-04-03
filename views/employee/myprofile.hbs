@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <title>about me profile - Bootdey.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+ 
+</head>
+
+<body>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css"
+        integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+        integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+
+
+    <div class="container">
+        {{#if message}}
+
+        <div class="alert alert-success" role="alert">
+            {{message}}
+        </div>
+        {{/if}}
+        <div class="row">
+            <div class="col-lg-4 col-xl-4">
+                <div class="card-box text-center">
+
+                    {{!-- profile pic --}}
+                    {{#if profile.proPic}}
+<img src="images/profilePic/{{profile._id}}.jpg" class="rounded-circle avatar-xl img-thumbnail" alt="">
+    <button id="uploadpicbtn" onclick="uploadPic()">change profile pic</button>
+                    {{else}}
+                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                        class="rounded-circle avatar-xl img-thumbnail" alt="profile-image"> 
+                       <button  id="uploadpicbtn" onclick="uploadPic()"> upload a profile picture</button>
+                       <p>you dont have a profile pic please upload a profile pic</p>
+                      {{/if}}
+                  
+<div id="uploadProPic" style="display: none;">
+    <form action="/uploadProfilepicture" method="POST" enctype="multipart/form-data">
+    <input type="file" id="profilepic" name="profilepic" accept=".jpeg">
+    <button type="submit">upload image</button>
+    </form>
+</div>
+
+
+{{!-- end --}}
+
+
+                    <h4 class="mb-0">{{profile.full_name}} </h4>
+                    <p class="text-muted">{{#if profile.premium}}premium A/C User{{else}}Base Plan User {{/if}}</p>
+
+                    Profile completed progress level
+                    <div class="progress" style="height: 30px">
+
+                        <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="25"
+                            aria-valuemin="0" aria-valuemax="100">
+                            25%
+                        </div>
+                        <p style="color: black; font-size: medium;"></p>
+                    </div>
+
+                    <div class="text-left mt-3">
+                        <h4 class="font-13 text-uppercase">About Me :</h4>
+                        <p class="text-muted font-13 mb-3">
+                            {{profile.bio}}
+                        </p>
+                        <p class="text-muted mb-2 font-13"><strong>Full Name :</strong> <span
+                                class="ml-2">{{profile.full_name}}</span></p>
+
+                        <p class="text-muted mb-2 font-13"><strong>Mobile :</strong><span
+                                class="ml-2">{{profile.phonenumber}}</span></p>
+
+                        <p class="text-muted mb-2 font-13"><strong>Email :</strong> <span
+                                class="ml-2 ">{{profile.email}}</span></p>
+
+                        <p class="text-muted mb-1 font-13"><strong>Location :</strong> <span
+                                class="ml-2">{{profile.city}}</span></p>
+                    </div>
+
+
+                </div> <!-- end card-box -->
+
+                <button onclick="addSkills()">add new skill</button>
+
+                <div class="card-box">
+                    <h4 class="header-title">Skills</h4>
+                    <p class="mb-3">Everyone realizes why a new common language would be desirable</p>
+                    {{#each profile.skills}}
+
+                    <div class="pt-1">
+                        <h6 class="text-uppercase mt-0">{{this.skills}}<span class="float-right">90%</span></h6>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="90" aria-valuemin="0"
+                                aria-valuemax="100" style="width: 90%">
+                                <span class="sr-only">90% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{/each}}
+
+                </div> <!-- end card-box-->
+
+            </div> <!-- end col-->
+
+            <div class="col-lg-8 col-xl-8">
+                <div class="card-box">
+                    <ul class="nav nav-pills navtab-bg">
+                        <li class="nav-item">
+                            <a href="#about-me" data-toggle="tab" aria-expanded="true" class="nav-link ml-0 active">
+                                <i class="mdi mdi-face-profile mr-1"></i>BIO
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                <i class="mdi mdi-settings-outline mr-1"></i>Resume
+
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+
+
+                        {{!-- toggle modal --}}
+                        <div class="tab-pane show active" id="about-me">
+
+
+
+                            {{!-- new skill add option --}}
+                            <div id="addNewSkill" style="display: none;">
+                                <h5 class="mb-4 text-uppercase"><i class="mdi mdi-briefcase mr-1"></i>
+                                    Add new Skill</h5>
+                                <ul>
+                                    <h3>specify Your skills here</h3>
+                                    <form action="" id="newSkill">
+                                        <input type="text" name="skill" id="skillIs">
+                                        <button type="submit">submit</button>
+                                    </form>
+                                </ul>
+                            </div>
+
+
+                            <ul class="list-unstyled timeline-sm">
+                                <li class="timeline-sm-item">
+                                    <span class="timeline-sm-date">Your Bio</span>
+                                    {{#if profile.bio}}
+                                    {{#each profile.bio}}
+                                    <h5 class="mt-0 mb-1">Personal Biography</h5>
+                                    {{!-- <p>websitename.com</p> --}}
+                                    <p class="text-muted mt-2">{{this.careerBio}}</p>
+
+                                    <h5 class="mt-0 mb-1">Career Biography</h5>
+
+                                    <p class="text-muted mt-2">{{this.personalBio}}</p>
+                                    {{/each}}
+                                    {{else}}
+                                    <h3>you didnt have uploaded a bio make a bio now <button style="size: 12px;"
+                                            onclick="addBio()">here</button> </h3>
+                                    {{/if}}
+
+                                    <div id="addbios" style="display: none;">
+                                        <form action="" method="POST" name="bioform" id="bioform">
+
+                                            <textarea type="text" class="form-control" rows="2" id="perbio"
+                                                placeholder="describe about your personal Biography"
+                                                name="personalBio"></textarea>
+
+                                            <textarea type="text" class="form-control" id="carbio"
+                                                placeholder="describe about your career Biography"
+                                                name="careerBio"></textarea>
+
+                                            <input type="submit" value="submit">
+                                        </form>
+
+
+                                    </div>
+
+                                    <div style="padding-top: 23px;">
+                                </li>
+
+                            </ul>
+
+                            {{#if profile.employment}}
+                            <h5 class="mb-3 mt-4 text-uppercase"><i class="mdi mdi-cards-variant mr-1"></i>
+                                Employment Details</h5>
+                            <div class="table-responsive">
+                                <table class="table table-borderless mb-0">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Postition of Job</th>
+                                            <th>Company name Name</th>
+                                            {{!-- <th>Start Date</th>
+                                            <th>Due Date</th> --}}
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each profile.employment}}
+                                        <tr>
+                                            <td></td>
+                                            <td>{{this.employment}}</td>
+                                            <td>{{this.company}}</td>
+                                        </tr>{{/each}}
+
+                                        {{!-- <td>07/05/2018</td>
+                                        <td><span class="badge badge-purple">Work in Progress</span></td> --}}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            {{else}}
+                            <h3>Add your employment details <button style="font-size: medium;"
+                                    onclick="addEmployment()">here</button> </h3>
+
+
+                            <div id="addNewEmployment" style="display: none;">
+                                <h5 class="mb-4 text-uppercase"><i class="mdi mdi-briefcase mr-1"></i>
+                                    Add new employment details</h5>
+                                <ul>
+                                    <h3>specify Your recent job here</h3>
+                                    <form action="" id="newEmployment" name="employm">
+                                        <input type="text" name="employment" id="employmentis"
+                                            placeholder="position (eg: Software engineer)">
+                                        <input type="text" name="company" id="companyis"
+                                            placeholder="Company name (eg: Tcs)">
+
+                                        <button type="submit">submit</button>
+                                    </form>
+                                </ul>
+                            </div>
+
+                            <div>
+
+                            </div>
+
+                            {{/if}}
+                        </div>
+                        <!-- end timeline content-->
+
+                        <div class="tab-pane" id="settings">
+                            <form id="resume" action="/addResume" method="POST">
+                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle mr-1"></i>
+                                    Personal Info</h5>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstname">Full Name</label>
+                                            <input type="text" class="form-control" name="fullname"
+                                                value="{{profile.full_name}}" id="firstname"
+                                                placeholder="Enter first name">
+                                        </div>
+                                    </div>
+                                    {{!-- <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastname">Last Name</label>
+                                            <input type="text" class="form-control" id="lastname"
+                                                placeholder="Enter last name">
+                                        </div>
+                                    </div> <!-- end col --> --}}
+                                </div> <!-- end row -->
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="userbio">Describe About Yourself</label>
+                                            <textarea class="form-control" id="userbio" rows="4"
+                                                value="{{resume.description}}" name="description"
+                                                placeholder="Write something about You..">{{resume.description}}</textarea>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="useremail">Date of birth</label>
+                                            <input type="date" class="form-control" name="dob" value="{{resume.dob}}"
+                                                id="useremail" placeholder="Enter email">
+                                            {{!-- <span class="form-text text-muted"><small>If you want to change email
+                                                    please <a href="javascript: void(0);">click</a> here.</small></span>
+                                            --}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userpassword">Languages Known</label>
+                                            <select name="language" id="language" value={{resume.language}}>
+                                                <option value="English">English</option>
+                                                <option value="Malayalam">Malayalam</option>
+                                                <option value="Hindi">Hindi</option>
+                                                <option value="Tamil">Tamil</option>
+                                            </select>
+                                            <span class="form-text text-muted"><small>If you want to change password
+                                                    please <a href="javascript: void(0);">click</a> here.</small></span>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+
+                                {{!-- clmsnn --}}
+
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="userbio">Residential Address</label>
+                                            <textarea class="form-control" id="userbio" rows="4" cols="4" name="address"
+                                                value="{{resume.address}}"
+                                                placeholder="Enter your Full address..">{{resume.address}}</textarea>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div>
+
+
+
+
+
+
+
+
+                                <h5 class="mb-3 text-uppercase bg-light p-2"><i
+                                        class="mdi mdi-office-building mr-1"></i>Career Info</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="companyname">Education History</label>
+                                            <input type="text" class="form-control" id="ed1" name="ed1"
+                                                value="{{resume.education}}" placeholder="Enter Recent Education">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="cwebsite">
+                                                <college>
+                                                    <university></university>
+                                            </label>
+                                            <input type="text" name="college" class="form-control" {{resume.college}}
+                                                id="college" placeholder="Enter The University or college">
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+                                {{!-- <button id="edbtn" onclick="showEdu()">add new education</button> --}}
+
+
+
+                                <h5 class="mb-3 text-uppercase bg-light p-2"><i
+                                        class="mdi mdi-office-building mr-1"></i>Experience History</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="companyname">Experience</label>
+                                            <input type="text" value="{{resume.experience}}" class="form-control"
+                                                id="ed1" name="experience" placeholder="Enter Recent Experience">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="cwebsite">company</label>
+                                            <input type="text" name="companyy" value="{{resume.company}}"
+                                                class="form-control" id="company" placeholder="Enter The Company">
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div>
+
+
+
+
+
+
+
+                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-earth mr-1"></i> Social
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="social-fb">Facebook</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="fab fa-facebook-square"></i></span>
+                                                </div>
+                                                <input type="text" value="{{resume.fb}}" class="form-control" name="fb"
+                                                    id="social-fb" placeholder="Url">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end row -->
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="social-insta">Instagram</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                class="fab fa-instagram"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" value="{{resume.insta}}"
+                                                        name="insta" id="social-insta" placeholder="Url">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="social-lin">Linkedin</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                class="fab fa-linkedin"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" value="{{resume.linkedin}}"
+                                                        name="linkedin" id="social-lin" placeholder="Url">
+                                                </div>
+                                            </div>
+                                        </div> <!-- end col -->
+                                    </div> <!-- end row -->
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="social-sky">Skype</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                class="fab fa-skype"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" value="{{resume.skype}}"
+                                                        name="skype" id="social-sky" placeholder="@username">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end col -->
+                                    </div> <!-- end row -->
+
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i
+                                                class="mdi mdi-content-save"></i> Save</button>
+
+                                    </div>
+                            </form>
+
+                        </div>
+                        <div id="pdfclickbtn">
+                            <h3>or</h3>
+                            <button style="align-items: center;" onclick="addpdf()">add a pdf resume</button>
+                        </div>
+                        <div id="addpdf" style="display: none; padding-top: 5px; padding-left: 10px;">
+                           
+<form action="/uploadCv" method="post" enctype="multipart/form-data" >
+
+ <input type="file" name="image" id="imgs" class="image" accept=".pdf">
+
+<button type="submit">upload</button>
+</form>
+
+                        </div>
+                        <!-- end settings content-->
+
+                    </div> <!-- end tab-content -->
+                </div> <!-- end card-box-->
+
+            </div> <!-- end col -->
+        </div>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript"></script>
+
+    <script>
+function uploadPic(){
+
+    $("#uploadProPic").show()
+    $("#uploadpicbtn").hide()
+
+}
+        function addpdf() {
+            $("#addpdf").show()
+            $("#pdfclickbtn").hide()
+        }
+
+        function showEdu() {
+            $("#educa2").show()
+        }
+
+
+        function addSkills() {
+            console.log("haiaha")
+            $("#addNewSkill").show()
+        }
+
+        //add bio
+
+        function addBio() {
+            console.log("od")
+            $("#addbios").show()
+        }
+
+        function addEmployment() {
+            $("#addNewEmployment").show()
+        }
+
+        //emp
+
+        $("#newEmployment").submit(function (e) {
+            e.preventDefault()
+            let emp = $("#employmentis").val()
+            let cmp = $("#companyis").val()
+
+            console.log("isis", emp, cmp)
+
+            $.ajax({
+                method: 'post',
+                url: '/addthisEmployment',
+                data: {
+                    emp, cmp
+                },
+                success: () => {
+                    alert("company added")
+                    location.reload()
+                }
+            })
+
+
+        })
+
+
+
+
+
+
+        $("#newSkill").submit(function (e) {
+            console.log("success")
+            e.preventDefault()
+            var form_data = $(this).serialize();
+            console.log("data is", form_data)
+            $.ajax({
+
+                url: '/addNewSkill',
+                method: 'post',
+                data: {
+                    form_data
+                },
+                success: (response) => {
+                    if (response.status) {
+                        alert("skill added")
+                        $("#addNewSkill").hide()
+                    }
+
+                }
+            })
+
+
+            newEmployment
+
+
+
+
+        })
+
+        $("#bioform").submit(function (e) {
+            e.preventDefault()
+            let va = $("#perbio").val()
+            let ca = $("#carbio").val()
+
+            $.ajax({
+                method: "post",
+                url: '/addBio',
+                data: {
+                    va,
+                    ca
+                },
+                success: (response) => {
+                    alert("bio added")
+                }
+            })
+            console.log("dd", va)
+
+
+        })
+
+
+
+
+    </script>
+</body>
+
+   <style type="text/css">
+        body {
+            color: #6c757d;
+            background-color: #f5f6f8;
+            margin-top: 20px;
+        }
+
+        .card-box {
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid #e7eaed;
+            padding: 1.5rem;
+            margin-bottom: 24px;
+            border-radius: .25rem;
+        }
+
+        .avatar-xl {
+            height: 6rem;
+            width: 6rem;
+        }
+
+        .rounded-circle {
+            border-radius: 50% !important;
+        }
+
+        .nav-pills .nav-link.active,
+        .nav-pills .show>.nav-link {
+            color: #fff;
+            background-color: #1abc9c;
+        }
+
+        .nav-pills .nav-link {
+            border-radius: .25rem;
+        }
+
+        .navtab-bg li>a {
+            background-color: #f7f7f7;
+            margin: 0 5px;
+        }
+
+        .nav-pills>li>a,
+        .nav-tabs>li>a {
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .mb-4,
+        .my-4 {
+            margin-bottom: 2.25rem !important;
+        }
+
+        .tab-content {
+            padding: 20px 0 0 0;
+        }
+
+        .progress-sm {
+            height: 5px;
+        }
+
+        .m-0 {
+            margin: 0 !important;
+        }
+
+        .table .thead-light th {
+            color: #6c757d;
+            background-color: #f1f5f7;
+            border-color: #dee2e6;
+        }
+
+        .social-list-item {
+            height: 2rem;
+            width: 2rem;
+            line-height: calc(2rem - 4px);
+            display: block;
+            border: 2px solid #adb5bd;
+            border-radius: 50%;
+            color: #adb5bd;
+        }
+
+        .text-purple {
+            color: #6559cc !important;
+        }
+
+        .border-purple {
+            border-color: #6559cc !important;
+        }
+
+        .timeline {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .timeline:before {
+            background-color: #dee2e6;
+            bottom: 0;
+            content: "";
+            left: 50%;
+            position: absolute;
+            top: 30px;
+            width: 2px;
+            z-index: 0;
+        }
+
+        .timeline .time-show {
+            margin-bottom: 30px;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .timeline .timeline-box {
+            background: #fff;
+            display: block;
+            margin: 15px 0;
+            position: relative;
+            padding: 20px;
+        }
+
+        .timeline .timeline-album {
+            margin-top: 12px;
+        }
+
+        .timeline .timeline-album a {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .timeline .timeline-album img {
+            height: 36px;
+            width: auto;
+            border-radius: 3px;
+        }
+
+        @media (min-width: 768px) {
+            .timeline .time-show {
+                margin-right: -69px;
+                text-align: right;
+            }
+
+            .timeline .timeline-box {
+                margin-left: 45px;
+            }
+
+            .timeline .timeline-icon {
+                background: #dee2e6;
+                border-radius: 50%;
+                display: block;
+                height: 20px;
+                left: -54px;
+                margin-top: -10px;
+                position: absolute;
+                text-align: center;
+                top: 50%;
+                width: 20px;
+            }
+
+            .timeline .timeline-icon i {
+                color: #98a6ad;
+                font-size: 13px;
+                position: absolute;
+                left: 4px;
+            }
+
+            .timeline .timeline-desk {
+                display: table-cell;
+                vertical-align: top;
+                width: 50%;
+            }
+
+            .timeline-item {
+                display: table-row;
+            }
+
+            .timeline-item:before {
+                content: "";
+                display: block;
+                width: 50%;
+            }
+
+            .timeline-item .timeline-desk .arrow {
+                border-bottom: 12px solid transparent;
+                border-right: 12px solid #fff !important;
+                border-top: 12px solid transparent;
+                display: block;
+                height: 0;
+                left: -12px;
+                margin-top: -12px;
+                position: absolute;
+                top: 50%;
+                width: 0;
+            }
+
+            .timeline-item.timeline-item-left:after {
+                content: "";
+                display: block;
+                width: 50%;
+            }
+
+            .timeline-item.timeline-item-left .timeline-desk .arrow-alt {
+                border-bottom: 12px solid transparent;
+                border-left: 12px solid #fff !important;
+                border-top: 12px solid transparent;
+                display: block;
+                height: 0;
+                left: auto;
+                margin-top: -12px;
+                position: absolute;
+                right: -12px;
+                top: 50%;
+                width: 0;
+            }
+
+            .timeline-item.timeline-item-left .timeline-desk .album {
+                float: right;
+                margin-top: 20px;
+            }
+
+            .timeline-item.timeline-item-left .timeline-desk .album a {
+                float: right;
+                margin-left: 5px;
+            }
+
+            .timeline-item.timeline-item-left .timeline-icon {
+                left: auto;
+                right: -56px;
+            }
+
+            .timeline-item.timeline-item-left:before {
+                display: none;
+            }
+
+            .timeline-item.timeline-item-left .timeline-box {
+                margin-right: 45px;
+                margin-left: 0;
+                text-align: right;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .timeline .time-show {
+                text-align: center;
+                position: relative;
+            }
+
+            .timeline .timeline-icon {
+                display: none;
+            }
+        }
+
+        .timeline-sm {
+            padding-left: 110px;
+        }
+
+        .timeline-sm .timeline-sm-item {
+            position: relative;
+            padding-bottom: 20px;
+            padding-left: 40px;
+            border-left: 2px solid #dee2e6;
+        }
+
+        .timeline-sm .timeline-sm-item:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 3px;
+            left: -7px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #1abc9c;
+        }
+
+        .timeline-sm .timeline-sm-item .timeline-sm-date {
+            position: absolute;
+            left: -104px;
+        }
+
+        @media (max-width: 420px) {
+            .timeline-sm {
+                padding-left: 0;
+            }
+
+            .timeline-sm .timeline-sm-date {
+                position: relative !important;
+                display: block;
+                left: 0 !important;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</html>

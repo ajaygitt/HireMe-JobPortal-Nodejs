@@ -7,7 +7,10 @@ var db= require('./config/connection')
 var dotenv=require('dotenv')
 var dotenv=require('dotenv').config()
 const isOnline=require('is-online');
+var fileUpload=require('express-fileupload')
 
+//flash
+var flush=require('connect-flash')
 //router initialization
 var adminRouter = require('./routes/admin');
 var recruiterRouter=require('./routes/recruiter')
@@ -26,7 +29,7 @@ const { Passport } = require('passport');
 var hbs=require('express-handlebars')
 var session=require('express-session')
 var app = express();
-var fileUpload=require('express-fileupload')
+
 var publicDir = require('path').join(__dirname,'/public'); 
 app.use(express.static(publicDir));
 
@@ -39,7 +42,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session())
-
+app.use(flush());
 app.use(function (req, res, next) {
   res.set(
     "Cache-Control",
