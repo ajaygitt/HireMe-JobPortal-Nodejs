@@ -178,4 +178,23 @@ console.log("err",myJobs);
     })
 })
 
+//recruiter profile
+router.get('/recruiterProfile',(req,res)=>{
+    let userfound=req.session.user
+    console.log("ljksa");
+    
+
+        res.render('recruiter/myProfile',{recruiter:true,userfound})
+    
+})
+
+//browse employees
+
+router.get('/browse-employees',(req,res)=>{
+    let userfound=req.session.user
+    res.render('recruiter/browse-employees',{recruiter:true,userfound})
+})
+
+
+
 module.exports = router;

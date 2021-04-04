@@ -495,6 +495,75 @@ console.log("k got");
     })
     resolve()
   })
+},
+
+
+profileProgress:(profile,resume)=>{
+return new Promise(async(resolve,reject)=>{
+
+  console.log("profile is",profile);
+
+let proArray =Object.values(resume)
+console.log("profile array is",proArray);
+console.log("ary lngth",proArray.length);
+var empties = proArray.length - proArray.filter(String).length;
+
+console.log("the empties are",empties);
+
+var level
+
+if(empties<=2)
+{
+  let res={
+    level:99
+  }
+  level=res
+}
+
+
+if(empties>=3 && empties <=5)
+{
+  let res={
+    level:87
+  }
+  level=res
+}
+
+if(empties>=6 && empties<=8)
+{
+  let res={
+    level:60
+  }
+  level=res
+}
+
+
+if(empties>=9 && empties<=11)
+{
+  let res={
+    level:45
+  }
+  level=res
+}
+if(empties>=12&& empties<=14)
+{
+  let res={
+    level:35
+  }
+  level=res
+}
+
+
+
+
+
+resolve(level)
+
+
+
+
+})
+
 }
 
 

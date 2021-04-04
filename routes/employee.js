@@ -437,10 +437,16 @@ let userfound=req.session.user
 let resume=await userHelper.viewResume(id)
     console.log("profile is ",profile);
     console.log("c v is",resume);
-    res.render('employee/myprofile',{user:true,profile,resume,userfound,message:req.flash('message')})
+
+let profileProgress= await userHelper.profileProgress(profile,resume).then((progress)=>{
+
+  console.log("progress",progress);
+
+
+    res.render('employee/myprofile',{user:true,profile,progress,resume,userfound,message:req.flash('message')})
   })
 })
-
+})
 router.post('/addNewSkill',async(req,res)=>{
   console.log("req",req.body);
 let userfound=req.session.user
@@ -530,6 +536,7 @@ image.mv('./public/images/profilePic/'+id+'.jpg',async(err,done)=>{
     res.redirect('/myProfile')
   }
 })
+
 
 })
 
