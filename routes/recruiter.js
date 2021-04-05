@@ -179,12 +179,12 @@ console.log("err",myJobs);
 })
 
 //recruiter profile
-router.get('/recruiterProfile',(req,res)=>{
+router.get('/recruiterProfile',async(req,res)=>{
     let userfound=req.session.user
     console.log("ljksa");
-    
+  let profile=await  recruiterHelper.viewMyProfile(userfound._id)
 
-        res.render('recruiter/myProfile',{recruiter:true,userfound})
+        res.render('recruiter/myProfile',{recruiter:true,userfound,profile})
     
 })
 
@@ -194,7 +194,29 @@ router.get('/browse-employees',(req,res)=>{
     let userfound=req.session.user
     res.render('recruiter/browse-employees',{recruiter:true,userfound})
 })
+ 
+router.post('/deleteJob',(req,res)=>{
+    let userfound=req.session.user
+    let jobId=req.body.id
+    recruiterHelper.deleteJob(jobId).then((response)=>{
+   
+        res.send(response)
+    })
+})
 
+router.get('/editJob',(req,res)=>{
+let id=req.query.job
+userHelper.viewSingleJob(id).then((job)=>{
+    console.log("job id this",job);
+res.render('recruiter/edit-job',{recruiter:true,job})
 
+})
+})
+
+router.post('/editJob',(req,res)=>{
+    let id=req.query.job
+    console.log("this isbody",req.body);
+    recruiterHelper.editJob(id,req.body)
+})
 
 module.exports = router;

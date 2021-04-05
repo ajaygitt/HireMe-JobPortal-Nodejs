@@ -1,0 +1,269 @@
+{{!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> --}}
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css'
+	integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
+ 
+ {{!-- egg --}}
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<div id="titlebar" class="single submit-page">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2><i class="fa fa-plus-circle"></i> Add Job</h2>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<div class="container">
+	
+	<!-- Submit Page -->
+	<div class="sixteen columns">
+		<div class="submit-page">
+
+			<!-- Notice -->
+			<div class="notification notice closeable margin-bottom-40">
+				<p><span>Have an account?</span> If you don’t have an account you can create one below by entering your email address. A password will be automatically emailed to you.</p>
+			</div>
+
+<form  id="addjob" method="POST" name="addjob" action="/editJob?job={{job._id}}" enctype="multipart/form-data">
+			<!-- Email -->
+			<div class="form">
+				<h5>email</h5>
+				<input class="search-field" type="text" name="email" value="{{job.email}}" id="email" placeholder="mail@example.com" />
+			</div>
+
+			<!-- Title -->
+			<div class="form">
+				<h5>Job Title</h5>
+				<input class="search-field" type="text" id="jobTitle" name="jobTitle" placeholder="" value="{{job.jobTitle}}"/>
+			</div>
+
+			<!-- Location -->
+			<div class="form">
+				<h5>Location <span></span></h5>
+				<input class="search-field" type="text" name="location" id="location" placeholder="e.g. London" value="{{job.location}}"/>
+				<p class="note">Leave this blank if the location is not important</p>
+			</div>
+
+			<!-- Job Type -->
+			<div class="form">
+				<h5>Job Type</h5>
+				<select data-placeholder="Full-Time" name="jobType" value="{{job.jobType}}" id="jobType" class="chosen-select-no-single">
+					<option value="full-time">Full-Time</option>
+					<option value="part-time">Part-Time</option>
+					<option value="internship">Internship</option>
+					<option value="freelance">Freelance</option>
+				</select>
+			</div>
+
+				<!-- Job Type -->
+			<div class="form">
+				<h5>Minimum Experience</h5>
+				<select data-placeholder="Full-Time" name="experience" id="experience" class="chosen-select-no-single">
+				  <option value="0">fresher</option>
+					<option value="1">0-1</option>
+					<option value="2">1-2</option>
+					<option value="3">3-4</option>
+					<option value="4">>4</option>
+				</select>
+			</div>
+
+
+			<!-- Choose Category -->
+			<div class="form">
+				<div class="select">
+					<h5>Category</h5>
+					<select data-placeholder="Choose Categories" id="category" name="category" class="chosen-select" multiple>
+						<option value="webdev">Web Developers</option>
+						<option value="mobiledev">Mobile Developers</option>
+						<option value="design">Designers & Creatives</option>
+						<option value="writers">Writers</option>
+						<option value="virtual">Virtual Assistants</option>
+						<option value="customer">Customer Service Agents</option>
+						<option value="sales">Sales & Marketing Experts</option>
+						<option value="accountant">Accountants & Consultants</option>
+					</select>
+				</div>
+			</div>
+
+
+			<div class="form">
+				<div class="select">
+					<h5>Minimum Qualification</h5>
+					<select data-placeholder="Choose quaification" id="category" name="qualification" value="{{job.quallification}}" class="chosen-select" multiple>
+						<option value="PG">PG(Any)</option>
+						<option value="Ug">UG</option>
+						<option value="+2">+2</option>
+						<option value="SSLC">SSLC</option>
+						
+					</select>
+				</div>
+			</div>
+
+			<!-- Tags -->
+			<div class="form">
+				<h5>Job Tags <span>(optional)</span></h5>
+				<input class="search-field" type="text" name="tags" id="tags" placeholder="e.g. PHP, Social Media, Management" value="{{job.tags}}"/>
+				<p class="note">Comma separate tags, such as required skills or technologies, for this job.</p>
+			</div>
+
+
+			<!-- Description -->
+			<div class="form">
+				<h5>Description</h5>
+				<textarea class="WYSIWYG" name="description" cols="40" id="description" rows="3" name="description" spellcheck="true">{{job.description}}</textarea>
+			</div>
+
+			<!-- Application email/url -->
+			<div class="form">
+				<h5>Sallary offered (in INR)</h5>
+				<input type="text" placeholder="sallary offered" value="{{job.sallary}}" name="sallary" id="sallary">
+			</div>
+
+			<!-- TClosing Date -->
+			<div class="form">
+				<h5>Closing Date(maximum date valid is 15 ) <span></span></h5>
+				{{!-- <input data-role="date" type="date" name="closingDate" min="2021-03-31" max="2021-04-20" id="closingDate" placeholder="yyyy-mm-dd"> --}}
+				<input type="text" id="datepicker" name="closingDate" value="{{job.closingDate}}">
+				<p class="note">Deadline for new applicants.</p>
+			</div>
+	
+
+			
+			<!-- Company Details -->
+			<div class="divider"><h3>Company Details</h3></div>
+
+			<!-- Company Name -->
+			<div class="form">
+				<h5>Company Name</h5>
+				<input type="text" name="company_name" id="company_name" value="{{job.company_name}}" placeholder="Enter the name of the company">
+			</div>
+
+			<!-- Website -->
+			<div class="form">
+				<h5>Website <span></span></h5>
+				<input type="text" name="website" id="website" value="{{job.website}}" placeholder="http://">
+			</div>
+
+			<!-- Teagline -->
+			<div class="form">
+				<h5>Tagline <span></span></h5>
+				<input type="text" name="tagline" id="tagline" value="{{job.tagline}}" placeholder="Briefly describe your company">
+			</div>
+
+		
+<div>
+  <label for="Image" style="color: white;">IMAGE 1</label>
+  <input type="file" name="image" id="image" class="form-control" required>
+</div>
+
+
+			<div class="divider margin-top-0"></div>
+			{{!-- <a href="#" class="button big margin-top-5">Preview <i class="fa fa-arrow-circle-right"></i></a> --}}
+
+</i><input type="submit" value="submit" class="button big margin-top-5">
+</form>
+		</div>
+	</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+
+<script>
+
+
+	$(document).ready(function () {
+
+
+  $( "#datepicker" ).datepicker({
+
+changeYear:true,
+minDate:'-0D',
+maxDate:'+15D',
+
+  });
+
+
+
+console.log("sdkfj")
+
+
+
+  $("#addjob").validate({
+            rules: {
+				email:{
+                      required:true,
+					email:true
+				},
+				jobTitle:{
+					required:true
+				},
+				location:{
+					required:true
+				},
+				jobType:{
+					required:true
+				},
+				sallary:{
+                    required:true
+				},
+				tags:{
+					required:true
+				},
+				description:{
+					required:true
+				},
+				closingDate:{
+					required:true
+				},
+				image:{
+					required:true
+				},
+				qualification:{
+					required:true
+				}
+				
+			}
+  });
+
+
+	})
+		  
+</script>
+
+
+
+<!-- Scripts
+================================================== -->
+
+<script src="scripts/custom.js"></script>
+<script src="scripts/jquery.superfish.js"></script>
+<script src="scripts/jquery.themepunch.tools.min.js"></script>
+<script src="scripts/jquery.themepunch.revolution.min.js"></script>
+<script src="scripts/jquery.themepunch.showbizpro.min.js"></script>
+<script src="scripts/jquery.flexslider-min.js"></script>
+<script src="scripts/chosen.jquery.min.js"></script>
+<script src="scripts/jquery.magnific-popup.min.js"></script>
+<script src="scripts/waypoints.min.js"></script>
+<script src="scripts/jquery.counterup.min.js"></script>
+<script src="scripts/jquery.jpanelmenu.js"></script>
+<script src="scripts/stacktable.js"></script>
+<script src="scripts/headroom.min.js"></script>
+
+
+<!-- WYSIWYG Editor -->
+<script type="text/javascript" src="scripts/jquery.sceditor.bbcode.min.js"></script>
+<script type="text/javascript" src="scripts/jquery.sceditor.js"></script> 
+

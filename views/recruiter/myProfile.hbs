@@ -55,7 +55,7 @@
                     <h4 class="mb-0">{{profile.full_name}} </h4>
                     <p class="text-muted">{{#if profile.premium}}premium A/C User{{else}}Base Plan User {{/if}}</p>
 
-                    Profile completed progress level
+                    {{!-- Profile completed progress level
                     <div class="progress" style="height: 30px">
 
                         <div class="progress-bar" role="progressbar" style="width: {{progress.level}}%" aria-valuenow="25"
@@ -63,15 +63,15 @@
                           {{progress.level}}%
                         </div>
                         <p style="color: black; font-size: medium;"></p>
-                    </div>
+                    </div> --}}
 
                     <div class="text-left mt-3">
                         {{!-- <h4 class="font-13 text-uppercase">ARea of Intrest</h4> --}}
                         <p class="text-muted font-13 mb-3">
                             {{profile.areaOfIntrest}}
                         </p>
-                        <p class="text-muted mb-2 font-13"><strong>Full Name :</strong> <span
-                                class="ml-2">{{profile.full_name}}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>Recruiter Name :</strong> <span
+                                class="ml-2">{{profile.recruiter_name}}</span></p>
 
                         <p class="text-muted mb-2 font-13"><strong>Mobile :</strong><span
                                 class="ml-2">{{profile.phonenumber}}</span></p>
@@ -86,10 +86,10 @@
 
                 </div> <!-- end card-box -->
 
-                <button onclick="addSkills()">add new skill</button>
+                {{!-- <button onclick="addSkills()">add new skill</button> --}}
 
                 <div class="card-box">
-                    <h4 class="header-title">Skills</h4>
+                    {{!-- <h4 class="header-title">Skills</h4>
                     <p class="mb-3">Everyone realizes why a new common language would be desirable</p>
                     {{#each profile.skills}}
 
@@ -103,7 +103,7 @@
                         </div>
                     </div>
 
-                    {{/each}}
+                    {{/each}} --}}
 
                 </div> <!-- end card-box-->
 
@@ -114,12 +114,12 @@
                     <ul class="nav nav-pills navtab-bg">
                         <li class="nav-item">
                             <a href="#about-me" data-toggle="tab" aria-expanded="true" class="nav-link ml-0 active">
-                                <i class="mdi mdi-face-profile mr-1"></i>BIO
+                                <i class="mdi mdi-face-profile mr-1"></i>Areas of Hiring
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
-                                <i class="mdi mdi-settings-outline mr-1"></i>Resume
+                                <i class="mdi mdi-settings-outline mr-1"></i>Company Resume
 
                             </a>
                         </li>

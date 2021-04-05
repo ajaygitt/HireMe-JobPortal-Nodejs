@@ -4,6 +4,8 @@ var bcrypt = require('bcrypt')
 const { USER_COLLECTION, JOB_COLLECTION } = require('../config/dbcollections')
 const { response } = require('express')
 const moment =require('moment')
+const { reject } = require('lodash')
+const { ObjectID } = require('bson')
 
 module.exports={
 
@@ -103,8 +105,45 @@ myJobs:(id)=>{
 
 
 
+viewMyProfile:(id)=>{
+    return new Promise((resolve,reject)=>{
+        db.get().collection(USER_COLLECTION).findOne({_id:ObjectID(id)}).then((result)=>{
+            resolve(result)
+        })
+    })
+},
+deleteJob:(jobId)=>{
+return new Promise((resolve,reject)=>{
+    db.get().collection(JOB_COLLECTION).remove({_id:ObjectID(jobId)}).then((response)=>{
+        resolve(response);
+    })
+})
 
+},
 
+editJob:(id,jobdata)=>{
+    return new Promise((resolve,reject)=>{
+        db.get().collection(JOB_COLLECTION).updateOne({_id:ObjectID(id)},{
+            $set:{
+                email:jobdata.email,jobTitle:jobdata.jobTitle,location:jobdata.location,
+
+                jobType:jobdata.jobType,
+                category:jobdata.category,
+                tags:jobdata.tags,
+                description:jobdata.description,
+                closingDate:jobdata.closingDate,
+                website:jobdata.website,
+                tagline:jobdata.tagline,
+                recruiter:recruiterid,
+                sallary:salary,
+                company_name:jobdata.company_name,
+                qualification:jobdata.qualification,
+                experience:jobdata.experience,
+                dateposted:newdate,
+            }
+        })
+    })
+}
 
 
 
