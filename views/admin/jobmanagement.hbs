@@ -6,6 +6,14 @@
      Basic table
     </div>
     <div>
+
+  {{#if message}}
+
+        <div class="alert alert-success" role="alert">
+            {{message}}
+        </div>
+        {{/if}}
+
       <table class="table" ui-jq="footable" ui-options='{
         "paging": {
           "enabled": true
@@ -18,7 +26,7 @@
         }}'>
         <thead>
           <tr>
-            <th data-breakpoints="xs">Jpb</th>
+            <th data-breakpoints="xs">Job Position</th>
             <th>Job type</th>
             <th>Job category</th>
             <th data-breakpoints="xs">Recruiter</th>
@@ -32,9 +40,9 @@
             <td>{{this.jobTitle}}</td>
             <td>{{this.jobType}}</td>
             <td>{{this.category}}</td>
-            <td><button class="btn btn-primary">view recruiter</button></td>
+            <td><button class="btn btn-primary" onClick="location.href='/admin/viewRecruiter?recrutier={{this.recruiter}}'">view recruiter</button></td>
             
-            <td><a href="/admin/viewRecruiter?recrutier={{this.recruiter}}"> <button class="btn btn-danger">delete job </button></a></td>
+            <td> <button class="btn btn-danger" onclick="deleteJob('{{this._id}}')">delete job </button></a></td>
           </tr>
          {{/each}}
         </tbody>
@@ -61,5 +69,30 @@
 <script src="js/jquery.nicescroll.js"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
 <script src="js/jquery.scrollTo.js"></script>
+
+<script>
+  function deleteJob(id){
+let r=confirm("are you sure to delete this job")
+
+id(r)
+{
+console.log("hai",id)
+ $.ajax({
+   url:'/admin/deleteJob',
+   method:'POST',
+   data:{
+     id
+   },
+   success:(response)=>{
+     alert("job deleted")
+    location.reload()
+   }
+ })
+
+}
+  }
+
+</script>
+
 </body>
 </html>

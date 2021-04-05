@@ -1,7 +1,7 @@
 var db = require("../config/connection");
 var collection = require("../config/dbcollections");
 var bcrypt = require("bcrypt");
-const { USER_COLLECTION, JOB_COLLECTION } = require("../config/dbcollections");
+const { USER_COLLECTION, JOB_COLLECTION, RESUME_COLLECTION } = require("../config/dbcollections");
 const { response } = require("express");
 const Razorpay=require('razorpay');
 const { ObjectId } = require("bson");
@@ -564,6 +564,28 @@ resolve(level)
 
 })
 
+},
+
+cvAdded:(id)=>{
+  return new Promise(async(resolve,reject)=>{
+ let cv=  await db.get().collection(RESUME_COLLECTION).findOne({userid:id})
+
+ if(cv)
+ {
+   db.get().collection(RESUME_COLLECTION).updateOne({userid:id},{
+     $set:{
+           pdfcv:true
+     }
+   })
+ }
+ else
+ {
+db.get().collection(RESUME_COLLECTION).insertOne({userid:id,pdfcv:true})
+
+ }
+
+ resolve()
+  })
 }
 
 

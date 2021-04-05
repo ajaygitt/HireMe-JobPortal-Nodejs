@@ -62,6 +62,14 @@ console.log("the result is",result);
             resolve(result)
         })
     })
+},
+
+deleteJob:(id)=>{
+    return new Promise((resolve,reject)=>{
+        db.get().collection(JOB_COLLECTION).removeOne({_id:ObjectId(id)}).then((response)=>{
+            resolve(response)
+        })
+    })
 }
 
 

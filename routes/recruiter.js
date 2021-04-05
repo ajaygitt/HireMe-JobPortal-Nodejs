@@ -174,7 +174,7 @@ router.get('/manage-jobs',(req,res)=>{
     console.log("urr",userfound);
     let myJobs=recruiterHelper.myJobs(userfound._id).then((myJobs)=>{
 console.log("err",myJobs);
-        res.render('recruiter/manageJobs',{recruiter:true,myJobs,userfound})
+        res.render('recruiter/manageJobs',{recruiter:true,myJobs,userfound,message:req.flash('message')})
     })
 })
 
@@ -206,17 +206,22 @@ router.post('/deleteJob',(req,res)=>{
 
 router.get('/editJob',(req,res)=>{
 let id=req.query.job
+let userfound=req.session.user
 userHelper.viewSingleJob(id).then((job)=>{
     console.log("job id this",job);
-res.render('recruiter/edit-job',{recruiter:true,job})
+res.render('recruiter/edit-job',{recruiter:true,job,userfound})
 
 })
 })
 
 router.post('/editJob',(req,res)=>{
     let id=req.query.job
+    let recid=req.session.user._id
     console.log("this isbody",req.body);
-    recruiterHelper.editJob(id,req.body)
+    recruiterHelper.editJob(id,req.body,recid).then(()=>{
+        req.flash('message','Job edited successfully');
+res.redirect('/manage-jobs')
+    })
 })
 
 module.exports = router;

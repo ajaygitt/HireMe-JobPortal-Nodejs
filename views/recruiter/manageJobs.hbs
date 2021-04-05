@@ -46,6 +46,12 @@
 <!-- Content
 ================================================== -->
 <div class="container">
+	  {{#if message}}
+
+        <div class="alert alert-success" role="alert">
+            {{message}}
+        </div>
+        {{/if}}
 	
 	<!-- Table -->
 	<div class="sixteen columns">

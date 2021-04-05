@@ -348,7 +348,7 @@ router.get("/viewjobs", verifyLoggedIn, (req, res) => {
 
 
 //single jobview 
-router.get('/jobPage',(req,res)=>{
+router.get('/jobPage',verifyLoggedIn,(req,res)=>{
   let id=req.query.job
 
   userHelper.viewSingleJob(id).then((jobs)=>{
@@ -360,7 +360,7 @@ router.get('/jobPage',(req,res)=>{
 
 
 
-router.post('/searchJob',(req,res)=>{
+router.post('/searchJob',verifyLoggedIn,(req,res)=>{
 
 let keyword=req.body.keyword
 let location=req.body.city
@@ -372,7 +372,7 @@ var stat=jobs;
 })
 })
 
-router.post('/filter',(req,res)=>{
+router.post('/filter',verifyLoggedIn,(req,res)=>{
 
   console.log("reached here",req.body);
 
@@ -416,7 +416,7 @@ else{
 
 })
 
-router.post('/searchByCity',(req,res)=>{
+router.post('/searchByCity',verifyLoggedIn,(req,res)=>{
 
   userHelper.findByCity(req.body.city).then((jobs)=>{
 
@@ -425,7 +425,7 @@ router.post('/searchByCity',(req,res)=>{
 })
 
 
-router.get('/myProfile',async(req,res)=>{
+router.get('/myProfile',verifyLoggedIn,async(req,res)=>{
 let userfound=req.session.user
   let id= req.query.id
   console.log("id ",id);
@@ -447,7 +447,7 @@ let profileProgress= await userHelper.profileProgress(profile,resume).then((prog
   })
 })
 })
-router.post('/addNewSkill',async(req,res)=>{
+router.post('/addNewSkill',verifyLoggedIn,async(req,res)=>{
   console.log("req",req.body);
 let userfound=req.session.user
   var str = req.body.form_data; 
@@ -460,7 +460,7 @@ console.log("this is response",response);
   })
 })
 
-router.post("/addBio",(req,res)=>{
+router.post("/addBio",verifyLoggedIn,(req,res)=>{
 let userfound=req.session.user
   console.log("req",req.body);
   userHelper.addBio(req.body,userfound._id).then((response)=>{
@@ -471,7 +471,7 @@ console.log("res",response);
 })
 
 
-router.post("/addthisEmployment",(req,res)=>{
+router.post("/addthisEmployment",verifyLoggedIn,(req,res)=>{
   let userfound=req.session.user
   console.log("data is",req.body);
   userHelper.addEmployment(req.body,userfound._id).then((response)=>{
@@ -484,17 +484,22 @@ router.post("/addthisEmployment",(req,res)=>{
 })
 
 
-router.post('/addResume',(req,res)=>{
+router.post('/addResume',verifyLoggedIn,(req,res)=>{
 let userfound=req.session.user
 console.log("re",req.body);
 userHelper.addResume(req.body,userfound._id).then((response)=>{
+
+
+
+  
 req.flash('message','saved successfully');
 res.redirect('/myProfile')
   
 })
 })
 
-router.post('/uploadCv',async(req,res)=>{
+
+router.post('/uploadCv',verifyLoggedIn,async(req,res)=>{
 
   console.log("req.body isisi",req.files);
 
@@ -502,7 +507,7 @@ router.post('/uploadCv',async(req,res)=>{
 let id=userfound._id
   let cv=req.files.image
 console.log("cvv",cv);
-  cv.mv('./public/resumes/users-cv/' + id + '.pdf', (err, done) => {
+  cv.mv('./public/resumes/users-cv/' + id + '.pdf', async(err, done) => {
 
     if(err)
     {
@@ -510,6 +515,8 @@ console.log("cvv",cv);
     }
     else
     {
+await userHelper.cvAdded(id)
+
       req.flash('message','saved successfully');
 res.redirect('/myProfile')
     }
@@ -518,7 +525,9 @@ res.redirect('/myProfile')
 
 })
 
-router.post('/uploadProfilepicture',(req,res)=>{
+
+
+router.post('/uploadProfilepicture',verifyLoggedIn,(req,res)=>{
   let image=req.files.profilepic
   console.log("pro",image);
   let userfound=req.session.user
@@ -540,7 +549,12 @@ image.mv('./public/images/profilePic/'+id+'.jpg',async(err,done)=>{
 
 })
 
+router.get('/viewResumePdf',verifyLoggedIn,(req,res)=>{
+let userfound=req.session.user
+let id=userfound._id
 
+  res.render('employee/embededpdf',{recruiter:true,userfound})
+})
 
 
 

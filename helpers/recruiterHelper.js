@@ -121,8 +121,9 @@ return new Promise((resolve,reject)=>{
 
 },
 
-editJob:(id,jobdata)=>{
+editJob:(id,jobdata,recid)=>{
     return new Promise((resolve,reject)=>{
+        let salary=parseInt(jobdata.sallary)
         db.get().collection(JOB_COLLECTION).updateOne({_id:ObjectID(id)},{
             $set:{
                 email:jobdata.email,jobTitle:jobdata.jobTitle,location:jobdata.location,
@@ -134,15 +135,17 @@ editJob:(id,jobdata)=>{
                 closingDate:jobdata.closingDate,
                 website:jobdata.website,
                 tagline:jobdata.tagline,
-                recruiter:recruiterid,
+                recruiter:recid,
                 sallary:salary,
                 company_name:jobdata.company_name,
                 qualification:jobdata.qualification,
                 experience:jobdata.experience,
-                dateposted:newdate,
+                
             }
         })
+        resolve()
     })
+
 }
 
 

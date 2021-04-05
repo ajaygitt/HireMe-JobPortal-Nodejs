@@ -7,7 +7,6 @@ var router = express.Router();
 
 
 
-
 router.get('/recruiters-management',(req,res)=>{
     let keyword="recruiter"
         adminHelpers.getEmployees(keyword).then((users)=>{
@@ -73,6 +72,16 @@ router.get('/viewRecruiter',(req,res)=>{
         res.render('admin/profiles',{admin:true,recruiteris})
     })
    
+})
+
+router.post('/deleteJob',(req,res)=>{
+console.log("hkask");
+    console.log("hai gusy",req.body);
+    let id = req.body.id
+    adminHelpers.deleteJob(id).then((response)=>{
+res.send(response)
+      
+    }) 
 })
 
 
