@@ -47,11 +47,23 @@
                        <p>you dont have a profile pic please upload a profile pic</p>
                       {{/if}}
                   
+
+
+
+
+
+
+
+
 <div id="uploadProPic" style="display: none;">
     <form action="/uploadProfilepicture" method="POST" enctype="multipart/form-data">
     <input type="file" id="profilepic" name="profilepic" accept=".jpeg">
     <button type="submit">upload image</button>
     </form>
+
+<p>or   <a href="/crop">crop and upload Image</a> </p>
+
+
 </div>
 
 
@@ -126,12 +138,21 @@
                                 <i class="mdi mdi-face-profile mr-1"></i>BIO
                             </a>
                         </li>
+                         {{#if resume.pdfcv}}
+ <li class="nav-item">
+                            <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                <i class="mdi mdi-settings-outline mr-1"></i>Edit My resume
+
+                            </a>
+                        </li>
+                       {{else}}
                         <li class="nav-item">
                             <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
                                 <i class="mdi mdi-settings-outline mr-1"></i>Resume
 
                             </a>
                         </li> 
+                           {{/if}}
                    {{#if resume.pdfcv}}
                         <li class="nav-item">
                             <a href="/viewResumePdf" aria-expanded="false" class="nav-link">

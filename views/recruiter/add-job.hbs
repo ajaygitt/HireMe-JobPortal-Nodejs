@@ -126,7 +126,7 @@
 
 			<!-- Application email/url -->
 			<div class="form">
-				<h5>Sallary offered (in INR)</h5>
+				<h5>Sallary offered Per Month (in INR)</h5>
 				<input type="text" placeholder="sallary offered" name="sallary" id="sallary">
 			</div>
 
@@ -164,24 +164,30 @@
 		
 <div>
   <label for="Image" style="color: white;">IMAGE 1</label>
-  <input type="file" name="image" id="image" class="form-control" required>
+  <input type="file" name="image" id="image" class="form-control" onchange="return fileValidation()" required>
 </div>
 
 
+<div id="imagePreview" style="width: 200px; height: 15px;"></div>
 			<div class="divider margin-top-0"></div>
 			{{!-- <a href="#" class="button big margin-top-5">Preview <i class="fa fa-arrow-circle-right"></i></a> --}}
 
-</i><input type="submit" value="submit" class="button big margin-top-5">
+</i><input type="submit" id="submitButton" value="submit" class="button big margin-top-5">
 </form>
 		</div>
 	</div>
 
 </div>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+        <link href="cropperjs/cropper.min.css" rel="stylesheet" type="text/css"/>
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 
 <script>
+
+
+
 
 
 	$(document).ready(function () {
@@ -229,18 +235,49 @@ console.log("sdkfj")
 					required:true
 				},
 				image:{
-					required:true
+					required:true,
+					extension:"jpeg|img"
 				},
 				qualification:{
 					required:true
 				}
+
 				
 			}
   });
 
 
 	})
-		  
+	
+
+
+
+function fileValidation(){
+    var fileInput = document.getElementById('image');
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    if(!allowedExtensions.exec(filePath)){
+        alert('Please upload file having extensions .jpeg/.jpg/.png/.gif only.');
+        fileInput.value = '';
+        return false;
+    }else{
+        //Image preview
+        if (fileInput.files && fileInput.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').innerHTML = '<img src="'+e.target.result+'"/>';
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+}
+
+
+
+
+
+
+
 </script>
 
 

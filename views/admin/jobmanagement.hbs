@@ -1,11 +1,6 @@
 <section id="main-content">
 	<section class="wrapper">
-		<div class="table-agile-info">
- <div class="panel panel-default">
-    <div class="panel-heading">
-     Basic table
-    </div>
-    <div>
+		
 
   {{#if message}}
 
@@ -14,7 +9,92 @@
         </div>
         {{/if}}
 
-      <table class="table" ui-jq="footable" ui-options='{
+ 
+
+{{#if viewJob}}
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/10.8.1/build.css" />
+{{#each jobs}}
+<div class="Box m-4">
+  <div class="Box-row Box-row--unread">
+    <div class="CircleBadge CircleBadge--small bg-green float-left d-block mr-3 text-center">
+      <h1 class="text-white text-center text-shadow-dark d-flex flex-justify-center height-full mt-1">S</h1>
+</div>
+
+    <h4>{{this.jobTitle}}</h4>
+    <span>{{this.company_name}}f</span><br/>
+    <span>
+    <label class="Label Label--gray mr-1">{{this.tags}}</label> <label class="Label Label--gray mr-1"></label> <label class="Label Label--gray mr-1"></label>
+   </span>
+  </div>
+  <div class="Box-row">
+<ul class="lead ml-4 mb-0">
+  <li><b>
+   {{this.sallary}}</b> salary</li>
+<li>
+  Flexible hours</li>
+<li>
+Location: <b></b> {{this.location}}</li>
+<li>
+  <b></b> learning budget per year</li>
+<li>
+job type: {{this.jobtype}}
+  </li>
+<li>
+  <b>category</b> {{this.category}}</li>
+<li>
+
+
+  <li>qualification: {{this.qualification}}</li>
+  <li>
+ Experience:   {{this.experience}}
+  </li>
+  description: {{this.description}}</li>
+
+ </li>
+  closing Date: {{this.closingDate}}</li>
+   </li>
+  date Posted: {{this.dateposted}}</li>
+
+
+
+  </ul>
+
+
+  </div>
+</div>
+
+
+
+
+{{/each}}
+
+
+
+
+
+
+<style>
+  .Box {
+  width: 100%;
+  height: 100%;
+}
+body {
+  font-family: Roboto !important;
+}
+</style>
+
+
+
+
+
+
+{{else}}
+
+
+
+     <table class="table" ui-jq="footable" ui-options='{
         "paging": {
           "enabled": true
         },
@@ -25,10 +105,11 @@
           "enabled": true
         }}'>
         <thead>
-          <tr>
+   <tr>
             <th data-breakpoints="xs">Job Position</th>
             <th>Job type</th>
             <th>Job category</th>
+            <th>job</th>
             <th data-breakpoints="xs">Recruiter</th>
            
             <th data-breakpoints="xs sm md" data-title="DOB">Action</th>
@@ -36,10 +117,11 @@
         </thead>
         <tbody>
             {{#each jobs}}
-          <tr data-expanded="true">
+             <tr data-expanded="true">
             <td>{{this.jobTitle}}</td>
             <td>{{this.jobType}}</td>
             <td>{{this.category}}</td>
+            <td><button class="btn btn-primary" onclick="location.href='/admin/viewJob?job={{this._id}}'">View full Details</button> </td>
             <td><button class="btn btn-primary" onClick="location.href='/admin/viewRecruiter?recrutier={{this.recruiter}}'">view recruiter</button></td>
             
             <td> <button class="btn btn-danger" onclick="deleteJob('{{this._id}}')">delete job </button></a></td>
@@ -52,9 +134,19 @@
 </div>
 </section>
  <!-- footer -->
+{{/if}}
+
+
+
+
+
+
+
+
+
 		  <div class="footer">
 			<div class="wthree-copyright">
-			  <p>© 2017 Visitors. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
+			  <p>© 2021 HireMe admin <a href="https//:ajaypradeep.ga">http://ajaypradeep.ga</a></p>
 			</div>
 		  </div>
   <!-- / footer -->
@@ -74,7 +166,7 @@
   function deleteJob(id){
 let r=confirm("are you sure to delete this job")
 
-id(r)
+if(r)
 {
 console.log("hai",id)
  $.ajax({

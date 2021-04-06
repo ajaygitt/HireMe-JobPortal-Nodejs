@@ -502,7 +502,8 @@ profileProgress:(profile,resume)=>{
 return new Promise(async(resolve,reject)=>{
 
   console.log("profile is",profile);
-
+if(resume)
+{
 let proArray =Object.values(resume)
 console.log("profile array is",proArray);
 console.log("ary lngth",proArray.length);
@@ -558,7 +559,15 @@ if(empties>=12&& empties<=14)
 
 
 resolve(level)
-
+}
+else
+{
+  let res={
+    level:40
+  }
+  level=res
+  resolve(level)
+}
 
 
 

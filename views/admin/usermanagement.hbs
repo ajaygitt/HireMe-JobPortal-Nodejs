@@ -172,7 +172,10 @@
 
                 console.log("hai guys", id)
 
+let r= confirm("when recruiter is blocked all posts by recruiter will be deleted permanently")
 
+if(r)
+{
                 $.ajax({
 
                     url: '/admin/blockUser',
@@ -194,13 +197,14 @@
                     }
 
                 })
+}
 
             })
 
-
+         
         }
 
-
+        
         function unblockUser(id) {
             $(document).ready(function () {
                 console.log("yse")

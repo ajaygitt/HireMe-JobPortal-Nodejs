@@ -24,6 +24,37 @@ getEmployees:(keyword)=>{
 blockUser:(id)=>{
 
     return new Promise(async(resolve,reject)=>{
+console.log("here is here");
+let user=await db.get().collection(USER_COLLECTION).findOne({_id:ObjectId(id)})
+
+console.log("this is user",user);
+if(user.type=="recruiter")
+{
+
+console.log("yes reccc");
+
+let status= await   db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(id)},{
+    $set:{
+        blocked:true
+    }
+}).then(async()=>{
+
+await db.get().collection(JOB_COLLECTION).remove({recruiter:id})
+
+}).then(()=>{
+
+    response.blocked=true
+    resolve(response)
+})
+
+}
+
+
+
+else
+{
+
+
 let response={}
     let status= await   db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(id)},{
             $set:{
@@ -33,8 +64,9 @@ let response={}
              response.blocked=true
             resolve(response)
         })
-
+    }
         })
+    
 },
 
 unblockUser:(id)=>{

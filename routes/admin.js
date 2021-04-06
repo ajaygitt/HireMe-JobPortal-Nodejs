@@ -60,6 +60,15 @@ userHelpers.viewAllJobs().then((jobs)=>{
 })
 })
 
+router.get('/viewJob',(req,res)=>{
+    userHelpers.viewAllJobs().then((jobs)=>{
+
+let viewJob=1
+
+console.log("d",jobs);
+    res.render('admin/jobmanagement',{viewJob, admin:true,jobs})
+})
+})
 
 
 

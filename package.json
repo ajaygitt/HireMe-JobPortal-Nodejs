@@ -48,7 +48,9 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-linkedin-oauth2": "^2.0.0",
     "paypal-rest-sdk": "^1.8.1",
+    "pdfkit": "^0.12.0",
     "razorpay": "^2.0.6",
+    "resume-pdf": "^1.0.3",
     "twilio": "^3.58.0",
     "voucher-code-generator": "^1.1.1"
   }

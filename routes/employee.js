@@ -9,6 +9,10 @@ require("./passport-setup");
 const config = require("../config/twilio");
 const { static } = require("express");
 const client = require("twilio")(config.accountSID, config.authToken);
+const fs=require('fs')
+const PDFDocument=require('pdfkit')
+var base64ToImage = require('base64-to-image');
+
 
 //middlevare for session checking
 const verifygoogleLogin = (req, res, next) => {
@@ -447,6 +451,9 @@ let profileProgress= await userHelper.profileProgress(profile,resume).then((prog
   })
 })
 })
+
+
+
 router.post('/addNewSkill',verifyLoggedIn,async(req,res)=>{
   console.log("req",req.body);
 let userfound=req.session.user
@@ -484,15 +491,94 @@ router.post("/addthisEmployment",verifyLoggedIn,(req,res)=>{
 })
 
 
-router.post('/addResume',verifyLoggedIn,(req,res)=>{
+router.post('/addResume',verifyLoggedIn,async(req,res)=>{
 let userfound=req.session.user
 console.log("re",req.body);
+
+let Fullname=req.session.user.full_name
+let email=userfound.email
+let phonenumber=userfound.phonenumber
+let education=req.body.education
+let experience=req.body.experience
+let company=req.body.company
+let dob=req.body.dob
+let address=req.body.address
+let fb=req.body.fb
+let insta=req.body.insta
+let linkedin=req.body.linkedin
+let skype=req.body.skype
+
+//make pdf copy of resume
+const bio=[
+  
+    {Fullname:Fullname},
+    {email:email},
+    {gender:userfound.gender},
+   
+    {phonenumber:phonenumber},
+    {education:education},
+    {experience:experience},
+    {company:company},
+    {dob:dob},
+    {address:address},
+    {fb:fb},
+    {insta:insta},
+    {linkedin:linkedin},
+    {skype:skype}
+]
+
+
+let id=userfound._id
+
+let i=1000;
+bio.forEach((bio)=>{
+ i++
+let doc=new PDFDocument()
+
+doc.pipe(fs.createWriteStream('public/resumes/users-cv/'+id+'.pdf'))
+
+doc.fillColor('#444444')
+.fontSize(20)
+.text("Made with HireMe JobPortal © Ajay Pradeep\n",110,57)
+.fontSize(10)
+.text("DIGITAL RESUME (pdf copy)")
+.moveDown();
+
+
+doc.text
+ (`Name:${Fullname} \n
+
+ email:${email}\n
+ dob:${dob}\n
+ Phone Number:${phonenumber} \n
+ Education :${education}\n
+ Experience:${experience}\n
+ company currently working on:${company}\n
+ address:${address}\n
+ Facebook:${fb}\n
+ InstaGram:${insta}\n
+ linkedin:${linkedin}\n
+ skype:${skype}
+
+ `,10,125,{width:500})
+
+
+ doc.end();
+console.log(bio.Fullname);
+
+})
+
+
+
+await userHelper.cvAdded(id)
+
+
 userHelper.addResume(req.body,userfound._id).then((response)=>{
 
 
 
   
-req.flash('message','saved successfully');
+req.flash('message','Resume saved successfully as Pdf');
 res.redirect('/myProfile')
   
 })
@@ -549,6 +635,38 @@ image.mv('./public/images/profilePic/'+id+'.jpg',async(err,done)=>{
 
 })
 
+
+
+router.post('/crop',async(req,res)=>{
+
+  console.log("reached");
+  let id=req.session.user._id
+let imgs=req.body.image
+
+  var base64Str = imgs;
+  var path ='./public/images/profilePic/';
+  var optionalObj = {'fileName': id, 'type':'jpg'};
+  
+      base64ToImage(base64Str,path,optionalObj); 
+      await  userHelper.addProPic(id)
+  let response={
+    status:true
+  }
+  res.send(response)
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
 router.get('/viewResumePdf',verifyLoggedIn,(req,res)=>{
 let userfound=req.session.user
 let id=userfound._id
@@ -556,6 +674,10 @@ let id=userfound._id
   res.render('employee/embededpdf',{recruiter:true,userfound})
 })
 
+router.get('/crop',(req,res)=>{
+
+  res.render('employee/crop',{user:true})
+})
 
 
 
