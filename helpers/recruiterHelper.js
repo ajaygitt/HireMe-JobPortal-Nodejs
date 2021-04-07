@@ -162,7 +162,8 @@ viewApplications:(id)=>{
         },
         {
 $project:{
-userid:1
+userid:1,
+message:1
 },
   },
   {
@@ -175,6 +176,7 @@ userid:1
   },
   {
       $project:{
+          message:1,
         useris:{$arrayElemAt:['$useris',0]}
       }
   }

@@ -714,6 +714,7 @@ let userfound=req.session.user
 userHelper.myApplications(userfound._id).then((jobs)=>{
 
   console.log("jkfdsa",jobs);
+
 res.render('employee/myApplications',{user:true,jobs})
 
 })

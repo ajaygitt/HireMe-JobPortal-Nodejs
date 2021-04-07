@@ -235,10 +235,18 @@ router.get('/viewApplications',(req,res)=>{
 
 
         console.log("$$$$$",applications);
-res.render('recruiter/viewApplicants',{user:true,applications})
+res.render('recruiter/viewApplicants',{recruiter:true,applications})
     })
 })
 
 
+router.get('/viewUserResume',(req,res)=>{
+    let applicant=req.query.applicant
+    recruiterHelper.viewMyProfile(applicant).then((applicant)=>{
+
+        res.render('recruiter/viewResume',{recruiter:true,applicant})
+    })
+
+})
 
 module.exports = router;
