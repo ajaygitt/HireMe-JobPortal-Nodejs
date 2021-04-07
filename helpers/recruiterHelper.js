@@ -1,7 +1,7 @@
 var db = require('../config/connection')
 var collection = require('../config/dbcollections')
 var bcrypt = require('bcrypt')
-const { USER_COLLECTION, JOB_COLLECTION } = require('../config/dbcollections')
+const { USER_COLLECTION, JOB_COLLECTION, appliedJobs } = require('../config/dbcollections')
 const { response } = require('express')
 const moment =require('moment')
 const { reject } = require('lodash')
@@ -146,8 +146,73 @@ editJob:(id,jobdata,recid)=>{
         resolve()
     })
 
+},
+
+viewApplications:(id)=>{
+    return new Promise(async(resolve,reject)=>{
+
+        let applications=await db.get().collection(appliedJobs).aggregate([{
+
+        $match:{    jobs:{
+                $elemMatch:{
+                    job:ObjectID(id)
+                }
+            }
+        }        
+        },
+        {
+$project:{
+userid:1
+},
+  },
+  {
+      $lookup:{
+          from:collection.USER_COLLECTION,
+          localField:'userid',
+          foreignField:'_id',
+          as:'useris'
+      }
+  },
+  {
+      $project:{
+        useris:{$arrayElemAt:['$useris',0]}
+      }
+  }
+    ]).toArray()
+        console.log("haiddddddddd",applications);
+        resolve(applications)
+    })
+    
 }
 
+// viewApplications:(id)=>{
+//     return new Promise(async(resolve,reject)=>{
+// let applications= await db.get().collection(appliedJobs).aggregate([
+//     {
+//          $match:{
+//             jobs:{
+//                 $elemMatch:{
+//                     job:ObjectID(id)
+//                 }
+//             }
+//          }
+//     },
+//     {
+//         $unwind:'$jobs'
+//     },
+// {
+//     $project:{
+//         jobs:1,
+//         userid:1
+//     }
+// }
+// ]).toArray()
+
+// resolve(applications)
+// console.log("#####",applications);
+
+//     })
+// }
 
 
 

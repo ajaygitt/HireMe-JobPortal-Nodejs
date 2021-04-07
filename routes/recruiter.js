@@ -224,4 +224,21 @@ res.redirect('/manage-jobs')
     })
 })
 
+
+router.get('/viewApplications',(req,res)=>{
+    let id=req.query.job
+    console.log("app is ",id);
+
+
+    recruiterHelper.viewApplications(id).then((applications)=>{
+
+
+
+        console.log("$$$$$",applications);
+res.render('recruiter/viewApplicants',{user:true,applications})
+    })
+})
+
+
+
 module.exports = router;

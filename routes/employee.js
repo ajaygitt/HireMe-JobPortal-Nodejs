@@ -309,6 +309,8 @@ router.post("/verify-payment", verifyLoggedIn, (req, res) => {
     .catch(() => {
       let response = {};
       response.success = true;
+
+      req.session.user.premium=true;
       res.send(response);
     });
 });
@@ -354,10 +356,27 @@ router.get("/viewjobs", verifyLoggedIn, (req, res) => {
 //single jobview 
 router.get('/jobPage',verifyLoggedIn,(req,res)=>{
   let id=req.query.job
-
-  userHelper.viewSingleJob(id).then((jobs)=>{
   let userfound=req.session.user
-    res.render('employee/job-single',{user:true,jobs,userfound})
+  userHelper.viewSingleJob(id).then((jobs)=>{
+
+userHelper.checkIfApplied(id,userfound._id).then((response)=>{
+
+  if(response.status=="notexists")
+  {
+        var applied=false
+       
+    res.render('employee/job-single',{user:true,jobs,applied,userfound})
+  }
+  else if(response.status=="jobexists")
+  {
+var applied=true
+
+    res.render('employee/job-single',{user:true,jobs,applied,userfound})
+  }
+
+})
+
+
   })
 
 })
@@ -659,14 +678,6 @@ let imgs=req.body.image
 
 
 
-
-
-
-
-
-
-
-
 router.get('/viewResumePdf',verifyLoggedIn,(req,res)=>{
 let userfound=req.session.user
 let id=userfound._id
@@ -679,6 +690,34 @@ router.get('/crop',(req,res)=>{
   res.render('employee/crop',{user:true})
 })
 
+
+router.post('/applyJob',async(req,res)=>{
+
+  console.log("reached",req.body);
+
+let jobId=req.body.jobid;
+let name=req.body.name
+let message=req.body.message
+let userid=req.session.user._id
+console.log("msg is ",message);
+  await userHelper.applyJob(jobId,userid,name,message).then((response)=>{
+
+res.json(response)
+
+  })
+})
+
+router.get('/viewMyApplications',(req,res)=>{
+
+let userfound=req.session.user
+
+userHelper.myApplications(userfound._id).then((jobs)=>{
+
+  console.log("jkfdsa",jobs);
+res.render('employee/myApplications',{user:true,jobs})
+
+})
+})
 
 
 module.exports = router;

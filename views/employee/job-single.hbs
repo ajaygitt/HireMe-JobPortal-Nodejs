@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <div class="container">
 	
 	<!-- Recent Jobs -->
@@ -7,7 +7,7 @@
 		
 		<!-- Company Info -->
 		<div class="company-info">
-			<img src="images/company-logo.png" alt="">
+			<img src="icons/{{jobs._id}}.jpg" alt="">
 			<div class="content">
 				<h4>{{jobs.company}}</h4>
 				<span><a href="#"><i class="fa fa-link"></i> {{jobs.website}}</a></span>
@@ -82,43 +82,47 @@
 						<i class="fa fa-money"></i>
 						<div>
 							<strong>Salary</strong>
-							<span> ₹ {{jobs.sallary}}</span>
+							<span> ₹ {{jobs.sallary}}/- (per month)</span>
 						</div>
 					</li>
 				</ul>
 
+{{#if applied}}
+<h4>Already applied for this Job</h4>
+{{else}}
 
-				<a href="#small-dialog" class="popup-with-zoom-anim button">Apply For This Job</a>
+{{#if userfound.premium}}
+				<a href="#small-dialog" id="apply" class="popup-with-zoom-anim button">Apply For This Job</a>
+
+				{{else}}
+				<p>You need to take Premium Membership to apply for a Job</p>
+<a href="/checkout" class="button">Upgrade to premium</a>
+
+{{/if}}
+{{/if}}
+			<div class="panel panel-default" id="modal1">
+    <div class="panel-body" style="display: none;" id="appliedSuccess">applied successfully</div>
+  </div>
+</div>
 {{!--job apply modal --}}
-				<div id="small-dialog" class="zoom-anim-dialog mfp-hide apply-popup">
+				<div id="small-dialog"  class="zoom-anim-dialog mfp-hide apply-popup">
 					<div class="small-dialog-headline">
 						<h2>Apply For This Job</h2>
 					</div>
 
 					<div class="small-dialog-content">
-						<form action="#" method="get" name="applyJob" id="applyJob" >
+
+						<form  name="applyJob" id="applyJob" >
 							<input type="text" placeholder="Full Name" name="name" id="name" value="{{userfound.full_name}}"/>
 							<input type="text" placeholder="Email Address"name="email" id="email" value="{{userfound.email}}"/>
-							<textarea placeholder="Your message / cover letter sent to the employer"></textarea>
+							<textarea placeholder="Your message / cover letter sent to the employer" name="message" id="message"></textarea>
+<input type="text" value="{{jobs._id}}" id="jobid" name="jobid" style="display: none;">
+							
 
-							<!-- Upload CV -->
-							{{!-- <div class="upload-info"><strong>Upload your CV (if you dont want to share then recent cv will be taken)</strong> <span>Max. file size: 5MB</span></div>
-							<div class="clearfix"></div>
+							<input id="subapp" type="submit" value="send application">
 
-							<label class="upload-btn">
-							    <input type="file" accept=".pdf" id="resume" />
-							    <i class="fa fa-upload"></i> Browse
-							</label>
-				
-							<span class="fake-input">No file selected</span>
-
-							<div class="divider">
-								<p>or <br></p>
-											<button class="btn"> select from previous resumes</button>
-							</div> --}}
-
-							<button class="send">Send Application</button>
 						</form>
+				<div style="padding-left: 50%; display: none;" id="applied" >	<button onclick="location.href='/'"> applied successfully take Me to Home</button></div>	
 					</div>
 					
 				</div>
@@ -209,6 +213,68 @@
 
 </div>
 <!-- Wrapper / End -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+$(document).ready(function () {
+
+	console.log("hello")
+
+ 	$("#applyJob").submit(function (e) {
+	let name=	$("#name").val()
+let message=$("#message").val()
+let email=$("#email").val()
+let jobid=$('#jobid').val()
+e.preventDefault();
+
+console.log("email",name,message,email)
+
+
+$.ajax({
+	url:'/applyJob',
+	method:'post',
+	data:{
+		name,
+		message,
+		email,
+		jobid
+	},
+	success:(response)=>{
+
+if(response.status=="jobexists")
+{
+	alert("already applied to this job cant apply again")
+}
+
+
+	else if(response.status==true)
+		{
+			alert("successfully applied for this Job")
+			$('#subapp').hide()
+			$('#applied').show()
+			$('#apply').hide()
+            $('#appliedSuccess').show()
+		}
+		else
+		{
+			alert("something went wrong please try again")
+		}
+	}
+})
+
+
+	 })
+
+
+})
+
+</script>
+
+
+
+
+
 
 
 <!-- Scripts

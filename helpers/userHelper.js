@@ -1,15 +1,15 @@
 var db = require("../config/connection");
 var collection = require("../config/dbcollections");
 var bcrypt = require("bcrypt");
-const { USER_COLLECTION, JOB_COLLECTION, RESUME_COLLECTION } = require("../config/dbcollections");
+const { USER_COLLECTION, JOB_COLLECTION, RESUME_COLLECTION, appliedJobs } = require("../config/dbcollections");
 const { response } = require("express");
 const Razorpay=require('razorpay');
-const { ObjectId } = require("bson");
+const { ObjectId, ObjectID } = require("bson");
 const { resource } = require("../app");
 const { resolve } = require("path");
 var lodash=require('lodash');
 const { reject } = require("lodash");
-
+const moment=require('moment')
 var instance=new Razorpay({
 
   key_id:'rzp_test_3URBQ8j8qtsLhB',
@@ -595,13 +595,169 @@ db.get().collection(RESUME_COLLECTION).insertOne({userid:id,pdfcv:true})
 
  resolve()
   })
+},
+
+
+applyJob:(jobId,userid,name,message)=>{
+return new Promise(async(resolve,reject)=>{
+console.log("name,msg,",name,message);
+  let collectionExist=await db.get().collection(appliedJobs).findOne({userid:ObjectID(userid)})
+
+  let jobObj = {
+    job: ObjectID(jobId),
+    message:message,
+    status:'applied',
+    appliedDate:moment(new Date()).format('DD/MM/YYYY')
 }
 
 
+  if(collectionExist)
+  {
+    console.log("akfs",collectionExist.jobs);
+console.log("jobid id di d",jobId);
+let JobExist=await collectionExist.jobs.findIndex(a=>a.job==jobId)
+    
+console.log("the job exist is ssi s",JobExist);
 
 
+if(JobExist != -1)
+{
+  console.log("job  exists",JobExist);
+
+let response={}
+response.status="jobexists"
+resolve(response)
+
+}
+else{
+  console.log("job not esisiists exist",JobExist);
 
 
+db.get().collection(appliedJobs).updateOne({userid:ObjectID(userid)},{
+
+  $push:{
+    jobs:jobObj
+  }
+})
+
+  }
+}
+// mapping to be implemented pending-1
+
+  else
+  {
+    db.get().collection(appliedJobs).insertOne({userid:ObjectID(userid),jobs:[jobObj]})
+  }
+  let response={
+    status:true
+  }
+  // applied successfull response
+  resolve(response);
+}).catch(()=>{
+
+  let response={
+    status:false
+  }
+  resolve(response)
+})
+
+},
+
+
+//view applied jobs list user's
+myApplications:(userid)=>{
+
+  return new Promise(async(resolve,reject)=>{
+console.log("thisisi");
+
+let jobis=await db.get().collection(collection.appliedJobs).aggregate([
+
+  {
+    $match:{
+      userid:ObjectID(userid)
+    }
+  },
+  {
+    $unwind:'$jobs'
+  },
+  {
+    $project:{
+
+      jobs:'$jobs.job',
+      message:'$jobs.message',
+      status:'$jobs.status'
+    }
+  },
+  {
+    $lookup:{
+      from:collection.JOB_COLLECTION,
+      localField:'jobs',
+      foreignField:'_id',
+      as:'jobis'
+    }
+  },
+  {
+    $project:{
+      jobs:1,
+      message:1,
+      status:1,
+      jobis:{$arrayElemAt:['$jobis',0]}
+    }
+  }
+  
+]).toArray()
+
+resolve(jobis)
+console.log("the job is ",jobis);
+
+  })
+},
+
+checkIfApplied:(jobid,userid)=>{
+
+  return new Promise(async(resolve,reject)=>{
+
+console.log("the job id od",jobid);
+    let collectionExist=await db.get().collection(appliedJobs).findOne({userid:ObjectID(userid)})
+
+   if(collectionExist)
+   {
+    let JobExist=collectionExist.jobs.findIndex(a=>a.job==jobid)
+    
+    console.log("the job exist is ssi s",JobExist);
+    
+    
+    if(JobExist != -1)
+    {
+      console.log("job  exists",JobExist);
+    
+    let response={}
+    response.status="jobexists"
+    resolve(response)
+    }
+    else
+    {
+      console.log("from else true not exist");
+      let response={
+
+        status:"notexists"
+      }
+      resolve(response)
+    }
+
+  }
+  else
+  {
+    console.log("frm coln nt exsts");
+    let response={
+      status:"notexists"
+    }
+    resolve(response)
+  }
+
+
+  })
+}
 
 
 };
