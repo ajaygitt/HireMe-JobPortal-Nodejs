@@ -20,8 +20,8 @@ sender:ObjectID(recruiter),
 receiver:ObjectID(user),
 jobId:ObjectID(job),
 notification:"Congratulations You have been selected for the following Job the recruiter will contact you soon",
-date:moment(new Date()).format('DD/MM/YYYY HH:mm:ss')
-
+date:moment(new Date()).format('DD/MM/YYYY HH:mm:ss'),
+positiveNotification:true
 
 
             })
@@ -37,11 +37,32 @@ sender:ObjectID(recruiter),
 receiver:ObjectID(user),
 jobId:ObjectID(job),
 notification:"SORRY!! You have been rejected.. Keep trying",
-date:moment(new Date()).format('DD/MM/YYYY HH:mm:ss')
-
+date:moment(new Date()).format('DD/MM/YYYY HH:mm:ss'),
+positiveNotification:false
             })
         })
 
+    },
+
+
+    getNotification:(id)=>{
+
+        return new Promise((resolve,reject)=>{
+
+            db.get().collection(collection.NOTIFICATION_COLLECTION).find({receiver:ObjectID(id)}).toArray().then((notifications)=>{
+
+                resolve(notifications)
+            })
+        })
+    },
+
+    removeNotification:(id)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.NOTIFICATION_COLLECTION).remove({_id:ObjectID(id)}).then((response)=>{
+
+                resolve(response)
+            })
+        })
     }
 
 }

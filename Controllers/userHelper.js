@@ -757,6 +757,17 @@ console.log("the job id od",jobid);
 
 
   })
+},
+
+browseAllRecruiter:()=>{
+
+return new Promise(async(resolve,reject)=>{
+
+ await db.get().collection(collection.USER_COLLECTION).find({type:'recruiter'}).toArray().then((response)=>{
+
+resolve(response)
+  })
+})
 }
 
 

@@ -245,6 +245,16 @@ router.get('/viewUserResume',(req,res)=>{
 let jobId=req.query.job
 
 console.log("these values aree",jobId,applicant);
+
+recruiterHelper.checkIfconfirmed(applicant).then((applicant)=>{
+
+console.log("applicant",applicant);
+})
+
+
+
+
+
     recruiterHelper.viewMyProfile(applicant).then((applicant)=>{
 
         res.render('recruiter/viewResume',{recruiter:true,applicant,jobId,applicant})
@@ -278,6 +288,7 @@ router.post('/reject',(req,res)=>{
         res.json(response)
     })
 })
+
 
 
 

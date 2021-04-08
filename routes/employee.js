@@ -5,6 +5,8 @@ const passport = require("passport");
 const auth = require("../routes/passport-setup");
 const app = require("../app");
 const userHelper = require("../Controllers/userHelper");
+const notificationHelper=require('../Controllers/NotificationController')
+
 require("./passport-setup");
 const config = require("../config/twilio");
 const { static } = require("express");
@@ -656,7 +658,7 @@ image.mv('./public/images/profilePic/'+id+'.jpg',async(err,done)=>{
 
 
 
-router.post('/crop',async(req,res)=>{
+router.post('/crop',verifyLoggedIn,async(req,res)=>{
 
   console.log("reached");
   let id=req.session.user._id
@@ -707,7 +709,7 @@ res.json(response)
   })
 })
 
-router.get('/viewMyApplications',(req,res)=>{
+router.get('/viewMyApplications',verifyLoggedIn,(req,res)=>{
 
 let userfound=req.session.user
 
@@ -720,5 +722,33 @@ res.render('employee/myApplications',{user:true,jobs})
 })
 })
 
+router.get('/notifications',verifyLoggedIn,(req,res)=>{
+let userfound=req.session.user
+notificationHelper.getNotification(userfound._id).then((notifications)=>{
+
+  console.log("n>>>>>",notifications);
+  res.render('employee/notifications',{user:true,notifications})
+})
+
+
+})
+router.post('/removeNotification',verifyLoggedIn,(req,res)=>{
+
+  let userfound=req.session.user
+  notificationHelper.removeNotification(req.body.id).then((response)=>{
+
+    res.json(response)
+  })
+})
+
+
+router.get('/browseRecruiter',(req,res)=>{
+  
+  userHelper.browseAllRecruiter().then((recruiters)=>{
+console.log(recruiters);
+let userfound=req.session.user;
+res.render('employee/browse-recruiters',{user:true,userfound,recruiters})
+  })
+})
 
 module.exports = router;

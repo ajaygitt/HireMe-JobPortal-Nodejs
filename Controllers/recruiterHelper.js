@@ -268,6 +268,37 @@ return new Promise(async(resolve,reject)=>{
   }
   resolve(res)
   })
+},
+
+
+checkIfconfirmed:(applicant)=>{
+
+    return new Promise(async(resolve,reject)=>{
+
+    let result= await   db.get().collection(appliedJobs).aggregate([
+            {
+                $match:{
+                    userid:ObjectID(applicant)
+                }
+            },
+            {
+
+$match:{    jobs:{
+                $elemMatch:{
+                    status:"applied"
+                }
+            }
+        }        
+                
+            },
+            {
+                $project:{
+                    status:1
+                }
+            }
+        ]).toArray()
+        console.log("jsda",result);
+    })
 }
 
 
