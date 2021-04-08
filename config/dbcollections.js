@@ -6,5 +6,6 @@ module.exports={
     JOB_COLLECTION:'jobs',
     JOB_CATEGORY:'jobcategory',
     RESUME_COLLECTION:'resumes',
-    appliedJobs:'appliedJobs'
+    appliedJobs:'appliedJobs',
+    NOTIFICATION_COLLECTION:'notifications'
 }

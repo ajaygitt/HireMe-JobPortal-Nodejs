@@ -4,7 +4,7 @@ var router = express.Router();
 const passport = require("passport");
 const auth = require("../routes/passport-setup");
 const app = require("../app");
-const userHelper = require("../helpers/userHelper");
+const userHelper = require("../Controllers/userHelper");
 require("./passport-setup");
 const config = require("../config/twilio");
 const { static } = require("express");

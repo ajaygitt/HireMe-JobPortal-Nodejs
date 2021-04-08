@@ -181,11 +181,11 @@ message:1
       }
   }
     ]).toArray()
-        console.log("haiddddddddd",applications);
+    
         resolve(applications)
     })
     
-}
+},
 
 // viewApplications:(id)=>{
 //     return new Promise(async(resolve,reject)=>{
@@ -216,6 +216,59 @@ message:1
 //     })
 // }
 
+
+approveApplicant:(user,job)=>{
+
+return new Promise(async(resolve,reject)=>{
+
+  let jobis=await  db.get().collection(appliedJobs).updateOne({userid:ObjectID(user)},
+  {
+      $set:{
+         "jobs.$[d].status":"approved"
+      }
+  },
+  {
+      arrayFilters:[
+          {
+              "d.job":ObjectID(job)
+          }
+      ]
+  }
+  )
+let res={
+updated:true
+}
+resolve(res)
+})
+},
+
+
+rejectApplicant:(user,job)=>{
+
+
+
+return new Promise(async(resolve,reject)=>{
+
+    let jobis=await  db.get().collection(appliedJobs).updateOne({userid:ObjectID(user)},
+    {
+        $set:{
+           "jobs.$[d].status":"rejected"
+        }
+    },
+    {
+        arrayFilters:[
+            {
+                "d.job":ObjectID(job)
+            }
+        ]
+    }
+    )
+  let res={
+  updated:true
+  }
+  resolve(res)
+  })
+}
 
 
 }

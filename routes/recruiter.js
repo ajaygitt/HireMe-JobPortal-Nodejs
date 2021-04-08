@@ -4,9 +4,11 @@ var router = express.Router();
 const passport=require('passport')
 const auth =require('../routes/passport-setup')
 const app = require('../app');
-const userHelper = require('../helpers/userHelper');
-const recruiterHelper=require('../helpers/recruiterHelper');
-const { myJobs } = require('../helpers/recruiterHelper');
+const userHelper = require('../Controllers/userHelper');
+const recruiterHelper=require('../Controllers/recruiterHelper');
+const notificationHelper=require('../Controllers/NotificationController')
+const { myJobs } = require('../Controllers/recruiterHelper');
+const { AwsPage } = require('twilio/lib/rest/accounts/v1/credential/aws');
 require('./passport-setup')
 
 
@@ -227,26 +229,58 @@ res.redirect('/manage-jobs')
 
 router.get('/viewApplications',(req,res)=>{
     let id=req.query.job
-    console.log("app is ",id);
-
+let userfound=req.session.user
 
     recruiterHelper.viewApplications(id).then((applications)=>{
 
+console.log("job id is",id);
 
-
-        console.log("$$$$$",applications);
-res.render('recruiter/viewApplicants',{recruiter:true,applications})
+res.render('recruiter/viewApplicants',{recruiter:true,applications,id})
     })
 })
 
 
 router.get('/viewUserResume',(req,res)=>{
     let applicant=req.query.applicant
+let jobId=req.query.job
+
+console.log("these values aree",jobId,applicant);
     recruiterHelper.viewMyProfile(applicant).then((applicant)=>{
 
-        res.render('recruiter/viewResume',{recruiter:true,applicant})
+        res.render('recruiter/viewResume',{recruiter:true,applicant,jobId,applicant})
     })
 
 })
+
+
+router.post('/approveJob',(req,res)=>{
+
+console.log("Job,",req.body);
+let userfound=req.session.user
+
+ recruiterHelper.approveApplicant(req.body.user,req.body.job).then((response)=>{
+
+    notificationHelper.sendApprovedNotification(req.body.user,req.body.job,userfound._id)
+
+
+res.json(response);
+})
+})
+
+
+router.post('/reject',(req,res)=>{
+
+    let userfound=req.session.user
+    recruiterHelper.rejectApplicant(req.body.user,req.body.job).then((response)=>{
+
+        notificationHelper.sendRejectedNotification(req.body.user,req.body.job,userfound._id)
+
+        res.json(response)
+    })
+})
+
+
+
+
 
 module.exports = router;

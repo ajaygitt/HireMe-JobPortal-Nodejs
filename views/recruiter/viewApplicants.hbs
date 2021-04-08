@@ -10,6 +10,8 @@
 
 <h1>applicants for Job</h1>
 
+
+
     </div>
 
 		<ul class="resumes-list">
@@ -22,8 +24,9 @@
 					<span><i class="fa fa-marker"></i>  location:{{this.useris.city}}</span><br>
 			
                 	<div class="clearfidfx" style="padding-top: 9px; padding-left: 60%;">
-			<button onclick="location.href='/viewUserResume?applicant={{this.useris._id}}'" >view resume</button>
-                    </div>
+			<button onclick="location.href='/viewUserResume?applicant={{this.useris._id}}&job={{../id}}'" > view resume</button>
+                  
+				    </div>
 				
 		
 <p>

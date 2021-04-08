@@ -1,7 +1,7 @@
 const { response } = require('express');
 var express = require('express');
-const adminHelpers = require('../helpers/adminHelpers');
-const userHelpers=require('../helpers/userHelper')
+const adminHelpers = require('../Controllers/adminHelpers');
+const userHelpers=require('../Controllers/userHelper')
 var router = express.Router();
 
 

@@ -1,8 +1,8 @@
-const userhelpers=require('../helpers/userHelper')
+const userhelpers=require('../Controllers/userHelper')
     
 const passport=require('passport')
 const auth =require('../routes/passport-setup')
-const userhelper=require('../helpers/userHelper')
+const userhelper=require('../Controllers/userHelper')
 
 const app = require('../app');
 
