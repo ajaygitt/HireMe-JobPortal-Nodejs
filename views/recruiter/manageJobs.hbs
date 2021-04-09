@@ -83,7 +83,7 @@
                 <td class="action">
 					<a href="/viewApplications?job={{this._id}}" class="delete"><i class="fa fa-eye"></i> view My applications</a>
 				</td>
-                <td class="centered"> <a href="" class="delete"><i class="fa fa-check"></i> Resolve</a> </td>
+                <td class="centered"> <a onclick="resolveJob('{{this._id}}')" class="delete"><i class="fa fa-check"></i> Resolve</a> </td>
 				  <td class="action">
 					<a href="/editJob?job={{this._id}}" class="delete"><i class="fa fa-edit"></i> Edit</a>
 				</td>
@@ -238,6 +238,29 @@ if(response)
 }
 
 	}
+
+function resolveJob(id){
+
+	console.log("resolve clicked")
+let r=confirm("resolving the job will delete the job are you want to continue?")
+if(r)
+{
+	$.ajax({
+		url:'/resolveJob',
+			method:'post',
+		data:{
+			id
+		},
+		success:(response)=>{
+			if(response)
+			{
+				alert("Job resolved")
+				location.reload();
+			}
+		}
+	})
+}
+}
 </script>
 
 </body>

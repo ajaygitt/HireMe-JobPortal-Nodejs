@@ -28,6 +28,19 @@ const verifyLoggedIn=(req,res,next)=>{
     }
 
 
+    const verifyIfPremium=(req,res,next)=>{
+        let userfound=req.session.user
+        if(userfound.premium==true)
+        {
+            next()
+        }
+        else
+        {
+            
+        }
+    }
+
+
 
 router.get('/signupRecruiter',(req,res)=>{
 
@@ -98,7 +111,7 @@ router.post('/verify-payment',verifyLoggedIn,(req,res)=>{
     console.log("reqqq body of veify ",req.body);
 
 let userid=req.session.user._id
-console.log("!!!!!!!!!!!!!!!!!!!!!!!!!",userid);
+
     userHelper.verifyPayment(req.body,userid).then(()=>{
         
         
@@ -194,9 +207,15 @@ router.get('/recruiterProfile',async(req,res)=>{
 
 router.get('/browse-employees',(req,res)=>{
     let userfound=req.session.user
-    res.render('recruiter/browse-employees',{recruiter:true,userfound})
+
+    recruiterHelper.getAllUsers().then((users)=>{
+
+   
+
+    res.render('recruiter/browse-employees',{recruiter:true,users,userfound})
 })
- 
+})
+
 router.post('/deleteJob',(req,res)=>{
     let userfound=req.session.user
     let jobId=req.body.id
@@ -289,9 +308,23 @@ router.post('/reject',(req,res)=>{
     })
 })
 
+router.post('/resolveJob',(req,res)=>{
+
+    let userfound=req.session.user
+    let job=req.body.id
+    recruiterHelper.resolveJob(job).then((response)=>{
+        res.json(response);
+    })
+})
 
 
+router.get('/manageApplications',(req,res)=>{
+    let userfound=req.session.user
+    recruiterHelper.manageApplications(userfound._id).then((applications)=>{
 
+res.render('recruiter/manageApplications')
+    })
+})
 
 
 module.exports = router;

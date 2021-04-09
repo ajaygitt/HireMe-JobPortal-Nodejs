@@ -90,17 +90,17 @@
                                 </ul>
                             </li>
 
-                            <li>
+                            {{!-- <li>
                                 <a href="#">Applications</a>
                                 <ul>
-                                        <li><a href="add-job.html">Manage applications</a></li>
+                                        <li><a href="/manageApplications">Manage applications</a></li>
                                     <li><a href="add-job.html">View Applicants</a></li>
                                     <li><a href="manage-jobs.html"></a></li>
                                   
                                 </ul>
                             </li>
 
-                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="blog.html">Blog</a></li> --}}
                             {{/if}}
                         </ul>
                           
@@ -109,7 +109,12 @@
  <ul class="float-right">
                        
                                 {{!-- <li><a href="/signupRecruiter"><i class="fa fa-user"></i> recruiter Home</a></li> --}}
-      {{#if userfound.premium}}     <span class="badge bg-info text-dark">Premium user</span>   {{/if}}         <li><a href="/recruiterProfile"><i class="fa fa-user"></i>{{userfound.company_name}}</a></li>
+      {{#if userfound.premium}}     <span class="badge bg-info text-dark">Premium user</span> 
+      {{else}}
+       <li><a href="/recruiterProfile"><i class="fa fa-user"></i>Upgrade to Premium</a></li>
+        {{/if}}       
+        
+          <li><a href="/recruiterProfile"><i class="fa fa-user"></i>{{userfound.company_name}}</a></li>
                             <li><a href="/logout"><i class="fa fa-lock"></i> Logout</a></li>
                             <li><a href="/logout"><i class="fa fa-bell"></i> Notifications</a></li>
                              <li><a href="/logout"><i class="	fa fa-comments"></i> Inbox</a></li>
@@ -119,6 +124,7 @@
 
 {{else}}
                         <ul class="float-right">
+                           
                             <li><a href="/signup"><i class="fa fa-user"></i> Sign Up as Employee</a></li>
                                 <li><a href="/signupRecruiter"><i class="fa fa-user"></i> Sign Up as Recruiter</a></li>
                             <li><a href="/login"><i class="fa fa-lock"></i> Log In</a></li>
