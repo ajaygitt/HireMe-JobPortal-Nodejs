@@ -31,10 +31,89 @@ var session=require('express-session')
 var app = express();
 
 var publicDir = require('path').join(__dirname,'/public'); 
+// for socketio chat
+
+var http=require('http')
+var socketio=require('socket.io')
+var server=http.createServer(app);
+const io=socketio(server)
+const getUrls=require('get-urls')
+const SocketIOFileUpload=require('socketio-file-upload');
+const {userJoin, getCurrentUser } = require('./chat/users');
+var msgFormat=require('./chat/message')
+
+
+
+
+
+
+
+
+
+
+io.on('connection', socket=>
+{
+  
+var uploader=new SocketIOFileUpload()
+uploader.dir=path.join(__dirname, '/public/image-chats');
+uploader.listen(socket)
+
+socket.on('joinChat',({sender,receiver})=>{
+
+  const user = userJoin(socket.id,sender,receiver)
+  socket.join(receiver)
+})
+
+socket.on('chatMessage',msg=>{
+  const text=msg;
+
+  let url =getUrls(text);
+console.log("the link is ",url);
+if(msg!='')
+{
+  const user=getCurrentUser(socket.id)
+  console.log("üser is",user);
+  console.log("message",msg);
+let id=user.id
+console.log("the id is",id);
+let newReceiver=user.receiver
+
+console.log("ithan sender",user.sender);
+console.log("ithan receiver",newReceiver);
+
+
+io.to(user.sender).emit('message',msgFormat.formatMessage(user.sender,msg))
+     io.to(newReceiver).emit('message',msgFormat.formatMessage(newReceiver,msg))
+
+
+
+}
+
+})
+
+
+
+})
+//server
+var port=3000;
+server.listen(port,(err)=>{
+  if(err)
+  {
+    console.log("server connection err",err);
+  }
+  else{
+    console.log("connected to server at PORT",port);
+  }
+});
+app.set('port',port);
+
+
+
+
 app.use(express.static(publicDir));
 
 app.use(express.json())
-
+app.use(SocketIOFileUpload.router)
 app.use(session({
   secret: 'keyboard cat',
  cookie:{maxAge:5000000}

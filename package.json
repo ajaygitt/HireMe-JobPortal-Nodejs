@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon app"
   },
   "dependencies": {
     "alert": "^5.0.10",
@@ -27,6 +27,7 @@
     "express-session": "^1.17.1",
     "file-base64": "^1.0.0",
     "file-system": "^2.2.2",
+    "get-urls": "^10.0.0",
     "hbs": "^4.1.1",
     "http-errors": "~1.6.3",
     "is-online": "^9.0.0",
@@ -51,6 +52,8 @@
     "pdfkit": "^0.12.0",
     "razorpay": "^2.0.6",
     "resume-pdf": "^1.0.3",
+    "socket.io": "^4.0.1",
+    "socketio-file-upload": "^0.7.3",
     "twilio": "^3.58.0",
     "voucher-code-generator": "^1.1.1"
   }

@@ -36,6 +36,8 @@ const verifyLoggedIn=(req,res,next)=>{
         }
         else
         {
+            console.log("not premium working");
+            res.render('notPremium',{recruiter:true,userfound})
             
         }
     }
@@ -126,17 +128,12 @@ let userid=req.session.user._id
 })
 
 
-router.get('/add-job',verifyLoggedIn,(req,res)=>{
+router.get('/add-job',verifyLoggedIn,verifyIfPremium,(req,res)=>{
 let userfound=req.session.user
 console.log("mm",userfound);
-if(userfound.premium)
-{
+
    res.render('recruiter/add-job',{recruiter:true,userfound})
-}
-else
-{
-console.log("not a premium member");
-}
+
 })
 
 router.post('/add-job',verifyLoggedIn,(req,res)=>{
@@ -171,7 +168,7 @@ image.mv('./public/icons/'+id+'.jpg',(err,done)=>{
 
 
 
-router.get('/myJobs',verifyLoggedIn,(req,res)=>{
+router.get('/myJobs',verifyLoggedIn,verifyIfPremium,(req,res)=>{
 
     let userfound=req.session.user
     console.log("usr",userfound);
@@ -183,7 +180,7 @@ let viewonly=true
 
 })
 
-router.get('/manage-jobs',(req,res)=>{
+router.get('/manage-jobs',verifyLoggedIn,verifyIfPremium,(req,res)=>{
 
     let userfound=req.session.user
     console.log("urr",userfound);
@@ -194,7 +191,7 @@ console.log("err",myJobs);
 })
 
 //recruiter profile
-router.get('/recruiterProfile',async(req,res)=>{
+router.get('/recruiterProfile',verifyLoggedIn,async(req,res)=>{
     let userfound=req.session.user
     console.log("ljksa");
   let profile=await  recruiterHelper.viewMyProfile(userfound._id)
@@ -205,7 +202,7 @@ router.get('/recruiterProfile',async(req,res)=>{
 
 //browse employees
 
-router.get('/browse-employees',(req,res)=>{
+router.get('/browse-employees',verifyIfPremium,verifyLoggedIn,(req,res)=>{
     let userfound=req.session.user
 
     recruiterHelper.getAllUsers().then((users)=>{
@@ -216,7 +213,7 @@ router.get('/browse-employees',(req,res)=>{
 })
 })
 
-router.post('/deleteJob',(req,res)=>{
+router.post('/deleteJob',verifyIfPremium,verifyLoggedIn,(req,res)=>{
     let userfound=req.session.user
     let jobId=req.body.id
     recruiterHelper.deleteJob(jobId).then((response)=>{
@@ -225,7 +222,7 @@ router.post('/deleteJob',(req,res)=>{
     })
 })
 
-router.get('/editJob',(req,res)=>{
+router.get('/editJob',verifyIfPremium,verifyLoggedIn,(req,res)=>{
 let id=req.query.job
 let userfound=req.session.user
 userHelper.viewSingleJob(id).then((job)=>{
@@ -235,7 +232,8 @@ res.render('recruiter/edit-job',{recruiter:true,job,userfound})
 })
 })
 
-router.post('/editJob',(req,res)=>{
+router.post('/editJob',verifyLoggedIn,verifyLoggedIn,
+(req,res)=>{
     let id=req.query.job
     let recid=req.session.user._id
     console.log("this isbody",req.body);
@@ -246,7 +244,7 @@ res.redirect('/manage-jobs')
 })
 
 
-router.get('/viewApplications',(req,res)=>{
+router.get('/viewApplications',verifyIfPremium,verifyLoggedIn,(req,res)=>{
     let id=req.query.job
 let userfound=req.session.user
 
@@ -259,7 +257,7 @@ res.render('recruiter/viewApplicants',{recruiter:true,applications,id})
 })
 
 
-router.get('/viewUserResume',(req,res)=>{
+router.get('/viewUserResume',verifyIfPremium,verifyLoggedIn,(req,res)=>{
     let applicant=req.query.applicant
 let jobId=req.query.job
 
@@ -282,7 +280,7 @@ console.log("applicant",applicant);
 })
 
 
-router.post('/approveJob',(req,res)=>{
+router.post('/approveJob',verifyIfPremium,verifyLoggedIn,(req,res)=>{
 
 console.log("Job,",req.body);
 let userfound=req.session.user
@@ -297,7 +295,7 @@ res.json(response);
 })
 
 
-router.post('/reject',(req,res)=>{
+router.post('/reject',verifyIfPremium,verifyLoggedIn,(req,res)=>{
 
     let userfound=req.session.user
     recruiterHelper.rejectApplicant(req.body.user,req.body.job).then((response)=>{
@@ -308,7 +306,7 @@ router.post('/reject',(req,res)=>{
     })
 })
 
-router.post('/resolveJob',(req,res)=>{
+router.post('/resolveJob',verifyIfPremium,verifyLoggedIn,(req,res)=>{
 
     let userfound=req.session.user
     let job=req.body.id
@@ -318,13 +316,44 @@ router.post('/resolveJob',(req,res)=>{
 })
 
 
-router.get('/manageApplications',(req,res)=>{
+router.get('/manageApplications',verifyIfPremium,verifyLoggedIn,(req,res)=>{
     let userfound=req.session.user
     recruiterHelper.manageApplications(userfound._id).then((applications)=>{
 
-res.render('recruiter/manageApplications')
+res.render('recruiter/manageApplications',{userfound,recruiter:true})
     })
 })
+
+
+
+
+router.post('/chat',(req,res)=>{
+
+
+    let senderid=req.query.sender
+    let receiverid=req.query.receiver
+    console.log("sender id is ",senderid);
+    console.log("receiver is ",receiverid);
+   let user=receiverid
+  //  let sender=senderid+receiverid
+  //  let receiver=receiverid+senderid
+  
+  let userfound=req.session.user
+  
+    let first= senderid.length-24
+    let senderis=senderid.slice(0,first)
+   let receiveris=receiverid.slice(0,first)
+   console.log("sender is this @@@@@@@@@@@@@@@@@@@@###########",senderis);
+   console.log("the receiver is %%%%%%%%%%%%%%%%%%",receiveris);
+  
+  res.render('employee/chat',{userfound,user:true})
+  
+  })
+  
+  
+  
+
+
 
 
 module.exports = router;

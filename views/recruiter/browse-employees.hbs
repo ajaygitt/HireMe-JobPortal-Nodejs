@@ -14,7 +14,7 @@
 
 		<ul class="resumes-list">
 {{#each users}}
-			<li><a href="resume-page.html">
+			<li>
 				<img src="images/profilePic/{{this._id}}.jpg" alt="">
 				<div class="resumes-list-content">
 					<h4>{{this.areaOfIntrest}} <span>{{this.full_name}}</span></h4>
@@ -23,7 +23,12 @@
 					<p>educational qualification:{{this.education}}</p> <br>
 					<p>experience: {{this.experience}} years</p> <br>
 					
-				{{#if ../userfound.premium}}	<button> chat</button>
+				{{#if ../userfound.premium}}	
+				
+				 <form action="/chat?sender={{../userfound._id}}{{this._id}}&receiver={{this._id}}{{../userfound._id}}" method="post">
+ <button type="submit"  >Chat</button>
+</form>
+
 				{{else}}
 				You need a premium account to enable chat Option
 				{{/if}}

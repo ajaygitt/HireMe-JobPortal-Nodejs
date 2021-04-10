@@ -332,6 +332,18 @@ module.exports = {
     });
   },
 
+
+  getRecruiterById:(id)=>{
+    return new Promise(async(resolve,reject)=>{
+  let result=   await db.get().collection(USER_COLLECTION).findOne({_id:ObjectID(id)},{type:"recruiter"})
+  resolve(result)
+    })
+  }
+
+
+
+
+
 //   manageApplications: (id) => {
 //     console.log("id is ", id);
 //     return new Promise(async (resolve, reject) => {

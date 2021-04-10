@@ -14,6 +14,7 @@ const client = require("twilio")(config.accountSID, config.authToken);
 const fs=require('fs')
 const PDFDocument=require('pdfkit')
 var base64ToImage = require('base64-to-image');
+const recruiterHelper = require("../Controllers/recruiterHelper");
 
 
 //middlevare for session checking
@@ -42,6 +43,21 @@ const verifyLoggedIn = (req, res, next) => {
     res.redirect("/");
   }
 };
+//middleware for check if premium
+
+const verifyIfPremium=(req,res,next)=>{
+  let userfound = req.session.user
+  if(userfound.premium)
+  {
+    next();
+  }
+  else{
+    
+    res.render('notPremium',{recruiter:true,userfound})
+  }
+}
+
+
 
 //middleware for 404 checking google
 function isLoggedIn(req, res, next) {
@@ -397,7 +413,7 @@ var stat=jobs;
 })
 })
 
-router.post('/filter',verifyLoggedIn,(req,res)=>{
+router.post('/filter',verifyLoggedIn,verifyIfPremium,(req,res)=>{
 
   console.log("reached here",req.body);
 
@@ -693,7 +709,7 @@ router.get('/crop',(req,res)=>{
 })
 
 
-router.post('/applyJob',async(req,res)=>{
+router.post('/applyJob',verifyIfPremium,verifyLoggedIn,async(req,res)=>{
 
   console.log("reached",req.body);
 
@@ -709,7 +725,7 @@ res.json(response)
   })
 })
 
-router.get('/viewMyApplications',verifyLoggedIn,(req,res)=>{
+router.get('/viewMyApplications',verifyLoggedIn,verifyIfPremium,(req,res)=>{
 
 let userfound=req.session.user
 
@@ -742,7 +758,7 @@ router.post('/removeNotification',verifyLoggedIn,(req,res)=>{
 })
 
 
-router.get('/browseRecruiter',(req,res)=>{
+router.get('/browseRecruiter',verifyIfPremium,verifyLoggedIn,(req,res)=>{
   
   userHelper.browseAllRecruiter().then((recruiters)=>{
 console.log(recruiters);
@@ -750,5 +766,41 @@ let userfound=req.session.user;
 res.render('employee/browse-recruiters',{user:true,userfound,recruiters})
   })
 })
+
+router.get('/ViewRecruiter',(req,res)=>{
+  let id=req.query.recruiter
+console.log("dsaj",id);
+recruiterHelper.getRecruiterById(id).then((recruiter)=>{
+
+res.render('employee/recruiterDetails',{recruiter:true,recruiter})
+})
+})
+
+
+router.post('/chat',(req,res)=>{
+
+
+  let senderid=req.query.sender
+  let receiverid=req.query.receiver
+  console.log("sender id is ",senderid);
+  console.log("receiver is ",receiverid);
+ let user=receiverid
+//  let sender=senderid+receiverid
+//  let receiver=receiverid+senderid
+
+let userfound=req.session.user
+
+  let first= senderid.length-24
+  let senderis=senderid.slice(0,first)
+ let receiveris=receiverid.slice(0,first)
+ console.log("sender is this @@@@@@@@@@@@@@@@@@@@###########",senderis);
+ console.log("the receiver is %%%%%%%%%%%%%%%%%%",receiveris);
+
+res.render('employee/chat',{userfound,user:true})
+
+})
+
+
+
 
 module.exports = router;
