@@ -7,5 +7,6 @@ module.exports={
     JOB_CATEGORY:'jobcategory',
     RESUME_COLLECTION:'resumes',
     appliedJobs:'appliedJobs',
-    NOTIFICATION_COLLECTION:'notifications'
+    NOTIFICATION_COLLECTION:'notifications',
+    MESSAGE_COLLECTION:'messages'
 }

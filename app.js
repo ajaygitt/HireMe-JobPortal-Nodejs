@@ -15,7 +15,7 @@ var flush=require('connect-flash')
 var adminRouter = require('./routes/admin');
 var recruiterRouter=require('./routes/recruiter')
 var employeeRouter = require('./routes/employee');
-
+var moment =require('moment')
 //google auth
 
 const passport=require('passport')
@@ -32,7 +32,7 @@ var app = express();
 
 var publicDir = require('path').join(__dirname,'/public'); 
 // for socketio chat
-
+var messageController=require('./Controllers/messageController')
 var http=require('http')
 var socketio=require('socket.io')
 var server=http.createServer(app);
@@ -41,7 +41,7 @@ const getUrls=require('get-urls')
 const SocketIOFileUpload=require('socketio-file-upload');
 const {userJoin, getCurrentUser } = require('./chat/users');
 var msgFormat=require('./chat/message')
-
+var fs=require('fs')
 
 
 
@@ -87,10 +87,104 @@ io.to(user.sender).emit('message',msgFormat.formatMessage(user.sender,msg))
 
 
 
+     let first= user.sender.length-24
+     let senderis=user.sender.slice(0,first)
+     let receiveris=newReceiver.slice(0,first)
+
+
+
+
+let obj={
+  socket:id,
+  sender:user.sender,
+  sender_id:senderis,
+  receiver_id:receiveris,
+  receiver:newReceiver,
+  message:msg
+}
+
+
+
+
+
+messageController.insertTextmessage(obj)
+
+console.log("the result is ",obj);
 }
 
 })
 
+// for file Upload 
+
+uploader.on("saved",function(event){
+  console.log("file ethiyittund",event.file);
+  const user = getCurrentUser(socket.id)
+  let date=new Date()
+  date=moment(date).format("YYYY/MM/DD")
+let time=moment(new Date()).format("h:mm:ss")
+let reciever=user.receiver
+console.log("this is receiver",time);
+
+let uniqueid=moment(new Date()).format("ss")
+console.log("uniqu id",uniqueid);
+let sender=user.sender
+let newimageId=sender+reciever
+
+console.log("the total id is",newimageId);
+console.log("the file name",event.file.name);
+var file=path.join(__dirname,'/public/image-chats/'+event.file.name)
+console.log("the file issss",file);
+var ext =path.extname(file)
+newimageId=newimageId+uniqueid+ext
+
+var newfileis = path.join(__dirname, '/public/image-chats/'+newimageId)
+
+
+console.log("new file name is",newimageId);
+fs.rename(file,newfileis,(err)=>{
+console.log("written the name");
+  if(err)
+  {
+    console.log("err",err);
+  }
+})
+event.file.name=newimageId
+
+let id=user.id
+let newReceiver=user.receiver
+
+io.to(user.sender).emit('file', msgFormat.formatFileMessage(user.sender,newimageId,ext))
+     io.to(newReceiver).emit('file', msgFormat.formatFileMessage(newReceiver,newimageId,ext))
+
+
+     if(ext=='.jpg'||ext=='.jpeg'||ext=='.png')
+     {
+     let messageis={
+      socket:id,
+      image:newimageId,
+      sender:user.sender,
+      receiver:newReceiver,
+      ext:ext
+
+     }
+     messageController.insertImageMessage(messageis)
+    }
+
+    else if(ext=='.mp4'||ext=='.mkv'||ext=='.webm')
+    {
+      console.log("ividelum ethio");
+      let messageis={
+        socket:id,
+        video:newimageId,
+        sender:user.sender,
+        receiver:newReceiver
+
+      }
+      // userHelper.insertVideo(messageis)
+    }
+   
+
+})
 
 
 })
@@ -171,6 +265,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', employeeRouter);
 app.use('/admin', adminRouter);
 app.use('/', recruiterRouter);
+app.use('/recruiter',recruiterRouter)
 
 
 

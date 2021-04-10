@@ -9,6 +9,7 @@ const recruiterHelper=require('../Controllers/recruiterHelper');
 const notificationHelper=require('../Controllers/NotificationController')
 const { myJobs } = require('../Controllers/recruiterHelper');
 const { AwsPage } = require('twilio/lib/rest/accounts/v1/credential/aws');
+const messageController = require('../Controllers/messageController');
 require('./passport-setup')
 
 
@@ -327,9 +328,9 @@ res.render('recruiter/manageApplications',{userfound,recruiter:true})
 
 
 
-router.post('/chat',(req,res)=>{
+router.post('/chat',async(req,res)=>{
 
-
+console.log("enterd to recruiter");
     let senderid=req.query.sender
     let receiverid=req.query.receiver
     console.log("sender id is ",senderid);
@@ -346,11 +347,27 @@ router.post('/chat',(req,res)=>{
    console.log("sender is this @@@@@@@@@@@@@@@@@@@@###########",senderis);
    console.log("the receiver is %%%%%%%%%%%%%%%%%%",receiveris);
   
-  res.render('employee/chat',{userfound,user:true})
+   let sendChat=await messageController.sendChat(senderid,receiverid)
+
+let receivedchats=await messageController.receivedChat(receiverid,senderid)
+let Recieverdetails=await recruiterHelper.getRecruiterById(receiveris)
+
+
+console.log("senderchat",Recieverdetails);
+
+  res.render('recruiter/chat',{userfound,recruiter:true,Recieverdetails,sendChat,receivedchats})
   
   })
   
-  
+  router.get('/inbox',(req,res)=>{
+
+    let userfound=req.session.user
+userHelper.getInbox(userfound._id).then(()=>{
+
+
+})
+
+  })
   
 
 

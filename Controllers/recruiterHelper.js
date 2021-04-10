@@ -335,7 +335,7 @@ module.exports = {
 
   getRecruiterById:(id)=>{
     return new Promise(async(resolve,reject)=>{
-  let result=   await db.get().collection(USER_COLLECTION).findOne({_id:ObjectID(id)},{type:"recruiter"})
+  let result=   await db.get().collection(USER_COLLECTION).findOne({_id:ObjectID(id)})
   resolve(result)
     })
   }

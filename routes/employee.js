@@ -16,6 +16,7 @@ const PDFDocument=require('pdfkit')
 var base64ToImage = require('base64-to-image');
 const recruiterHelper = require("../Controllers/recruiterHelper");
 
+const messageController = require('../Controllers/messageController');
 
 //middlevare for session checking
 const verifygoogleLogin = (req, res, next) => {
@@ -777,7 +778,10 @@ res.render('employee/recruiterDetails',{recruiter:true,recruiter})
 })
 
 
-router.post('/chat',(req,res)=>{
+
+
+
+router.post('/chat',async(req,res)=>{
 
 
   let senderid=req.query.sender
@@ -796,7 +800,19 @@ let userfound=req.session.user
  console.log("sender is this @@@@@@@@@@@@@@@@@@@@###########",senderis);
  console.log("the receiver is %%%%%%%%%%%%%%%%%%",receiveris);
 
-res.render('employee/chat',{userfound,user:true})
+
+
+ let sendChat=await messageController.sendChat(senderid,receiverid)
+
+ let receivedchats=await messageController.receivedChat(receiverid,senderid)
+ let Recieverdetails=await recruiterHelper.getRecruiterById(receiveris)
+ 
+ 
+ console.log("senderchat",Recieverdetails);
+ 
+
+
+res.render('employee/chat',{userfound,recruiter:true,Recieverdetails,sendChat,receivedchats})
 
 })
 

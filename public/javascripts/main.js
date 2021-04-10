@@ -91,17 +91,22 @@ if(senderforCheck==myuserid)
 
     console.log("executing inside if @@@@@@@@@@@@@@@@@@@@@@@@@1")
 
-    div.innerHTML = `<div class="ctext-wrap-content" style="padding-left:7px">
-    <p class="conversation-name pt-1 pb-1" style="margin-bottom:0px;margin-left:0px">My message :</p>
-    <p class="mb-0" style="padding-left:20px">
+    div.innerHTML = ` <div
+       class="msg-img"
+       style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
+      ></div>
+
+      <div class="msg-bubble">
+        <div class="msg-info">
+          <div class="msg-info-name">Sajad</div>
+          <div class="msg-info-time">${message.time}</div>
+        </div>
+
+        <div class="msg-text">
         ${msgis} 
-    </p>
-    
-    <p class="chat-time mb-0"><i class="ri-chat-check-line align-middle"></i>
-        <span class="align-middle">${message.time}</span>
-    </p>
-    
-</div>`
+        </div>
+      </div>
+    </div>`
 }
 
 
@@ -113,17 +118,23 @@ else
 
 console.log("in the else condition >>>>>>>>>>>>");
 
-    div.innerHTML = `<div class="ctext-wrap-content" style="padding-left:7px">
-    <p class="conversation-name pt-1 pb-1" style="margin-bottom:0px;margin-left:0px">next person msg</p>
-    <p class="mb-0" style="padding-left:20px">
-    ${html} 
-    </p>
-    
-    <p class="chat-time mb-0"><i class="ri-chat-check-line align-middle"></i>
-        <span class="align-middle">${message.time}</span>
-    </p>
-    
-</div>`
+    div.innerHTML = ` <div class="msg right-msg  ">
+    <div
+     class="msg-img"
+     style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
+    ></div>
+
+    <div class="msg-bubble ">
+      <div class="msg-info">
+        <div class="msg-info-name">Hireme test</div>
+        <div class="msg-info-time">  ${message.time}</div>
+      </div>
+
+      <div class="msg-text">
+     ${msgis}
+      </div>
+    </div>
+  </div>`
 
 function urlify(text) {
 
@@ -157,18 +168,31 @@ console.log("entered to image function")
     div.classList.add('conversation-list')
     console.log("the destructured msg is",data.userName)
 
-    div.innerHTML = `<div class="ctext-wrap-content" style="padding-left:7px">
-    <p class="conversation-name pt-1 pb-1" style="margin-bottom:0px;margin-left:0px">${data.userName} :</p>
-    <p class="mb-0" style="padding-left:20px">
-    <img src="http://localhost:5000/image-chats/${data.file}" style="width:150px;height:150px" class="img-responsive m-auto" alt="">
-        
-    </p>
+    div.innerHTML = `
     
-    <p class="chat-time mb-0"><i class=" ri-chat-check-line align-middle"></i>
-        <span class="class="fa fa-check"">  ethii</span>
-    </p>
     
-</div>`
+
+
+
+
+    <div class="msg right-msg  ">
+    <div
+     class="msg-img"
+     style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
+    ></div>
+
+    <div class="msg-bubble ">
+      <div class="msg-info">
+        <div class="msg-info-name">Hireme test</div>
+        <div class="msg-info-time"> ${data.userName}</div>
+      </div>
+
+      <div class="msg-text">
+      <img src="http://localhost:3000/image-chats/${data.file}" style="width:150px;height:150px" class="img-responsive m-auto" alt="">
+      </div>
+    </div>
+  </div>
+`
 
 var br = document.createElement("br");
     
