@@ -1,7 +1,7 @@
 var db = require("../config/connection");
 var collection = require("../config/dbcollections");
 var bcrypt = require("bcrypt");
-const { USER_COLLECTION, JOB_COLLECTION, RESUME_COLLECTION, appliedJobs, } = require("../config/dbcollections");
+const { USER_COLLECTION, JOB_COLLECTION, RESUME_COLLECTION, appliedJobs,MESSAGE_COLLECTION } = require("../config/dbcollections");
 const { response } = require("express");
 const Razorpay=require('razorpay');
 const { ObjectId, ObjectID } = require("bson");
@@ -770,19 +770,30 @@ resolve(response)
 })
 },
 
+// getInbox:(id)=>{
+// db.get().collection(collection.MESSAGE_COLLECTION).aggregate([
+
+// {
+//   $match:{
+
+//     sender:id
+//   }
+// }
+
+
+// ])
+
+// },
+
 getInbox:(id)=>{
-db.get().collection(collection.MESSAGE_COLLECTION).aggregate([
+  return new Promise((resolve,reject)=>{
+    db.get().collection(collection.MESSAGE_COLLECTION).find({ $or: [ { sender_id:id }, { receiver_id: id } ] }).toArray().then((result)=>{
 
-{
-  $match:{
+console.log("the result is this",result);
 
-    sender:id
-  }
-}
-
-
-])
-
+resolve(result)
+    })
+  })
 }
 
 

@@ -230,10 +230,12 @@ router.post("/otpLogin", async (req, res) => {
       client.verify
         .services(config.serviceID)
         .verifications.create({
-          to: `+91${req.body.phone}`,
+        
+          to: `+918156803272`,
           channel: `sms`,
         })
         .then((data) => {
+          console.log(data);
           if (data) {
             res.send(response);
           } else {

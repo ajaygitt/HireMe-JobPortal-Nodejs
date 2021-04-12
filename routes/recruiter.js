@@ -361,11 +361,12 @@ console.log("senderchat",Recieverdetails);
   
   router.get('/inbox',(req,res)=>{
 
-    let userfound=req.session.user
-userHelper.getInbox(userfound._id).then(()=>{
+//     let userfound=req.session.user
+// userHelper.getInbox(userfound._id).then((messages)=>{
 
+    res.render('recruiter/inbox',{recruiter:true})
 
-})
+// })
 
   })
   
