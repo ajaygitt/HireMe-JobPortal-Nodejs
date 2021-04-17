@@ -785,16 +785,57 @@ resolve(response)
 
 // },
 
-getInbox:(id)=>{
+getSentMessages:(id)=>{
   return new Promise((resolve,reject)=>{
-    db.get().collection(collection.MESSAGE_COLLECTION).find({ $or: [ { sender_id:id }, { receiver_id: id } ] }).toArray().then((result)=>{
+    db.get().collection(collection.MESSAGE_COLLECTION).aggregate([
+      {
+        $match:{
+          sender_id:id
+        }
+      },
+      {
+        $lookup:{
+          from:collection.MESSAGE_COLLECTION,
+          localField:'sender_id',
+          foreignField:'_id',
+          as:'list'
+        }
+      },
+      {
+        $project:{
+        _id:1
+        }
+      }
+    ])
+    
+    .toArray().then((messages)=>{
+resolve(messages)
 
-console.log("the result is this",result);
 
-resolve(result)
     })
+
+
+
   })
+},
+
+
+
+getReceivedMessages:(id)=>{
+  return new Promise((resolve,reject)=>{
+    db.get().collection(collection.MESSAGE_COLLECTION).find({receiver_id:id}).toArray().then((messages)=>{
+resolve(messages)
+
+    })
+
+
+
+  })
+ 
 }
+
+
+
 
 
 };

@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+
 
 <!--main content start-->
 <section id="main-content">
@@ -11,8 +15,8 @@
 					</div>
 					 <div class="col-md-8 market-update-left">
 					 <h4>Visitors</h4>
-					<h3>13,500</h3>
-					<p>Other hand, we denounce</p>
+					<h3>{{usersCount}}</h3>
+					<p>active users</p>
 				  </div>
 				  <div class="clearfix"> </div>
 				</div>
@@ -23,9 +27,10 @@
 						<i class="fa fa-users" ></i>
 					</div>
 					<div class="col-md-8 market-update-left">
-					<h4>Users</h4>
-						<h3>1,250</h3>
-						<p>Other hand, we denounce</p>
+					<h4>Premium Users</h4>
+						<h3>{{premiumUsers}}</h3>
+
+						
 					</div>
 				  <div class="clearfix"> </div>
 				</div>
@@ -33,12 +38,13 @@
 			<div class="col-md-3 market-update-gd">
 				<div class="market-update-block clr-block-3">
 					<div class="col-md-4 market-update-right">
-						<i class="fa fa-usd"></i>
+						<i class=" fa fa-shopping-cart"></i>
 					</div>
 					<div class="col-md-8 market-update-left">
-						<h4>Sales</h4>
-						<h3>1,500</h3>
-						<p>Other hand, we denounce</p>
+						<h4>Jobs Active</h4>
+						<h3>{{JobsCount}}</h3>
+						<p>active now</p>
+					
 					</div>
 				  <div class="clearfix"> </div>
 				</div>
@@ -46,12 +52,13 @@
 			<div class="col-md-3 market-update-gd">
 				<div class="market-update-block clr-block-4">
 					<div class="col-md-4 market-update-right">
-						<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+						<i class=" fa fa-rupee" aria-hidden="true"></i>
 					</div>
 					<div class="col-md-8 market-update-left">
-						<h4>Orders</h4>
-						<h3>1,500</h3>
-						<p>Other hand, we denounce</p>
+						<h4>Revenue</h4>
+						<h3>₹ {{revenue}}</h3>
+						<p>(In Rupees)</p>
+				
 					</div>
 				  <div class="clearfix"> </div>
 				</div>

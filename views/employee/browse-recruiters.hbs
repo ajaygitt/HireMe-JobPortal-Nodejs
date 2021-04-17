@@ -17,11 +17,12 @@
 <div class="gallery-items">
 			{{!-- <li><a href="/ViewRecruiter?recruiter={{this._id}}" id="link"> --}}
             <p></p>
+			<a href="/ViewRecruiter?recruiter={{this._id}}" id="link">
 				<img src="images/profilePic/{{this._id}}.jpg"  alt="profile Pic not added" id="logo" >
 
 
 				<div class="job-list-content">
-					<h4 id="jobTitle{{this._id}}">{{this.recruiter_name}} <span class="full-time" id="jobType">{{this.jobType}}</span></h4>
+					<h4 id="jobTitle{{this._id}}">{{this.recruiter_name}} <span class="full-time" id="jobType">{{this.jobType}}</span></h4></a>
 					<div class="job-icons">
 						     {{#if ../userfound.premium}}
 

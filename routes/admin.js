@@ -1,6 +1,7 @@
 const { response } = require('express');
 var express = require('express');
 const adminHelpers = require('../Controllers/adminHelpers');
+const NotificationController = require('../Controllers/NotificationController');
 const userHelpers=require('../Controllers/userHelper')
 var router = express.Router();
 
@@ -92,6 +93,26 @@ res.send(response)
       
     }) 
 })
+
+router.get('/send-Notification',(req,res)=>{
+    
+    res.render('admin/sendNotification',{admin:true})
+})
+
+router.post('/sendNotification',(req,res)=>{
+
+NotificationController.sendNotificationByAdmin(req.body.data).then((response)=>{
+    res.send(response);
+    
+})
+   
+})
+
+
+
+
+
+
 
 
 module.exports = router;

@@ -1,5 +1,5 @@
 var express = require('express');
-const { response, resource, render } = require('../app');
+const { response, resource, render, set } = require('../app');
 var router = express.Router();
 const passport=require('passport')
 const auth =require('../routes/passport-setup')
@@ -361,14 +361,19 @@ console.log("senderchat",Recieverdetails);
   
   router.get('/inbox',(req,res)=>{
 
-//     let userfound=req.session.user
-// userHelper.getInbox(userfound._id).then((messages)=>{
+    let userfound=req.session.user
 
-    res.render('recruiter/inbox',{recruiter:true})
+messageController.getInbox(userfound._id).then((messages)=>{
 
-// })
 
-  })
+
+
+
+    res.render('recruiter/inbox',{recruiter:true,messages})
+    })
+
+})
+
   
 
 

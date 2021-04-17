@@ -41,7 +41,8 @@ const getUrls=require('get-urls')
 const SocketIOFileUpload=require('socketio-file-upload');
 const {userJoin, getCurrentUser } = require('./chat/users');
 var msgFormat=require('./chat/message')
-var fs=require('fs')
+var fs=require('fs');
+const { ObjectID } = require('bson');
 
 
 
@@ -81,30 +82,29 @@ let newReceiver=user.receiver
 console.log("ithan sender",user.sender);
 console.log("ithan receiver",newReceiver);
 
+let first= user.sender.length-24
+let senderis=user.sender.slice(0,first)
+let receiveris=newReceiver.slice(0,first)
 
-io.to(user.sender).emit('message',msgFormat.formatMessage(user.sender,msg))
-     io.to(newReceiver).emit('message',msgFormat.formatMessage(newReceiver,msg))
+
+io.to(user.sender).emit('message',msgFormat.formatMessage(user.sender,msg,senderis))
+     io.to(newReceiver).emit('message',msgFormat.formatMessage(newReceiver,msg,senderis))
 
 
 
-     let first= user.sender.length-24
-     let senderis=user.sender.slice(0,first)
-     let receiveris=newReceiver.slice(0,first)
+    
 
 
 
 
 let obj={
   socket:id,
-  sender:user.sender,
-  sender_id:senderis,
-  receiver_id:receiveris,
+  sender: user.sender,
+  sender_id:ObjectID(senderis) ,
+  receiver_id:ObjectID(receiveris) ,
   receiver:newReceiver,
-  message:msg
+  message:[msg]
 }
-
-
-
 
 
 messageController.insertTextmessage(obj)

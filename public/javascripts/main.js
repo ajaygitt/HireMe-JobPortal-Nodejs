@@ -67,46 +67,41 @@ function outputMessage(message) {
 
    let msgis=message.text
 
-
-
-
-
-
-  console.log("message is this s s",msgis)
+  console.log("message is this s s",message)
     const par = document.getElementsByClassName('chat-messages')
     const div = document.createElement('div')
     div.classList.add('conversation-list')
-    console.log("the destructured msg is",message.userName)
+   
 const userid=message.userName
 
-let first= message.userName.length-24
-let senderforCheck=message.userName.slice(0,24)
 
 
-console.log("username",myuserid);
-console.log("the sender for check is ",senderforCheck);
 
-if(senderforCheck==myuserid)
+console.log("My user name is username",myuserid);
+console.log("ithan senderinte id",message.senderis);
+
+if(message.senderis==myuserid)
 {
 
     console.log("executing inside if @@@@@@@@@@@@@@@@@@@@@@@@@1")
 
-    div.innerHTML = ` <div
-       class="msg-img"
-       style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
-      ></div>
+    div.innerHTML = `<div class="msg right-msg  ">
+    <div
+     class="msg-img"
+     style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
+    ></div>
 
-      <div class="msg-bubble">
-        <div class="msg-info">
-          <div class="msg-info-name">Sajad</div>
-          <div class="msg-info-time">${message.time}</div>
-        </div>
-
-        <div class="msg-text">
-        ${msgis} 
-        </div>
+    <div class="msg-bubble ">
+      <div class="msg-info">
+        <div class="msg-info-name">Hireme test</div>
+        <div class="msg-info-time">  ${message.time}</div>
       </div>
-    </div>`
+
+      <div class="msg-text">
+     ${msgis}
+      </div>
+    </div>
+  </div>`
 }
 
 
@@ -118,7 +113,7 @@ else
 
 console.log("in the else condition >>>>>>>>>>>>");
 
-    div.innerHTML = ` <div class="msg right-msg  ">
+    div.innerHTML = ` <div class="msg left-msg  ">
     <div
      class="msg-img"
      style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"

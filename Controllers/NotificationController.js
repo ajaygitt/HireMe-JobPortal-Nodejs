@@ -6,6 +6,7 @@ const { response } = require('express')
 const moment =require('moment')
 const { reject } = require('lodash')
 const { ObjectID } = require('bson')
+const adminHelpers = require('./adminHelpers')
 
 
 module.exports={
@@ -49,7 +50,7 @@ positiveNotification:false
 
         return new Promise((resolve,reject)=>{
 
-            db.get().collection(collection.NOTIFICATION_COLLECTION).find({receiver:ObjectID(id)}).toArray().then((notifications)=>{
+            db.get().collection(collection.NOTIFICATION_COLLECTION).find({$or:[ {receiver:ObjectID(id)} ,{receiver:"everyone"}]}).toArray().then((notifications)=>{
 
                 resolve(notifications)
             })
@@ -61,6 +62,16 @@ positiveNotification:false
             db.get().collection(collection.NOTIFICATION_COLLECTION).remove({_id:ObjectID(id)}).then((response)=>{
 
                 resolve(response)
+            })
+        })
+    },
+
+    sendNotificationByAdmin:(data)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.NOTIFICATION_COLLECTION).insertOne({sender:"admin",receiver:'everyone',notification:data}).then((result)=>{
+
+                resolve(result);
+
             })
         })
     }

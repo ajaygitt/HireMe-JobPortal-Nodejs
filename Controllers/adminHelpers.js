@@ -102,8 +102,31 @@ deleteJob:(id)=>{
             resolve(response)
         })
     })
+},
+getUsersCount:()=>{
+    return new Promise(async(resolve,reject)=>{
+   let count= await    db.get().collection(USER_COLLECTION).find().count()
+   resolve(count)
+    })
 }
+,
 
+premiumUsers:()=>{
+    return new Promise((resolve,reject)=>{
+        db.get().collection(USER_COLLECTION).find({premium:true}).count().then((count)=>{
+            resolve(count)
+            console.log(count);
+        })
+    })
+},
+JobsCount:()=>{
+    return new Promise((resolve,reject)=>{
+        db.get().collection(JOB_COLLECTION).find().count().then((count)=>{
+            resolve(count)
+            console.log(count);
+        })
+    })
+}
 
 
 
