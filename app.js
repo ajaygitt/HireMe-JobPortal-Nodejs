@@ -103,7 +103,7 @@ let obj={
   sender_id:ObjectID(senderis) ,
   receiver_id:ObjectID(receiveris) ,
   receiver:newReceiver,
-  message:[msg]
+  message:msg
 }
 
 

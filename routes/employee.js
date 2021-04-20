@@ -73,10 +73,13 @@ router.get("/", async (req, res) => {
 
   if (userfound) {
     if (userfound.type == "employee") {
-      let premium = await userHelper.isPremium(userfound._id).then((result) => {
+      let premium = await userHelper.isPremium(userfound._id).then(async(result) => {
         console.log("premium", result);
         let home = true;
-        res.render("employee/home", { user: true, home, userfound, result });
+        let recentjobs=await userHelper.recentJobs()
+       
+        res.render("employee/home", { user: true, home, userfound, result,recentjobs });
+
       });
     } else if (userfound.type == "recruiter") {
       let home = 1;
@@ -412,6 +415,9 @@ router.get("/jobPage", verifyLoggedIn, (req, res) => {
 
 router.post("/searchJob", verifyLoggedIn, (req, res) => {
   let keyword = req.body.keyword;
+
+console.log("###############",keyword);
+
   let location = req.body.city;
   userHelper.seachJob(keyword, location).then((jobs) => {
     var stat = jobs;
@@ -747,11 +753,13 @@ router.post("/chat", async (req, res) => {
   let first = senderid.length - 24;
   let senderis = senderid.slice(0, first);
   let receiveris = receiverid.slice(0, first);
-  console.log("sender is this @@@@@@@@@@@@@@@@@@@@###########", senderis);
-  console.log("the receiver is %%%%%%%%%%%%%%%%%%", receiveris);
+
 
   let sendChat = await messageController.sendChat(senderid, receiverid);
 
+
+console.log("the message is",sendChat);
+  
   let receivedchats = await messageController.receivedChat(
     receiverid,
     senderid
@@ -769,4 +777,7 @@ router.post("/chat", async (req, res) => {
   });
 });
 
+
+
 module.exports = router;
+

@@ -4,6 +4,7 @@ var router = express.Router();
 const passport=require('passport')
 const auth =require('../routes/passport-setup')
 const app = require('../app');
+const base64ToImage=require('base64-to-image')
 const userHelper = require('../Controllers/userHelper');
 const recruiterHelper=require('../Controllers/recruiterHelper');
 const notificationHelper=require('../Controllers/NotificationController')
@@ -131,7 +132,6 @@ let userid=req.session.user._id
 
 router.get('/add-job',verifyLoggedIn,verifyIfPremium,(req,res)=>{
 let userfound=req.session.user
-console.log("mm",userfound);
 
    res.render('recruiter/add-job',{recruiter:true,userfound})
 
@@ -139,28 +139,27 @@ console.log("mm",userfound);
 
 router.post('/add-job',verifyLoggedIn,(req,res)=>{
 
-    let alert=require('alert')
-    console.log("daata",req.body);
-    let image=req.files.image
 
-console.log(image);
+    console.log("daata",req.body);
+    
+    var base64Str = req.body.base1;
+
+
 
 let recruiterid=req.session.user._id
 
 recruiterHelper.postJob(req.body,recruiterid).then((response)=>{
+
+    let id=response
+    var path = "./public/icons/";
+    var optionalObj = { fileName: id, type: "jpg" };
+
+    base64ToImage(base64Str, path, optionalObj);
+
     console.log("response formaskheloper",response);
-let image=req.files.image
-let id=response
-image.mv('./public/icons/'+id+'.jpg',(err,done)=>{
-    if(!err)
-    {
-        res.redirect('/')
-    }
-    else
-    {
-        console.log("errrer");
-    }
-})
+res.redirect('/')
+
+
     
 })
 
@@ -352,8 +351,9 @@ console.log("enterd to recruiter");
 let receivedchats=await messageController.receivedChat(receiverid,senderid)
 let Recieverdetails=await recruiterHelper.getRecruiterById(receiveris)
 
+console.log("the recieved chat",receivedchats);
+console.log("senderchadddddddddddddddddddddt",Recieverdetails);
 
-console.log("senderchat",Recieverdetails);
 
   res.render('recruiter/chat',{userfound,recruiter:true,Recieverdetails,sendChat,receivedchats})
   
@@ -366,10 +366,28 @@ console.log("senderchat",Recieverdetails);
 messageController.getInbox(userfound._id).then((messages)=>{
 
 
+console.log(messages);
 
+//making array unique
+function getUnique(arr, comp) {
 
+    // store the comparison  values in array
+const unique =  arr.map(e => e[comp])
 
-    res.render('recruiter/inbox',{recruiter:true,messages})
+  // store the indexes of the unique objects
+  .map((e, i, final) => final.indexOf(e) === i && i)
+
+  // eliminate the false indexes & return unique objects
+ .filter((e) => arr[e]).map(e => arr[e]);
+
+return unique;
+}
+
+messages=getUnique(messages,'email')
+console.log("this is message",messages);
+
+    res.render('recruiter/inbox',{recruiter:true,messages,userfound})
+
     })
 
 })

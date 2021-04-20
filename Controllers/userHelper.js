@@ -252,9 +252,10 @@ viewSingleJob:(id)=>{
 seachJob:(keyword,location)=>{
   return new Promise(async(resolve,reject)=>{
  console.log("key");
-   
+   let key2 = keyword.charAt(0).toLowerCase();
 
- await db.get().collection(JOB_COLLECTION).find({$or:[{jobTitle:{$regex:keyword}},{tags:{$regex:keyword}},{description:{$regex:keyword}},{company_name:{$regex:keyword}}]}).toArray().then((result)=>{
+
+ await db.get().collection(JOB_COLLECTION).find({$or:[{jobTitle:{$regex:keyword}},{tags:{$regex:keyword}},{description:{$regex:keyword}},{company_name:{$regex:keyword}},{company_name:{$regex:key2}},{jobTitle:{$regex:key2}}]}).toArray().then((result)=>{
 
   console.log("result is ",result);
 
@@ -832,6 +833,17 @@ resolve(messages)
 
   })
  
+},
+
+recentJobs:()=>{
+  return new Promise(async(resolve,reject)=>{
+ let result= await  db.get().collection(JOB_COLLECTION).find().sort({dateposted:-1}).toArray()
+
+
+ result=result.slice(0,4)
+ 
+resolve(result)
+  })
 }
 
 

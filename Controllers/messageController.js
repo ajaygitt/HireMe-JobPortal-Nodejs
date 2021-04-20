@@ -10,35 +10,11 @@ const { ObjectID } = require('bson')
 
 module.exports={
 
-
-
-
     insertTextmessage:(obj)=>{
-
-        return new Promise(async(resolve,reject)=>{
-
        
-console.log("hihihihi",obj);
 
-        let collectionExist=await db.get().collection(MESSAGE_COLLECTION).findOne({sender_id:ObjectID(obj.sender_id)})
-
-        if(collectionExist)
-        {
-            db.get().collection(MESSAGE_COLLECTION).updateOne({
-                sender_id:obj.sender_id
-            },
-            {
-                $push:{
-                    message:obj.message
-                }
-            })
-        }
-        else
-        {
-            
-            db.get().collection(collection.MESSAGE_COLLECTION).insertOne(obj)
-        }
-    })
+ db.get().collection(collection.MESSAGE_COLLECTION).insertOne({socket:obj.socket,sender:obj.sender,sender_id:obj.sender_id,receiver_id:obj.receiver_id,receiver:obj.reciever,message:obj.message,time:new Date()})
+     
     },
 
 insertImageMessage:(obj)=>{
@@ -77,7 +53,9 @@ let inbox=await db.get().collection(MESSAGE_COLLECTION).aggregate([
 {
 $project:{
     sender_id:1,
-    receiver_id:1
+    receiver_id:1,
+    message:1,
+    time:1
 }
 },
 {
@@ -98,7 +76,11 @@ $unwind:'$result'
     $project:{
         userid:'$result._id',
         email:'$result.email',
-        fullname:'$result.full_name'
+        full_name:'$result.full_name',
+        message:1,
+        time:1,
+        recruiter_name:1
+
 
     }
 }

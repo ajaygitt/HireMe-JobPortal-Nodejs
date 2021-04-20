@@ -38,7 +38,12 @@
 
                     {{!-- profile pic --}}
                     {{#if profile.proPic}}
-<img src="images/profilePic/{{profile._id}}.jpg" class="rounded-circle avatar-xl img-thumbnail" alt="">
+                  <div  style="padding-left: 95px;">
+
+   
+<img src="images/profilePic/{{profile._id}}.jpg" class="rounded-circle avatar-xl img-thumbnail " alt="" >
+                           </div>     
+
     <button id="uploadpicbtn" onclick="uploadPic()"  style="font-size: smaller;">change profile pic</button>
                     {{else}}
                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png"

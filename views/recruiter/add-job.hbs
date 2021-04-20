@@ -9,7 +9,8 @@
  {{!-- egg --}}
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.css"
+            integrity="sha256-FeDcPwV8ZgxG1MU5L/b2i8clOmqZJKK0eyDHqrQaXxY=" crossorigin="anonymous" />
 
 <div id="titlebar" class="single submit-page">
 	<div class="container">
@@ -127,7 +128,7 @@
 			<!-- Application email/url -->
 			<div class="form">
 				<h5>Sallary offered Per Month (in INR)</h5>
-				<input type="text" placeholder="sallary offered" name="sallary" id="sallary">
+				<input type="number" placeholder="sallary offered" name="sallary" id="sallary">
 			</div>
 
 			<!-- TClosing Date -->
@@ -162,15 +163,40 @@
 			</div>
 
 		
-<div>
-  <label for="Image" style="color: white;">IMAGE 1</label>
-  <input type="file" name="image" id="image" class="form-control" onchange="return fileValidation()" required>
-</div>
 
 
-<div id="imagePreview" style="width: 200px; height: 15px;"></div>
-			<div class="divider margin-top-0"></div>
-			{{!-- <a href="#" class="button big margin-top-5">Preview <i class="fa fa-arrow-circle-right"></i></a> --}}
+        <!-- Textarea -->
+             <div class="form-group " style="margin-left:300px;">
+                    <div class=" col-md-4 " style="display: flex;">
+                        <div>
+                            <input type="file" name="image" required id="image" onchange="readURL(this);" />
+
+                            <div class=" image_container" style="width: 25px;height:300px">
+                                <img id="blah" src="#" alt="" />
+                            </div>
+                        </div>
+
+                        <!-- // Cropped image to display (only if u want) -->
+                        <div style="margin-left: 50px;">
+
+                            <div id="cropped_result" style="">
+<p>cropped result </p>
+                                <img src="" id="cropped_results" alt=""
+                                    style="margin-top:25px;width: 200px;height:300px;display:none">
+
+                            </div>
+                        </div>
+                        <div style="margin-left: 50px;">
+                            <button type="button" id="crop_button" style="display: none;" >Crop</button>
+                        </div>
+                    </div>
+                    <!-- // Will trigger crop event -->
+
+
+                    <textarea name="base1" id="base1" cols="30" rows="10" hidden></textarea>
+
+                </div> 
+
 
 </i><input type="submit" id="submitButton" value="submit" class="button big margin-top-5">
 </form>
@@ -182,12 +208,11 @@
         <link href="cropperjs/cropper.min.css" rel="stylesheet" type="text/css"/>
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
+
 
 
 <script>
-
-
-
 
 
 	$(document).ready(function () {
@@ -202,8 +227,6 @@ maxDate:'+15D',
   });
 
 
-
-console.log("sdkfj")
 
 
 
@@ -223,7 +246,8 @@ console.log("sdkfj")
 					required:true
 				},
 				sallary:{
-                    required:true
+                    required:true,
+					Number:true
 				},
 				tags:{
 					required:true
@@ -276,7 +300,48 @@ function fileValidation(){
 
 
 
-
+  function readURL(input) {
+        console.log('first')
+        console.log('hkjhjkh')
+		$('#crop_button').show()
+        if (input.files && input.files[0]) {
+            $('#blah').attr('src', '');
+            
+            var reader = new FileReader();
+            reader.onload = function (e) {
+            
+                $('#blah').attr('src', e.target.result)
+            };
+            reader.readAsDataURL(input.files[0]);
+            setTimeout(initCropper1, 50);
+        }
+    }
+    function initCropper1() {
+        console.log('9898')
+    
+        var image = document.getElementById('blah');
+        var cropper = new Cropper(image, {
+            viewMode: 10,
+            aspectRatio: 9 / 16,
+            autoCropArea: 1,
+            cropBoxResizable: false,
+            crop: function (e) {
+                console.log(e.detail.x);
+                console.log(e.detail.y);
+            }
+        });
+        // On crop button clicked
+        document.getElementById('crop_button').addEventListener('click', function (event) {
+            event.preventDefault()
+            var imgurl = cropper.getCroppedCanvas().toDataURL();
+            var img = document.createElement("img");
+            $('#base1').val(imgurl)
+            $('#cropped_results').show()
+            document.getElementById('cropped_results').src = ""
+            document.getElementById('cropped_results').src = imgurl
+            
+        })
+    }    
 
 </script>
 
