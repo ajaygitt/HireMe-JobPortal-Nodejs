@@ -338,7 +338,7 @@ module.exports = {
   let result=   await db.get().collection(USER_COLLECTION).findOne({_id:ObjectID(id)})
   resolve(result)
     })
-  }
+  },
 
 
 
@@ -359,4 +359,15 @@ module.exports = {
 //       console.log("$", result);
 //     });
 //   },
+
+searchEmployee:(keyword)=>{
+
+  return new Promise(async(resolve,reject)=>{
+ let result=await   db.get().collection(USER_COLLECTION).find({$or:[{full_name:{$regex:keyword}},{education:{$regex:keyword}}]}).toArray()
+resolve(result)
+
+
+  })
+  // find({$or:[{jobTitle:{$regex:keyword}},{tags:{$regex:keyword}},{description:{$regex:keyword}},{company_name:{$regex:keyword}},{company_name:{$regex:key2}},{jobTitle:{$regex:key2}}]}).toArray().then((result)=>{
+}
 };

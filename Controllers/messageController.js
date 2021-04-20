@@ -23,18 +23,24 @@ db.get().collection(collection.MESSAGE_COLLECTION).insertOne(obj)
 
 },
 
+
+
+
+
 sendChat:(sender,receiver)=>{
     return new Promise(async(resolve,reject)=>{
 
-    let messages=await    db.get().collection(collection.MESSAGE_COLLECTION).find({$and:[{sender:sender,receiver:receiver}]}).toArray()
+    let messages=await    db.get().collection(collection.MESSAGE_COLLECTION).find({$and:[{sender_id:ObjectID(sender) ,receiver_id:ObjectID(receiver)}]}).toArray()
 
 resolve(messages)
     })
 },
 
 receivedChat:(sender,reciever)=>{
+
+    console.log("rec",sender,reciever);
     return new Promise(async(resolve,reject)=>{
-        let messageis=await db.get().collection(collection.MESSAGE_COLLECTION).find({$and:[{sender:sender,receiver:reciever}]}).toArray()
+        let messageis=await db.get().collection(collection.MESSAGE_COLLECTION).find({$and:[{sender_id:ObjectID(sender) ,receiver_id:ObjectID(reciever) }]}).toArray()
         resolve(messageis)
     })
 },
@@ -93,6 +99,12 @@ console.log("dal",inbox);
 
     })
            
+},
+
+
+insertVideo:(obj)=>{
+
+    db.get().collection(MESSAGE_COLLECTION).insertOne(obj)
 }
 
 

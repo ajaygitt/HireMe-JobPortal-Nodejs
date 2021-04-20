@@ -252,7 +252,7 @@ let userfound=req.session.user
 
 console.log("job id is",id);
 
-res.render('recruiter/viewApplicants',{recruiter:true,applications,id})
+res.render('recruiter/viewApplicants',{recruiter:true,applications,id,userfound})
     })
 })
 
@@ -273,8 +273,9 @@ console.log("applicant",applicant);
 
 
     recruiterHelper.viewMyProfile(applicant).then((applicant)=>{
+        let userfound=req.session.user
 
-        res.render('recruiter/viewResume',{recruiter:true,applicant,jobId,applicant})
+        res.render('recruiter/viewResume',{recruiter:true,applicant,jobId,applicant,userfound})
     })
 
 })
@@ -335,20 +336,19 @@ console.log("enterd to recruiter");
     console.log("sender id is ",senderid);
     console.log("receiver is ",receiverid);
    let user=receiverid
-  //  let sender=senderid+receiverid
-  //  let receiver=receiverid+senderid
   
   let userfound=req.session.user
   
     let first= senderid.length-24
     let senderis=senderid.slice(0,first)
    let receiveris=receiverid.slice(0,first)
+   console.log("hai guys",userfound._id);
    console.log("sender is this @@@@@@@@@@@@@@@@@@@@###########",senderis);
    console.log("the receiver is %%%%%%%%%%%%%%%%%%",receiveris);
   
-   let sendChat=await messageController.sendChat(senderid,receiverid)
+   let sendChat=await messageController.sendChat(senderis,receiveris)
 
-let receivedchats=await messageController.receivedChat(receiverid,senderid)
+let receivedchats=await messageController.receivedChat(receiveris,senderis)
 let Recieverdetails=await recruiterHelper.getRecruiterById(receiveris)
 
 console.log("the recieved chat",receivedchats);
@@ -358,6 +358,12 @@ console.log("senderchadddddddddddddddddddddt",Recieverdetails);
   res.render('recruiter/chat',{userfound,recruiter:true,Recieverdetails,sendChat,receivedchats})
   
   })
+
+
+
+
+
+
   
   router.get('/inbox',(req,res)=>{
 
@@ -390,6 +396,13 @@ console.log("this is message",messages);
 
     })
 
+})
+
+router.post('/searchEmployees',(req,res)=>{
+    let userfound=req.session.user
+    recruiterHelper.searchEmployee(req.body.keyword).then((users)=>{
+        res.render('recruiter/browse-employees',{recruiter:true,users,userfound})
+    })
 })
 
   

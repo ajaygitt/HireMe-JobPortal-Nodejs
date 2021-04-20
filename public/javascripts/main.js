@@ -25,7 +25,9 @@ socket.on('message', message => {
     console.log("hai guys")
     console.log(message);  
     outputMessage(message)
-    chatMessages.scrollTop=chatMessages.scrollHeight
+
+    chatMessages.scrollTop=chatMessages.scrollHeight;
+    
 })
 
 
@@ -151,25 +153,33 @@ function urlify(text) {
     
     par[0].appendChild(br)
     
-
+  //  par[0].scrollTop = par[0].scrollHeight
     document.querySelector('.chat-messages').appendChild(div)
 }
 
 function imageFile(data)
 {
+ 
+
+
+
+
+
+
+
 console.log("entered to image function")
     const par = document.getElementsByClassName('chat-messages')
     const div = document.createElement('div')
     div.classList.add('conversation-list')
     console.log("the destructured msg is",data.userName)
 
+
+
+    if(data.senderis==myuserid)
+    {
     div.innerHTML = `
     
     
-
-
-
-
     <div class="msg right-msg  ">
     <div
      class="msg-img"
@@ -188,6 +198,33 @@ console.log("entered to image function")
     </div>
   </div>
 `
+}
+else
+{
+  div.innerHTML =  `
+    
+    
+  <div class="msg left-msg  ">
+  <div
+   class="msg-img"
+   style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
+  ></div>
+
+  <div class="msg-bubble ">
+    <div class="msg-info">
+      <div class="msg-info-name">Hireme test</div>
+      <div class="msg-info-time"> ${data.userName}</div>
+    </div>
+
+    <div class="msg-text">
+    <img src="http://localhost:3000/image-chats/${data.file}" style="width:150px;height:150px" class="img-responsive m-auto" alt="">
+    </div>
+  </div>
+</div>
+`
+
+
+}
 
 var br = document.createElement("br");
     
@@ -195,37 +232,83 @@ par[0].appendChild(br)
 
 
 document.querySelector('.chat-messages').appendChild(div)
+
+
 }
+
 
 //video file rendering
 function videoFile(data){
 
 
-    console.log("entered to image function")
+    console.log("entered to video",data)
     const par = document.getElementsByClassName('chat-messages')
     const div = document.createElement('div')
     div.classList.add('conversation-list')
-    console.log("the destructured msg is",data.userName)
+    
 
-    div.innerHTML = `<div class="ctext-wrap-content" style="padding-left:7px">
-    <p class="conversation-name pt-1 pb-1" style="margin-bottom:0px;margin-left:0px">${data.userName} :</p>
-    <p class="mb-0" style="padding-left:20px">
-   
-        
+    if(data.senderis==myuserid)
+    {
 
+
+
+    div.innerHTML = `
+    
+    <div class="msg right-msg  ">
+    <div
+     class="msg-img"
+     style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
+    ></div>
+
+    <div class="msg-bubble ">
+      <div class="msg-info">
+        <div class="msg-info-name">Hireme test</div>
+        <div class="msg-info-time"> ${data.userName}</div>
+      </div>
+
+      <div class="msg-text">
+      <video width="320" height="240" controls>
+      <source src="http://localhost:3000/image-chats/${data.file}"" type="video/mp4">
+    
+      Your browser does not support the video tag.
+    </video>
+      </div>
+    </div>
+  </div>`
+    }
+
+
+else
+{
+
+
+  div.innerHTML = `
+    
+  <div class="msg left-msg  ">
+  <div
+   class="msg-img"
+   style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
+  ></div>
+
+  <div class="msg-bubble ">
+    <div class="msg-info">
+      <div class="msg-info-name">Hireme test</div>
+      <div class="msg-info-time"> ${data.userName}</div>
+    </div>
+
+    <div class="msg-text">
     <video width="320" height="240" controls>
-    <source src="http://localhost:5000/image-chats/${data.file}"" type="video/mp4">
+    <source src="http://localhost:3000/image-chats/${data.file}"" type="video/mp4">
   
-  Your browser does not support the video tag.
+    Your browser does not support the video tag.
   </video>
-
-    </p>
-    
-    <p class="chat-time mb-0"><i class=" ri-chat-check-line align-middle"></i>
-        <span class="class="fa fa-check"">  ethii</span>
-    </p>
-    
+    </div>
+  </div>
 </div>`
+
+
+}
+
 
 var br = document.createElement("br");
     

@@ -152,19 +152,29 @@ event.file.name=newimageId
 
 let id=user.id
 let newReceiver=user.receiver
+let first= user.sender.length-24
+let senderis=user.sender.slice(0,first)
+let receiveris=newReceiver.slice(0,first)
 
-io.to(user.sender).emit('file', msgFormat.formatFileMessage(user.sender,newimageId,ext))
-     io.to(newReceiver).emit('file', msgFormat.formatFileMessage(newReceiver,newimageId,ext))
+io.to(user.sender).emit('file', msgFormat.formatFileMessage(user.sender,newimageId,ext,senderis))
+     io.to(newReceiver).emit('file', msgFormat.formatFileMessage(newReceiver,newimageId,ext,senderis))
 
 
      if(ext=='.jpg'||ext=='.jpeg'||ext=='.png')
      {
+
+
+ 
+
      let messageis={
       socket:id,
+      sender_id:ObjectID(senderis) ,
+      receiver_id:ObjectID(receiveris) ,
       image:newimageId,
       sender:user.sender,
       receiver:newReceiver,
-      ext:ext
+      ext:ext,
+      time:new Date()
 
      }
      messageController.insertImageMessage(messageis)
@@ -176,11 +186,13 @@ io.to(user.sender).emit('file', msgFormat.formatFileMessage(user.sender,newimage
       let messageis={
         socket:id,
         video:newimageId,
+        sender_id:ObjectID(senderis) ,
+      receiver_id:ObjectID(receiveris) ,
         sender:user.sender,
         receiver:newReceiver
 
       }
-      // userHelper.insertVideo(messageis)
+      messageController.insertVideo(messageis)
     }
    
 

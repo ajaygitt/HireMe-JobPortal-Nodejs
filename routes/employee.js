@@ -754,21 +754,24 @@ router.post("/chat", async (req, res) => {
   let senderis = senderid.slice(0, first);
   let receiveris = receiverid.slice(0, first);
 
+ console.log("sender is this @@@@@@@@@@@@@@@@@@@@###########",senderis);
+ console.log("the receiver is %%%%%%%%%%%%%%%%%%",receiveris);
 
-  let sendChat = await messageController.sendChat(senderid, receiverid);
+
+  let sendChat = await messageController.sendChat(senderis, receiveris);
 
 
 console.log("the message is",sendChat);
   
   let receivedchats = await messageController.receivedChat(
-    receiverid,
-    senderid
+    receiveris,
+    senderis
   );
   let Recieverdetails = await recruiterHelper.getRecruiterById(receiveris);
 
   console.log("senderchat", Recieverdetails);
 
-  res.render("employee/chat", {
+  res.render("recruiter/chat", {
     userfound,
     recruiter: true,
     Recieverdetails,
