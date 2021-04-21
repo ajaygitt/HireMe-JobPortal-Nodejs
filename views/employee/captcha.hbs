@@ -1,0 +1,111 @@
+
+
+
+<html>
+  <head>
+    <title>reCAPTCHA demo: Simple page</title>
+     <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+      crossorigin="anonymous"
+    />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  </head>
+  <body >
+       <h2 style="text-align: center; padding-top: 10%;">You need to verify the Captcha below to continue</h2>
+      <div class="center">
+         
+    <form  id="captchaForm">
+      <div class="g-recaptcha" data-sitekey="6LcmvLIaAAAAAM_L3WshRDHtgsKswqrR1p6yi5Ly"></div>
+      <br/>
+    <button type="submit" id="btn"> submit</button>
+    </form>
+    </div>
+  </body>
+</html>
+
+</script>
+
+  <script>
+	$("#captchaForm").submit(function (e) {
+        e.preventDefault()
+
+console.log("yeah")
+
+var recaptcha=$('#g-recaptcha-response').val()
+{
+    if(recaptcha==='')
+    {
+        alert("please give recaptcha")
+    }else
+    {
+        console.log("mm working",recaptcha)
+
+
+        $.ajax({
+            url:'/captcha',
+            method:'post',
+            data:{
+                recaptcha
+            },
+            success:((response)=>{
+                console.log(response)
+
+if(response)
+{
+    window.location.href='/'
+
+}
+else
+{
+    alert("Please Try again")
+}
+
+            })
+            
+        })
+    }
+}
+
+
+
+
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+<style>
+    body {
+    display: table-cell;
+    vertical-align: middle;
+    background-color: var(--main-bg-color);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.center {
+  margin-left: 30%;
+  margin-right: 60%;
+  margin-top: 10%;
+  width: 50%;
+  border: 3px solid green;
+  padding: 30px;
+}
+</style>

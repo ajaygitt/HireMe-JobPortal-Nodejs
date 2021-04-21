@@ -17,7 +17,8 @@ var base64ToImage = require("base64-to-image");
 const recruiterHelper = require("../Controllers/recruiterHelper");
 const adminHelper=require('../Controllers/adminHelpers')
 const messageController = require("../Controllers/messageController");
-
+var fetch=require('node-fetch');
+const { send } = require("process");
 //middlevare for session checking
 const verifygoogleLogin = (req, res, next) => {
   var userfound = req.session.email;
@@ -44,6 +45,28 @@ const verifyLoggedIn = (req, res, next) => {
     res.redirect("/");
   }
 };
+
+//verify if user didnt done captcha
+
+const verifyIfCaptcha=(req,res,next)=>{
+
+
+  let tempUser=req.session.temp
+  let userfound=req.session.user
+  if(tempUser)
+  {
+    next()
+  }
+  else
+  {
+res.redirect('/')
+
+  }
+  if(userfound)
+  {
+    res.redirect('/')
+  }
+}
 //middleware for check if premium
 
 const verifyIfPremium = (req, res, next) => {
@@ -69,6 +92,20 @@ function isLoggedIn(req, res, next) {
 //to home
 
 router.get("/", async (req, res) => {
+
+
+  if(req.session.tempUser)
+  {
+  if(req.session.temp)
+  {
+    req.session.user=req.session.temp
+    req.session.temp=null;
+  }
+
+  }
+
+
+
   let userfound = req.session.user;
 
   if (userfound) {
@@ -123,18 +160,59 @@ router.post("/login", (req, res) => {
       console.log("pwd err");
       res.send(response);
     } else if (response.type == "employee") {
-      req.session.user = response;
+      req.session.temp = response;
       res.send(response);
     } else if (response.type == "recruiter") {
-      req.session.user = response;
+      req.session.temp = response;
       res.send(response);
     } else if (response.type == "admin") {
-      req.session.user = response;
+      req.session.temp = response;
 
       res.send(response);
     }
   });
 });
+
+
+router.get('/captcha',verifyIfCaptcha,(req,res)=>{
+
+  console.log("to captcha");
+ 
+  res.render('employee/captcha',{user:true})
+
+
+})
+
+
+router.post('/captcha',async (req,res)=>{
+
+  console.log("this is body",req.body);
+
+  const captchaVerified=await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=6LcmvLIaAAAAAIm2IxB_l9kesqNsJNGD5vcaY7s_&response=${req.body.recaptcha}`,{
+
+  method:'post'
+  }).then(_res=>_res.json())
+
+let success=true
+  console.log("this is res",captchaVerified);
+if(captchaVerified.success)
+{
+  console.log("yes i got it");
+  req.session.tempUser=true;
+  res.send(success)
+}
+else{
+res.send(success)
+}
+
+
+
+
+})
+
+
+
+
 
 //google get page
 router.get(

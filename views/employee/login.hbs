@@ -3,6 +3,10 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
+{{!-- google captcha --}}
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
 <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css'
 	integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
 
@@ -112,11 +116,11 @@ console.log("sdkfj")
 					}
 					else if(response.type=="recruiter")
 					{
-						window.location.href='/'
+						window.location.href='/captcha'
 console.log("its recriter")
 					}
 					else if(response.type=='employee'){
-						window.location.href="/"
+						window.location.href="/captcha"
 console.log("employee")
 					}
 					else if(response.type=='admin')
