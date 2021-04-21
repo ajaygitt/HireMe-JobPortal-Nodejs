@@ -60,15 +60,32 @@
                                 <div class="media-heading">
                                     <a href="mail-single.html" class="m-r-10"></a>
                                     <span class="badge bg-blue"> {{this.email}}</span>
+                                    {{#if this.full_name}}
+                                    <p>{{this.full_name}}</p>
+                                    {{else}}
+                                    <p>{{this.recruiter_name}}</p>
+                                    {{/if}}
                                     <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">{{this.time}}</time><i class="zmdi zmdi-attachment-alt"></i> </small>
                                 </div>
+                                {{!-- {{this.userid}} --}}
+                                
                                 <p class="msg">{{this.message}} </p>
+
+
+ <form action="/chat?sender={{../userfound._id}}{{this.userid}}&receiver={{this.userid}}{{../userfound._id}}" 
+ method="post">
+ 
+ <button type="submit">view Chat</button>
+ 
+ </form>
+
+
                             </div>
                         </div>
                     </li>          </a>  
                     {{/each}}
                 </ul>
-                
+
                 <div class="card m-t-5">
                     <div class="body">
                         <ul class="pagination pagination-primary m-b-0">

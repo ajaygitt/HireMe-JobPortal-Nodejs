@@ -21,6 +21,8 @@ sender:ObjectID(recruiter),
 receiver:ObjectID(user),
 jobId:ObjectID(job),
 notification:"Congratulations You have been selected for the following Job the recruiter will contact you soon",
+
+
 date:moment(new Date()).format('DD/MM/YYYY HH:mm:ss'),
 positiveNotification:true
 

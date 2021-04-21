@@ -252,7 +252,36 @@ let userfound=req.session.user
 
 console.log("job id is",id);
 
-res.render('recruiter/viewApplicants',{recruiter:true,applications,id,userfound})
+let pageNumber = [
+    { page: 1 },
+    { page: 2 },
+    
+  ];
+
+  if(req.query.page)
+  {
+
+
+  const page = parseInt(req.query.page);
+
+  const limit = parseInt(req.query.limit);
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  applications = applications.slice(startIndex, endIndex);
+
+  if (!applications[0]) {
+    console.log("end");
+  }
+  let prev = page - 1;
+  let next = page + 1;
+  if (prev == 0) {
+    prev = 1;
+  }
+}
+
+
+res.render('recruiter/viewApplicants',{recruiter:true,applications,id,userfound,pageNumber})
     })
 })
 

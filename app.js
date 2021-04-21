@@ -54,6 +54,8 @@ const { ObjectID } = require('bson');
 
 io.on('connection', socket=>
 {
+
+  console.log("new User is connectedddd");
   
 var uploader=new SocketIOFileUpload()
 uploader.dir=path.join(__dirname, '/public/image-chats');

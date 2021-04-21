@@ -707,6 +707,14 @@ router.get("/notifications", verifyLoggedIn, (req, res) => {
     res.render("employee/notifications", { user: true, notifications });
   });
 });
+
+
+
+
+
+
+
+
 router.post("/removeNotification", verifyLoggedIn, (req, res) => {
   let userfound = req.session.user;
   notificationHelper.removeNotification(req.body.id).then((response) => {
