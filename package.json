@@ -55,7 +55,7 @@
     "resume-pdf": "^1.0.3",
     "socket.io": "^4.0.1",
     "socketio-file-upload": "^0.7.3",
-    "twilio": "^3.58.0",
+    "twilio": "^3.60.0",
     "voucher-code-generator": "^1.1.1"
   }
 }

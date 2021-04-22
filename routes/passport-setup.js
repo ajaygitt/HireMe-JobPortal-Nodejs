@@ -31,9 +31,9 @@ const app = require('../app');
 await userhelper.googleSignup(userdata).then((response)=>{
 
   console.log("##########",response);  
-  
 
-  return done(null,profile,response)
+
+  return done(null,response,profile)
 })
 
 

@@ -75,7 +75,7 @@ let response=emailexist
           resolve(response)
       }
       else{
-        await  db.get().collection(USER_COLLECTION).insertOne({fullname:userData.fullname,email:userData.email,picture:userData.picture}).then((response)=>{
+        await  db.get().collection(USER_COLLECTION).insertOne({full_name:userData.fullname,email:userData.email,picture:userData.picture,type:"employee"}).then((response)=>{
             resolve(response)
         })
       }

@@ -19,8 +19,13 @@ const adminHelper=require('../Controllers/adminHelpers')
 const messageController = require("../Controllers/messageController");
 var fetch=require('node-fetch');
 const { send } = require("process");
+
+
 //middlevare for session checking
+
+
 const verifygoogleLogin = (req, res, next) => {
+
   var userfound = req.session.email;
   if (req.user) {
     req.session.email = req.user.email;
@@ -34,6 +39,8 @@ const verifygoogleLogin = (req, res, next) => {
     res.redirect("/");
   }
 };
+
+
 
 //middleware for checking session userside
 
@@ -81,9 +88,9 @@ const verifyIfPremium = (req, res, next) => {
 //middleware for 404 checking google
 function isLoggedIn(req, res, next) {
   if (req.user.email) {
-    req.session.user = req.user.email;
+    req.session.user = req.user;
 
-    console.log("req.bodyyy", req.user.email);
+    console.log("req.bodyyy", req.user);
   }
 
   req.user ? next() : res.sendStatus(401);
@@ -92,6 +99,7 @@ function isLoggedIn(req, res, next) {
 //to home
 
 router.get("/", async (req, res) => {
+
 
 
   if(req.session.tempUser)
@@ -104,12 +112,11 @@ router.get("/", async (req, res) => {
 
   }
 
-
-
   let userfound = req.session.user;
 
   if (userfound) {
-    if (userfound.type == "employee") {
+    if (userfound.type == "employee"|| !userfound.type) {
+      
       let premium = await userHelper.isPremium(userfound._id).then(async(result) => {
         console.log("premium", result);
         let home = true;
@@ -129,7 +136,7 @@ router.get("/", async (req, res) => {
   let premiumUsers= await adminHelper.premiumUsers()
   let revenue=await premiumUsers*199
   let JobsCount=await adminHelper.JobsCount()
-  console.log("Glfasl",usersCount);
+
       res.render("admin/home", { admin: true,usersCount,premiumUsers,revenue,JobsCount });
     }
   } else {
@@ -205,9 +212,6 @@ else{
 res.send(success)
 }
 
-
-
-
 })
 
 
@@ -220,12 +224,7 @@ router.get(
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
 
-// router.get('/home',verifygoogleLogin,isLoggedIn,(req,res)=>{
 
-//     console.log("at home ");
-
-//     res.send('success')
-// })
 
 //userhome defalult router
 router.get("/home", isLoggedIn, (req, res) => {
@@ -234,6 +233,8 @@ router.get("/home", isLoggedIn, (req, res) => {
   res.render("employee/index", { user: true, userfound });
 });
 
+
+
 router.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -241,6 +242,9 @@ router.get(
     failureRedirect: "/failure",
   })
 );
+
+
+
 
 router.get("/failure", (req, res) => {
   res.send("failed");
@@ -304,16 +308,18 @@ router.get("/otpLogin", (req, res) => {
   res.render("employee/otpLogin", { user: true, nouser, no });
 });
 
+
+
 router.post("/otpLogin", async (req, res) => {
   console.log("reqboody", req.body);
-  await userHelper.verifyPhoneNumber(req.body).then((response) => {
+  await userHelper.verifyPhoneNumber(req.body).then(async(response) => {
     if (response.status == true) {
       req.session.phone = req.body.phone;
 
-      client.verify
+   await   client.verify
         .services(config.serviceID)
         .verifications.create({
-          to: `+918156803272`,
+          to: `+91${req.body.phone}`,
           channel: `sms`,
         })
         .then((data) => {
@@ -618,10 +624,12 @@ router.post("/addResume", verifyLoggedIn, async (req, res) => {
   let insta = req.body.insta;
   let linkedin = req.body.linkedin;
   let skype = req.body.skype;
+  let description=req.body.description
 
   //make pdf copy of resume
   const bio = [
     { Fullname: Fullname },
+    {About_Me:description},
     { email: email },
     { gender: userfound.gender },
 
@@ -635,6 +643,7 @@ router.post("/addResume", verifyLoggedIn, async (req, res) => {
     { insta: insta },
     { linkedin: linkedin },
     { skype: skype },
+
   ];
 
   let id = userfound._id;
@@ -656,7 +665,7 @@ router.post("/addResume", verifyLoggedIn, async (req, res) => {
 
     doc.text(
       `Name:${Fullname} \n
-
+  Bio:${description}\n
  email:${email}\n
  dob:${dob}\n
  Phone Number:${phonenumber} \n
@@ -857,12 +866,16 @@ console.log("the message is",sendChat);
 
   console.log("senderchat", Recieverdetails);
 
-  res.render("recruiter/chat", {
+  let chatMessages=sendChat.conca
+  console.log("the chat issisisiisisisisisi",chatMessages)
+
+  res.render("employee/chat", {
     userfound,
     recruiter: true,
     Recieverdetails,
     sendChat,
     receivedchats,
+    chatMessages
   });
 });
 

@@ -104,6 +104,9 @@ if(message.senderis==myuserid)
       </div>
     </div>
   </div>`
+
+scrollToBottom();
+
 }
 
 
@@ -145,6 +148,12 @@ function urlify(text) {
 
  
 
+}
+
+
+function scrollToBottom(){
+  console.log("called function")
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 
