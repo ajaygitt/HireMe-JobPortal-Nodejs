@@ -23,9 +23,6 @@ const googleAuth=require('passport-google-oauth20');
 const { Passport } = require('passport');
 
 
-
-
-
 var hbs=require('express-handlebars')
 var session=require('express-session')
 var app = express();
@@ -315,6 +312,7 @@ app.use(function(err, req, res, next) {
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 
 module.exports = app;

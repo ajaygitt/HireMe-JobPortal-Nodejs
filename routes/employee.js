@@ -880,6 +880,59 @@ console.log("the message is",sendChat);
 });
 
 
+router.get('/quiz',(req,res)=>{
+
+   let quiz= [
+    {
+      question: 'Which country produces the most coffee in the world?',
+      a: 'Columbia',
+      b: 'Indonesia',
+      c: 'Ethiopia',
+      d: 'Brazil',
+      correct: 'd',
+    },
+    {
+      question: 'What is Chandler’s last name in the sitcom Friends?',
+      a: 'Geller',
+      b: 'Smith',
+      c: 'Bing',
+      d: 'Johnson',
+      correct: 'c',
+    },
+    {
+      question: "What's the most expensive home in the world?",
+      a: 'Buckingham Palace - UK',
+      b: 'Antilla - India',
+      c: 'Villa Les Cédres - France',
+      d: 'Four Fairfield Pond -USA',
+      correct: 'a',
+    },
+    {
+      question: 'How many rides are there at Disney World?',
+      a: '50',
+      b: '42',
+      c: '46',
+      d: '49',
+      correct: 'b',
+    },
+    {
+      question: 'What was Beyoncé’s first solo album?',
+      a: 'Drunk In Love',
+      b: 'Dangerously In Love',
+      c: 'Lemonade',
+      d: 'Deja Vu',
+      correct: 'b',
+    },
+  ];
+
+
+
+
+
+  res.render('employee/quiz',{user:true,quiz})
+})
+
+
 
 module.exports = router;
 
