@@ -8,5 +8,6 @@ module.exports={
     RESUME_COLLECTION:'resumes',
     appliedJobs:'appliedJobs',
     NOTIFICATION_COLLECTION:'notifications',
-    MESSAGE_COLLECTION:'messages'
+    MESSAGE_COLLECTION:'messages',
+    QUESTIONS_COLLECTION:'questions'
 }

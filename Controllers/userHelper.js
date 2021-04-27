@@ -1,7 +1,7 @@
 var db = require("../config/connection");
 var collection = require("../config/dbcollections");
 var bcrypt = require("bcrypt");
-const { USER_COLLECTION, JOB_COLLECTION, RESUME_COLLECTION, appliedJobs,MESSAGE_COLLECTION } = require("../config/dbcollections");
+const { USER_COLLECTION, JOB_COLLECTION, RESUME_COLLECTION, appliedJobs,MESSAGE_COLLECTION, QUESTIONS_COLLECTION } = require("../config/dbcollections");
 const { response } = require("express");
 const Razorpay=require('razorpay');
 const { ObjectId, ObjectID } = require("bson");
@@ -844,12 +844,47 @@ recentJobs:()=>{
  
 resolve(result)
   })
+},
+
+loadQuestions:()=>{
+  return new Promise(async(resolve,reject)=>{
+    let question=await db.get().collection(QUESTIONS_COLLECTION).find().toArray()
+    
+    console.log("fi",question);
+    resolve(question)
+  })
+},
+
+loadNextQuestion:()=>{
+
+return new Promise((resolve,reject)=>{
+  db.get().collection(QUESTIONS_COLLECTION).find()
+})
+
+},
+
+
+
+// insertquestion:(data)=>{
+//   db.get().collection(QUESTIONS_COLLECTION).insertOne(data)
+// }
+
+checkAnswer:(id,ans)=>{
+  return new Promise(async(resolve,reject)=>{
+
+    let answer=await db.get().collection(QUESTIONS_COLLECTION).findOne({_id:ObjectID(id)})
+console.log("ans",ans);
+    if(answer)
+    {
+      if(answer.correct==ans)
+      {
+       resolve(answer=true)
+      }
+      else
+      {
+      resolve(answer=false)
+      }
+    }
+  })
 }
-
-
-
-
-
 };
-
-

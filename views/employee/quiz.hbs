@@ -1,220 +1,199 @@
-<body>
-<div class="quiz-container" id="quiz">
-  <div class="quiz-header">
-    <h2 id="question">Question text</h2>
-    <ul>
-      <li>
-        <input type="radio" name="answer" id="a" class="answer" />
-        <label for="a" id="a_text">Question</label>
-      </li>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-      <li>
-        <input type="radio" name="answer" id="b" class="answer" />
-        <label for="b" id="b_text">Question</label>
-      </li>
-
-      <li>
-        <input type="radio" name="answer" id="c" class="answer" />
-        <label for="c" id="c_text">Question</label>
-      </li>
-
-      <li>
-        <input type="radio" name="answer" id="d" class="answer" />
-        <label for="d" id="d_text">Question</label>
-      </li>
-    </ul>
-  </div>
-  <button id="submit">Submit</button>
+<div class="container mt-5" id="quizbody">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10 col-lg-10">
+            <div class="border">
+                <div class="question bg-white p-3 border-bottom">
+                 
+                    <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                        <h4>Hire Me Skill Assessment</h4><span></span>
+                    </div>
+                </div>
+                <div class="question bg-white p-3 border-bottom">
+                   
+                    <div class="d-flex flex-row align-items-center question-title">
+                        <h3 class="text-danger" id="counter">Q.1</h3>
+                     <h2 style=" text-align: right;"> correct Answers: <span id="answerCorrect"></span> </h2>
+                        <h5 class="mt-1 ml-2" id="question">{{quizData.1.question}}</h5>
+                    </div>
+                    <form id="quizForm">
+                    <div class="ans ml-2">
+                        <label class="radio"> <input type="radio" name="answer" value="a" id='a'> <span id='aa'>{{quizData.1.a}}</span>
+                        </label>
+                    </div>
+                    <div class="ans ml-2"> 
+                        <label class="radio"> <input type="radio" name="answer" value="b" id='b'> <span id="bb"> {{quizData.1.b}}</span>
+                        </label>
+                    </div>
+                    <div class="ans ml-2">
+                        <label class="radio"> <input type="radio" name="answer" value="c" id='c'> <span id='cc'>{{quizData.1.c}}</span>
+                        </label>
+                    </div>
+                    <div class="ans ml-2">
+                        <label class="radio"> <input type="radio" name="answer" value="d" id='d'> <span id='dd'>{{quizData.1.d}}</span>
+                        </label>
+                    </div>
+            
+                </div>
+                <div>
+                  <button>submit</button>
+                </div>
+                </form>
+                        <input type="text" value="{{quizData.1._id}}" name="quizId" id="quizId"style="display:none">
+            
+            </div>
+        </div>
+    </div>
 </div>
-<script src="script.js"></script>
-</body>
-
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #b8c6db;
-  background-image: linear-gradient(315deg, #b8c6db 0%, #f5f7fa 100%);
-  font-family: 'Poppins', sans-serif;
-display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  overflow: hidden;
-  margin: 0;
-}
-
-.quiz-container {
-  align-items: center;
-
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px 2px rgba(100, 100, 100, 0.1);
-  width: 600px;
-  overflow: hidden;
-}
-
-.quiz-header {
-  padding: 4rem;
-}
-
-h2 {
-  padding: 1rem;
-  text-align: center;
-  margin: 0;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-ul li {
-  font-size: 1.2rem;
-  margin: 1rem 0;
-}
-
-ul li label {
-  cursor: pointer;
-}
-
-button {
-  background-color: #8e44ad;
-  border: none;
-  color: #fff;
-  display: block;
-  width: 100%;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-family: inherit;
-  padding: 1.3em;
-}
-
-button:hover {
-  background-color: #732d91;
-}
-
-button:focus {
-  outline: none;
-  background-color: #5e3370;
-}
-
-</style>
-
 
 
 <script>
+  var counter=0;
+  var correctAnswers=0
+  var ArrayGlobal;
+  var question=1;
+window.onload = (event) => {
+ 
+fetch(`http://localhost:3000/getQuestion?q=${counter}`).then(async(response)=>{
 
-  
-  console.log("hai")
-const quizData= [{
-      question: 'Which country produces the most coffee in the world?',
-      a: 'Columbia',
-      b: 'Indonesia',
-      c: 'Ethiopia',
-      d: 'Brazil',
-      correct: 'd',
-    },
-    {
-      question: 'What is Chandler’s last name in the sitcom Friends?',
-      a: 'Geller',
-      b: 'Smith',
-      c: 'Bing',
-      d: 'Johnson',
-      correct: 'c',
-    },
-    {
-      question: "What's the most expensive home in the world?",
-      a: 'Buckingham Palace - UK',
-      b: 'Antilla - India',
-      c: 'Villa Les Cédres - France',
-      d: 'Four Fairfield Pond -USA',
-      correct: 'a',
-    },
-    {
-      question: 'How many rides are there at Disney World?',
-      a: '50',
-      b: '42',
-      c: '46',
-      d: '49',
-      correct: 'b',
-    },
-    {
-      question: 'What was Beyoncé’s first solo album?',
-      a: 'Drunk In Love',
-      b: 'Dangerously In Love',
-      c: 'Lemonade',
-      d: 'Deja Vu',
-      correct: 'b',
-    },
-  ];
 
-const quiz = document.getElementById('quiz'),
-  answerEls = document.querySelectorAll('.answer'),
-  questionEl = document.getElementById('question'),
-  a_text = document.getElementById('a_text'),
-  b_text = document.getElementById('b_text'),
-  c_text = document.getElementById('c_text'),
-  d_text = document.getElementById('d_text'),
-  submitBtn = document.getElementById('submit');
+var arr=await response.json()
+ArrayGlobal=arr
+   console.log("array",arr)
 
-let currentQuiz = 0,
-  score = 0;
+document.getElementById('question').innerHTML=arr.question
+document.getElementById('aa').innerHTML=arr.a
+document.getElementById('bb').innerHTML=arr.b
+document.getElementById('cc').innerHTML=arr.c
+document.getElementById('dd').innerHTML=arr.d
 
-loadQuiz();
+counter++;
+document.getElementById('answerCorrect').innerHTML=0
+ })
 
-function loadQuiz() {
-  deselectAnswers();
+};
 
-  const currentQuizData = quizData[currentQuiz];
+   $(document).ready(function(){
 
-  questionEl.innerText = currentQuizData.question;
-  a_text.innerText = currentQuizData.a;
-  b_text.innerText = currentQuizData.b;
-  c_text.innerText = currentQuizData.c;
-  d_text.innerText = currentQuizData.d;
-}
+  	$("#quizForm").submit(function (e) {
 
-function deselectAnswers() {
-  answerEls.forEach((answerEl) => (answerEl.checked = false));
-}
+e.preventDefault()
 
-function getSelected() {
-  let answer;
+	var form_data = $(this).serialize()
 
-  answerEls.forEach((answerEl) => {
-    if (answerEl.checked) {
-      answer = answerEl.id;
-    }
-  });
-
-  return answer;
-}
-
-submitBtn.addEventListener('click', () => {
-  const answer = getSelected();
-  if (answer) {
-    if (answer === quizData[currentQuiz].correct) {
-      score++;
-    }
-
-    currentQuiz++;
-
-    if (currentQuiz < quizData.length) {
-      loadQuiz();
-    } else {
-      quiz.innerHTML = `
-        <h2>You answered ${score}/${quizData.length} questions correctly</h2>
-
-        <button onclick="location.reload()">Reload</button>
-      `;
-    }
+  if(!form_data)
+  {
+   alert("enter an answer")
   }
-});
+  else
+  {
+console.log('formdata',form_data)
+let answer=form_data
+
+  answer = answer.slice(7);
+  console.log("the answer",answer)
+
+if(answer==ArrayGlobal.correct)
+{
+ correctAnswers++;   
+ document.getElementById('answerCorrect').innerHTML=correctAnswers
+    alert("correct answer ")
+}
+
+
+
+    console.log("mm",counter)
+ fetch(`http://localhost:3000/getQuestion?q=${counter}`).then(async(response)=>{
+
+
+var arr=await response.json()
+
+if(arr==false)
+{
+    alert("Questions End")
+console.log("fjasjfsda",correctAnswers)
+
+
+quizbody.innerHTML=`<h2 style={color:red}>You have correctly answered ${correctAnswers} questions  </h2>
+
+        <button onclick="location.reload('/')">Reload</button>`
+
+}
+   console.log("array",arr)
+ArrayGlobal=arr
+
+document.getElementById('question').innerHTML=arr.question
+document.getElementById('aa').innerHTML=arr.a
+document.getElementById('bb').innerHTML=arr.b
+document.getElementById('cc').innerHTML=arr.c
+document.getElementById('dd').innerHTML=arr.d
+counter++;
+question++;
+document.getElementById('counter').innerHTML="Q."+question
+
+ })
+
+
+  }
+
+
+
+    })
+    })
+  
 
 </script>
 
+
+
+
+<style>
+  body {
+    background-color: #eee
+}
+
+label.radio {
+    cursor: pointer
+}
+
+label.radio input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    pointer-events: none
+}
+
+label.radio span {
+    padding: 4px 0px;
+    border: 1px solid red;
+    display: inline-block;
+    color: red;
+    width: 100px;
+    text-align: center;
+    border-radius: 3px;
+    margin-top: 7px;
+    text-transform: uppercase
+}
+
+label.radio input:checked+span {
+    border-color: red;
+    background-color: red;
+    color: #fff
+}
+
+.ans {
+    margin-left: 36px !important
+}
+
+.btn:focus {
+    outline: 0 !important;
+    box-shadow: none !important
+}
+
+.btn:active {
+    outline: 0 !important;
+    box-shadow: none !important
+}
+</style>
