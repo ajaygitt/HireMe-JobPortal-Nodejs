@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <!-- Basic Page Needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>Work Scout</title>
+
+    <!-- Mobile Specific Metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/colors/green.css" id="colors">
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <!-- Header
+        ================================================== -->
+        <header class="sticky-header">
+            <div class="container">
+                <div class="sixteen columns">
+
+                    <!-- Logo -->
+                    <div id="logo">
+                        <h1><a href="/"><img src="images/logo.png" alt="Work Scout" /></a></h1>
+                    </div>
+                    {{#if no}}
+                    <nav id="navigation" class="menu">
+                        <ul id="responsive">
+                            <li>
+                                <a href="/otpLogin" id="current">otp login</a>
+
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="clearfix"></div>
+
+                    {{else}}
+                    <!-- Menu -->
+                    <nav id="navigation" class="menu">
+                        <ul id="responsive">
+
+                            <li>
+                                <a href="/" id="current">Home</a>
+                                {{!-- <ul>
+                                    <li><a href="index.html">Home #1</a></li>
+                                    <li><a href="index-2.html">Home #2</a></li>
+                                    <li><a href="index-3.html">Home #3</a></li>
+                                    <li><a href="index-4.html">Home #4</a></li>
+                                    <li><a href="index-5.html">Home #5</a></li>
+                                </ul> --}}
+                            </li>
+
+                            <li>
+                                <a href="#">Jobs</a>
+                                <ul> {{!-- /view-all-products?page=1&limit=8 --}}
+                                    <li><a href="/viewjobs?page=1&limit=6">View all Jobs</a></li>
+                                    <li><a href="/viewMyApplications">View My applications</a></li>
+                                         {{!-- <li><a href="/MyJOb ">Applied Jobs status</a></li> --}}
+                                    {{!-- <li><a href="resume-page.html">Resume Page</a></li>
+                                    <li><a href="shortcodes.html">Shortcodes</a></li>
+                                    <li><a href="icons.html">Icons</a></li>
+                                    <li><a href="pricing-tables.html">Pricing Tables</a></li>
+                                    <li><a href="contact.html">Contact</a></li> --}}
+                                </ul>
+                            </li>
+
+                             <li>
+                                <a href="" id="">Find Recruiter</a>
+                                <ul>
+                                    <li><a href="/browseRecruiter">Browse Recruiter</a></li>
+                                   
+                                </ul>
+                            </li>
+
+
+
+                            {{!-- <li>
+                                <a href="#">For Employers</a>
+                                <ul>
+                                    <li><a href="add-job.html">Add Job</a></li>
+                                    <li><a href="manage-jobs.html">Manage Jobs</a></li>
+                                    <li><a href="manage-applications.html">Manage Applications</a></li>
+                                    <li><a href="browse-resumes.html">Browse Resumes</a></li>
+                                </ul>
+                            </li> --}}
+
+
+                        </ul>
+
+                        {{#if nouser}}
+
+                        <ul class="float-right">
+
+                            <li><a href="/signup"><i class="fa fa-user"></i> Sign Up as Employee</a></li>
+                            <li><a href="/signupRecruiter"><i class="fa fa-user"></i> Sign Up as Recruiter</a></li>
+                            <li><a href="/login"><i class="fa fa-lock"></i> Log In</a></li>
+                        </ul>
+
+                        {{else}}
+
+                        <ul class="float-right">
+                            {{#if home}}
+                            {{#if result.premium}}
+                            <span class="badge bg-info text-dark">Premium user</span>  {{else}} <li><a
+                                    href="/checkout"><i class="fa fa-user"></i> Upgrade to premium</a></li>{{/if}}
+                            {{/if}}
+                            <li><a href="/myProfile?id={{userfound._id}}"><i
+                                        class="fa fa-user"></i>{{userfound.full_name}}</a></li>
+                            {{#if userfound}}
+
+
+                            <li><a href="/notifications"><i class="fa fa-bell"></i> Notifications</a></li>
+                            <li><a href="/inbox"><i class="fa fa-inbox"></i> Inbox</a></li>
+                       
+                         <li><a href="/quiz"><i class="fa fa-question"></i> quiz</a></li>
+     <li><a href="/logout"><i class="fa fa-sign-out "></i> Logout</a></li>
+                            {{/if}}
+
+                        </ul>
+                        {{/if}}
+
+
+                    </nav>
+
+                    <!-- Navigation -->
+                    <div id="mobile-navigation">
+                        <a href="#menu" class="menu-trigger"><i class="fa fa-reorder"></i> Menu</a>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+        <div class="clearfix"></div>
+
+        {{/if}}
+
+        {{{body}}}

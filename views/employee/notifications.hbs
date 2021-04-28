@@ -1,0 +1,208 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+</head>
+
+
+<body>
+    
+    <div class="container mt-5">
+        <div class="title">
+          <h3>Notifications</h3>
+        </div>
+    </div>
+ 
+    {{#each notifications}}
+
+    {{#if this.positiveNotification}}
+    <div class="alert alert-success">
+        <div class="container">
+            <div class="alert-icon">
+                <i class="material-icons">check</i>
+            </div>
+       
+            <button onclick="removeNotification('{{this._id}}')" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    
+                <span aria-hidden="true"><i class="material-icons">clear</i>     </span>
+            </button>
+            <b>Good News:</b>{{this.notification}}
+
+  <button style="background-color: blue;" onclick="window.location.href='  /jobPage?job={{this.jobId}}'"  >view Job approved</button>
+
+
+        </div>
+    </div>
+    
+{{else}}
+    
+
+    <div class="alert alert-danger">
+         <div class="container">
+             <div class="alert-icon">
+                <i class="material-icons">error_outline</i>
+            </div>
+            <button type="button" class="close"class="close" data-dismiss="alert" aria-label="Close" onclick="removeNotification('{{this._id}}')" >
+          <span aria-hidden="true"><i class="material-icons">clear</i></span>
+            </button>
+             <b>Alert:</b> {{this.notification}}
+             
+<button style="background-color: blue;" onclick="window.location.href='  /jobPage?job={{this.jobId}}'"  >view Job Rejected</button>
+        </div>
+    </div>
+
+
+    {{/if}}
+    
+    {{/each}}
+    <footer class="footer text-center ">
+     
+    </footer>
+    
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+
+</body>
+
+
+<script>
+    $(document).ready(function() {
+    $('body').bootstrapMaterialDesign();
+});
+
+
+function removeNotification(id){
+    console.log("hai",id)
+
+    $.ajax({
+        url:'/removeNotification',
+        method:'post',
+        data:{
+id
+        },
+        success:(response)=>{
+           console.log("success")
+        }
+    })
+}
+
+
+
+
+
+</script>
+
+
+
+
+<style>
+    html *{
+    -webkit-font-smoothing: antialiased;
+}
+
+.title h3{
+    font-size: 25px !important;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    line-height: 1.4em !important;
+    font-weight: 300;
+}
+
+/* alerts */
+
+.alert {
+    border: 0;
+    border-radius: 0;
+    padding: 20px 15px !important;
+    line-height: 20px;
+    font-weight: 300;
+    color: #fff;
+}
+
+.alert .alert-icon {
+    display: block;
+    float: left;
+    margin-right: 1.071rem;
+}
+
+.alert b {
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+.alert .close {
+    color: #fff;
+    text-shadow: none;
+    opacity: .9;
+}
+.alert .close i {
+    font-size: 20px;
+}
+.alert .close:hover{
+    opacity: 1;
+    color: #fff;
+}
+.alert.alert-info {
+    background-color: #00cae3;
+    color: #fff;
+}
+
+.alert.alert-success {
+    background-color: #55b559;
+    color: #fff;
+}
+
+.alert.alert-warning {
+    background-color: #ff9e0f;
+    color: #fff;
+}
+
+.alert.alert-danger {
+    background-color: #f55145;
+    color: #fff;
+}
+
+.alert.alert-primary {
+    background-color: #a72abd;
+    color: #fff;
+}
+
+/* footer */
+
+footer{
+    margin-top: 20px;
+    color: #555;
+    background: #fff;
+    padding: 25px;
+    font-weight: 300;
+    
+}
+.footer p{
+    margin-bottom: 0;
+    font-size: 14px;
+    margin: 0 0 10px;
+    font-weight: 300;
+}
+footer p a{
+    color: #555;
+    font-weight: 400;
+}
+
+footer p a:hover {
+    color: #9f26aa;
+    text-decoration: none;
+}
+</style>

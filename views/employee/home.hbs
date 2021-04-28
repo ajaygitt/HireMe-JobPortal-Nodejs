@@ -1,0 +1,210 @@
+
+        <!-- Banner
+        ================================================== -->
+        <div id="banner" style="background-image: url(images/banner-home-01.jpg)" class="parallax background" data-img-width="2000" data-img-height="1330" data-diff="400">
+            <div class="container">
+                <div class="sixteen columns">
+
+                    <div class="search-container">
+
+                        <!-- Form -->
+                        <h2>Find job</h2>
+<form id="searchform" method="POST" action="/searchJob" >
+
+                        <input type="text" name="keyword" class="ico-01" placeholder="job title, keywords or company name" value="" />
+                        <input type="text" name="city" class="ico-02" placeholder="city, province or region" value="" />
+                  
+                        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+                        <!-- Browse Jobs -->
+                        <div class="browse-jobs">
+                            Browse job offers by <a href="browse-categories.html"> category</a> or <a href="#">location</a>
+                        </div>
+
+                        <!-- Announce -->
+                        <div class="announce">
+                            We’ve over <strong>15 000</strong> job offers for you!
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+     
+           <div class="container">
+            <div class="sixteen columns">
+                <h3 class="margin-bottom-25">Job Plans & Pricing</h3>
+            </div
+            <!-- Plan #1 -->
+
+
+       {{#if userfound.premium}}
+
+
+<h4>congrats you are a premium member with access to all premium facilities</h4>
+<h1>current plan</h1>
+<div class="plan color-2 one-third column">
+                <div class="plan-price">
+                    <h3>Premium Plan</h3>
+                    <span class="plan-currency">₹</span>
+                    <span class="value">199/-</span>
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li>One Time Fee</li>
+                        <li>This Plan Includes Unlimited Job applying</li>
+                        <li>Access for chat</li>
+                        <li>view employers contact</li>
+                    </ul>
+                   
+                </div>
+            </div>
+{{else}}
+
+
+            <div class="plan color-1 one-third column">
+                <div class="plan-price">
+                    <h3>Free Plan</h3>
+                    <span class="plan-currency">$</span>
+                    <span class="value">FREE</span>
+
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li>Trial Pack</li>
+                        <li>This Plan Includes 1 Job Posting</li>
+                        <li>no unlimited job postings</li>
+                        <li>can't see employers phonenumber</li>
+                    </ul>
+                    <a class="button" href="#"><i class="fa fa-shopping-cart"></i> Current plan</a>
+                </div>
+            </div>
+
+            <!-- Plan #2 -->
+            <div class="plan color-2 one-third column">
+                <div class="plan-price">
+                    <h3>Company</h3>
+                    <span class="plan-currency">₹</span>
+                    <span class="value">199/-</span>
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li>One Time Fee</li>
+                        <li>This Plan Includes Unlimited Job posting</li>
+                        <li>post unlimited offers</li>
+                        <li>view employers contact</li>
+                    </ul>
+                    <a class="button" href="/checkout"><i class="fa fa-shopping-cart"></i> Upgrade Now</a>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+
+
+
+
+ <!-- Recent Jobs -->
+<div class="container">
+
+            <div class="eleven columns">
+                <div class="padding-right">
+                    <h3 class="margin-bottom-25">Recent Jobs</h3>
+                    <ul class="job-list">
+{{#each recentjobs}}
+                        <li class="highlighted">
+                            <a href="job-page.html">
+                                <img src="icons/{{this._id}}.jpg" alt="">
+                                <div class="job-list-content">
+                                    <h4>{{this.jobTitle}}<span class="full-time">{{this.jobType}}</span></h4>
+                                    <div class="job-icons">
+                                        <span><i class="fa fa-briefcase"></i> {{this.company_name}}</span>
+                                        <span><i class="fa fa-map-marker"></i> {{this.location}}</span>
+                                        <span><i class="fa fa-money"></i>₹ {{this.sallary}}/-</span>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="clearfix"></div>
+                        </li>
+                        {{/each}}
+                    </ul>
+
+                    <a href="/viewjobs?page=1&limit=6" class="button centered"><i class="fa fa-plus-circle"></i> Show More Jobs</a>
+                    <div class="margin-bottom-55"></div>
+                </div>
+            </div>
+
+
+  <!-- Content
+        ================================================== -->
+        {{!-- <!-- Icon Boxes -->
+        <div class="section-background top-0">
+            <div class="container">
+
+                <div class="one-third column">
+                    <div class="icon-box rounded alt">
+                        <i class="ln ln-icon-Folder-Add"></i>
+                        <h4>Add Resume</h4>
+                        <p>Pellentesque habitant morbi tristique senectus netus ante et malesuada fames ac turpis egestas maximus neque.</p>
+                    </div>
+                </div>
+
+                <div class="one-third column">
+                    <div class="icon-box rounded alt">
+                        <i class="ln ln-icon-Search-onCloud"></i>
+                        <h4>Search For Jobs</h4>
+                        <p>Pellentesque habitant morbi tristique senectus netus ante et malesuada fames ac turpis egestas maximus neque.</p>
+                    </div>
+                </div> --}}
+
+                {{!-- <div class="one-third column">
+                    <div class="icon-box rounded alt">
+                        <i class="ln ln-icon-Business-ManWoman"></i>
+                        <h4>Find Crew</h4>
+                        <p>Pellentesque habitant morbi tristique senectus netus ante et malesuada fames ac turpis egestas maximus neque.</p>
+                    </div>
+                </div> --}}
+
+            </div>
+        </div>
+        <!-- Icon Boxes / End -->
+
+     
+
+
+        
+
+    </div>
+    <!-- Wrapper / End -->
+    <!-- Scripts
+    ================================================== -->
+
+
+
+
+
+
+
+
+    <script src="scripts/jquery-2.1.3.min.js"></script>
+    <script src="scripts/custom.js"></script>
+    <script src="scripts/jquery.superfish.js"></script>
+    <script src="scripts/jquery.themepunch.tools.min.js"></script>
+    <script src="scripts/jquery.themepunch.revolution.min.js"></script>
+    <script src="scripts/jquery.themepunch.showbizpro.min.js"></script>
+    <script src="scripts/jquery.flexslider-min.js"></script>
+    <script src="scripts/chosen.jquery.min.js"></script>
+    <script src="scripts/jquery.magnific-popup.min.js"></script>
+    <script src="scripts/waypoints.min.js"></script>
+    <script src="scripts/jquery.counterup.min.js"></script>
+    <script src="scripts/jquery.jpanelmenu.js"></script>
+    <script src="scripts/stacktable.js"></script>
+    <script src="scripts/headroom.min.js"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,228 @@
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+{{!-- <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css'
+	integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'> --}}
+
+
+
+<form action="" id="my_form" name="my_form" method="POST">
+      <h1>I'll pay with&hellip;</h1>
+      <div class="list-group">
+        <div class="list-group-item">
+          <div class="list-group-item-heading">          
+              <div class="row radio">
+                
+              </div>
+          </div>
+        </div>
+        <div class="list-group-item">
+          <div class="list-group-item-heading">          
+              <div class="row radio">
+                
+              </div>
+          </div>
+        </div>
+        <div class="list-group-item">
+          <div class="list-group-item-heading">          
+              <div class="row radio">
+                <div class="col-xs-3">
+                  <label>
+                    <input type="radio" name="type" id="optionsRadios2" value="razorpay">
+                    razorpay
+                  </label>
+                </div>
+                <div class="col-xs-9">                      
+                  <div class="media">
+                    <a class="media-left" href="#">
+                     <a href="https://razorpay.com/" target="_blank"> <img referrerpolicy="origin" src = "https://badges.razorpay.com/badge-dark.png " style = "height: 45px; width: 113px;" alt = "Razorpay | Payment Gateway | Neobank"></a>
+                    </a>
+                    <div class="media-body">
+                      When you click "Place Order", you will be taken to the Razorpay payment gate                   </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+<div class="list-group-item">
+          <div class="list-group-item-heading">          
+              <div class="row radio">
+                <div class="col-xs-3">
+                  <label>
+                      <input type="hidden" id="userid" name="userid" value="{{userfound._id}}" hidden>
+                    <input type="radio" name="type" id="optionsRadios2" value="paypal" >
+                    PayPal
+                  </label>
+                </div>
+                <div class="col-xs-9">                      
+                  <div class="media">
+                    <a class="media-left" href="#">
+                      <img src="https://www.paypalobjects.com/webstatic/mktg/logo-center/PP_Acceptance_Marks_for_LogoCenter_76x48.png" height="25" alt="" />
+                    </a>
+                    <div class="media-body">
+                      When you click "Place Order", you will be taken to the PayPal website.
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="well">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Place payment ₹199</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+
+
+	$(document).ready(function () {
+
+var userid=$('#userid').val()
+console.log("userid isss@@ ",userid)
+
+console.log("sdkfj")
+
+
+
+  $("#my_form").validate({
+            rules: {
+				password:{
+                      required:true,
+					  minlength:3
+				}
+			}
+  })
+
+
+
+		$("#my_form").submit(function (e) {
+			console.log('jhgjh')
+			e.preventDefault()
+			var form_data = $(this).serialize();
+			console.log("data is", form_data)
+			$.ajax({
+				url: '/checkout',
+				method: 'post',
+				data: form_data,
+				success: (response) => {
+					if (response.type == "razorpay") {
+						console.log("oooser responseee",response)
+                        let orderid=response.id
+                        razorpayPayment(orderid)
+					
+					}
+					else if(response.type=="paypal"){
+						$('#invalid2').show()
+					}
+					else if(response.type=="recruiter")
+					{
+						window.location.href='/'
+console.log("its recriter")
+					}
+					else if(response.type=='employee'){
+						window.location.href="/"
+console.log("employee")
+					}
+				}
+
+
+			})
+		})
+
+	});
+
+
+  function razorpayPayment(orderid) {
+
+    var options = {
+      "key": "rzp_test_3URBQ8j8qtsLhB", // Enter the Key ID generated from the Dashboard
+      "amount": 199, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "E-CART",
+      "description": "Test Transaction",
+      "image": "https://example.com/your_logo",
+      "order_id": orderid, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function (response) {
+
+
+        verifyPayment(response)
+
+      },
+      "prefill": {
+        "name": "ajay pradeep",
+        "email": "ajay1712@example.com",
+        "contact": "8156803272"
+      },
+      "notes": {
+        "address": "Razorpay Corporate Office"
+      },
+      "theme": {
+        "color": "#3399cc"
+      }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+
+  }
+
+function verifyPayment(payment) {
+    $.ajax({
+      url: '/verify-payment',
+      data: {
+        payment
+      },
+      method: 'POST',
+      success: (response) => {
+        if(response.success)
+        {
+        alert("payment success")
+        window.location.href="/"
+        }
+        else{
+          alert("failed payment")
+        }
+      }
+    })
+  }
+
+</script>
+
+
+
+<style>
+    @import "compass/css3";
+
+.dl-small {
+  margin-bottom: 4px;
+}
+
+body {
+  margin: 0 auto;
+  padding: 1em;
+  max-width: 800px;
+}
+
+.form-control {
+  width: auto;
+}
+
+.form-control-small {
+  width: 100px;
+}
+
+.form-control-large {
+  width: 310px;
+}
+
+
+</style>

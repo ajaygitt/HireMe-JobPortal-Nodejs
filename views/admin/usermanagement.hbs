@@ -1,0 +1,241 @@
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+        <div class="table-agile-info">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Responsive Table
+                </div>
+                <div class="row w3-res-tb">
+                    <div class="col-sm-5 m-b-xs">
+                        <select class="input-sm form-control w-sm inline v-middle">
+                            <option value="0">Bulk action</option>
+                            <option value="1">Delete selected</option>
+                            <option value="2">Bulk edit</option>
+                            <option value="3">Export</option>
+                        </select>
+                        <button class="btn btn-sm btn-default">Apply</button>
+                    </div>
+                    <div class="col-sm-4">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" class="input-sm form-control" placeholder="Search">
+                            <span class="input-group-btn">
+                                <button class="btn btn-sm btn-default" type="button">Go!</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    {{#if emp}}
+
+
+                    <table class="table table-striped b-t b-light">
+                        <thead>
+                            <tr>
+
+                                <th>Full name</th>
+                                <th>Email</th>
+                                <th>phone number</th>
+                                <th style="width:30px;">account-type</th>
+                                <th>action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each users}}
+                            <tr>
+                                <td>{{this.full_name}}</td>
+                                <td>{{this.email}}</td>
+                                <td>{{this.phonenumber}}</td>
+                                <td>{{#if this.premium}} premium account {{else}} not premium a/c {{/if}}</td>
+                                <td>
+                                                                     
+    {{#if this.blocked}}
+                                    <button id="unblockButton{{this._id}}" 
+                                        class="btn btn-primary" onclick="unblockUser('{{this._id}}')">Unblock</button>
+<button id="blockButton{{this._id}}" style="display: none;" class="btn btn-danger"
+                                        onclick="blockUser('{{this._id}}')">block</button>
+
+{{else}}
+<button id="blockButton{{this._id}}" class="btn btn-danger"
+                                        onclick="blockUser('{{this._id}}')">block</button>
+                                      <button id="unblockButton{{this._id}}" 
+                                        class="btn btn-primary" style="display: none;" onclick="unblockUser('{{this._id}}')">Unblock</button>
+                                       
+
+{{/if}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+
+                    {{/if}}
+
+
+                    {{#if rec}}
+
+
+                    <table class="table table-striped b-t b-light">
+                        <thead>
+                            <tr>
+
+                                <th>Recruiter name</th>
+                                <th>Company name</th>
+                                <th>Email</th>
+                                <th style="width:30px;">account type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each users}}
+                            <tr>
+                                <td>{{this.recruiter_name}}</td>
+                                <td>{{this.company_name}}</td>
+                                <td>{{this.email}}</td>
+                                <td>{{#if this.premium}} premium account {{else}} not premium a/c {{/if}}</td>
+                                <td>
+                    
+                                    
+    {{#if this.blocked}}
+                                    <button id="unblockButton{{this._id}}" 
+                                        class="btn btn-primary" onclick="unblockUser('{{this._id}}')">Unblock</button>
+<button id="blockButton{{this._id}}" style="display: none;" class="btn btn-danger"
+                                        onclick="blockUser('{{this._id}}')">block</button>
+
+{{else}}
+<button id="blockButton{{this._id}}" class="btn btn-danger"
+                                        onclick="blockUser('{{this._id}}')">block</button>
+                                      <button id="unblockButton{{this._id}}" 
+                                        class="btn btn-primary" style="display: none;" onclick="unblockUser('{{this._id}}')">Unblock</button>
+                                       
+
+{{/if}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+
+                    {{/if}}
+
+
+
+
+
+
+                </div>
+                <footer class="panel-footer">
+                    <div class="row">
+
+                        <div class="col-sm-5 text-center">
+                            <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
+                        </div>
+                        <div class="col-sm-7 text-right text-center-xs">
+                            <ul class="pagination pagination-sm m-t-none m-b-none">
+                                <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
+                                <li><a href="">1</a></li>
+                                <li><a href="">2</a></li>
+                                <li><a href="">3</a></li>
+                                <li><a href="">4</a></li>
+                                <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <!--main content end-->
+    </section>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery.dcjqaccordion.2.7.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/jquery.slimscroll.js"></script>
+    <script src="js/jquery.nicescroll.js"></script>
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
+    <script src="js/jquery.scrollTo.js"></script>
+
+    <script>
+
+        function blockUser(id) {
+
+
+
+
+
+            $(document).ready(function () {
+
+
+
+
+                console.log("hai guys", id)
+
+let r= confirm("when recruiter is blocked all posts by recruiter will be deleted permanently")
+
+if(r)
+{
+                $.ajax({
+
+                    url: '/admin/blockUser',
+                    data: {
+                        id
+                    },
+                    method: 'post',
+
+                    success: (response) => {
+
+                        if (response.blocked) {
+                        
+
+                            $("#blockButton" + (id)).hide();
+                            $("#unblockButton" + (id)).show();
+
+                        }
+
+                    }
+
+                })
+}
+
+            })
+
+         
+        }
+
+        
+        function unblockUser(id) {
+            $(document).ready(function () {
+                console.log("yse")
+                $.ajax({
+                    url: '/admin/unblockUser',
+                    method: 'post',
+                    data: {
+                        id
+                    },
+                    success: (response) => {
+
+                        if (response.blocked == false) {
+                        
+                            $("#blockButton" + (id)).show();
+                            $("#unblockButton" + (id)).hide();
+
+                        }
+                    }
+                })
+
+            })
+
+        }
+
+    </script>
+
+
+
+
+
+
+    </body>
+
+    </html>

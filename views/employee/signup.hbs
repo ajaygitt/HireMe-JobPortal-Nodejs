@@ -1,0 +1,388 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+ <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+
+    <div id="signupbox" style=" margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Sign Up</div>
+             <a href="/auth/google">   <input type="button" style="text-align=center" name="Signup" value="Sign Up with Google"
+                    {{!-- class="btn btn btn-primary" id="button-id-signup" /> </a> or <a href="/auth/linkedin"><input type="button" name="Signup"
+                    value="Sign Up with LinkedIn" class="btn btn btn-primary" id="button-id-signup" /></a> --}}
+
+                <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink"
+                        href="/accounts/login/"></a></div>
+            </div>
+               <span id="invalid" class="text-danger d-flex justify-content-center"
+                        style="display: none !important;">A user with this email is already exists</span>
+
+            <div class="panel-body">
+                <form method="post" action="/signup" id="my_form" name="my_form">
+                    <input type='hidden' name='csrfmiddlewaretoken' value='XFe2rTYl9WOpV8U6X5CfbIuOZOELJ97S' />
+
+
+                    <form class="form-horizontal" method="post" action="/signup">
+                        <input type='hidden' name='csrfmiddlewaretoken' value='XFe2rTYl9WOpV8U6X5CfbIuOZOELJ97S' />
+                        <div id="div_id_select" class="form-group required">
+                          
+                        </div>
+                       {{#if sess}}
+<h4 style="text-align: center; color: red;">*email already exist</h4>
+                       {{/if}}
+    
+                        <div id="div_id_username" class="form-group ">
+                            <label for="id_username" class="control-label col-md-4  "> fullname<span
+                                    class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="full_name" maxlength="30"
+                                    name="full_name" placeholder="enter your name" style="margin-bottom: 10px"
+                                    type="text" />
+                            </div>
+                        </div>
+                        <div id="div_id_email" class="form-group ">
+                            <label for="id_email" class="control-label col-md-4  requiredField"> E-mail<span
+                                    class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md emailinput form-control" id="email" name="email"
+                                    placeholder="Your current email address" style="margin-bottom: 10px" type="email" />
+                            </div>
+                        </div>
+                        <div id="div_id_password1" class="form-group ">
+                            <label for="phonenumber" class="control-label col-md-4  requiredField">Phone Number<span
+                                    class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md textinput textInput form-control" id="phonenumber"
+                                    name="phonenumber" placeholder="enter phone number" style="margin-bottom: 10px"
+                                    type="password" />
+                            </div>
+                        </div>
+                        <div id="div_id_password2" class="form-group ">
+
+                            <label for="id_password2" class="control-label col-md-4  requiredField"> Qaulification<span
+                                    class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <select id="education" name="education">
+                                    <option value="">Select your highest eductional qualification</option>
+                                    <option value="postgraduate">Post graduation</option>
+                                    <option value="undergraduate">graduation</option>
+                                    <option value="+2">+2</option>
+                                    <option value="10th">10th</option>
+                                </select>
+                                <p> </p>
+
+                            </div>
+                        </div>
+
+
+
+ <div id="div_id_location" class="form-group ">
+                            <label for="id_location" class="control-label col-md-4  requiredField"> specifyskill(eg:html)<span
+                                    class="">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md textinput textInput form-control" id="skill" name="skill"
+                                    placeholder="enter a skill" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+
+
+
+                        <div id="div_id_name" class="form-group ">
+                            <label for="id_name" class="control-label col-md-4  requiredField"> Experience<span
+                                    class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <select name="experience" id="experience">
+                                    <option value="">Select your Experience</option>
+                                    <option value="0">I'm a fresher</option>
+                                    <option value="1">0.5-1</option>
+                                    <option value="2">2-3</option>
+                                    <option value="3">3-4</option>
+                                    <option value="5">>5</option>
+                                </select>
+                                <p> </p>
+
+                            </div>
+                        </div>
+                        <div id="div_id_gender" class="form-group ">
+                            <label for="id_gender" class="control-label col-md-4  requiredField"> Gender<span
+                                    class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 " style="margin-bottom: 10px">
+                                <label class="radio-inline"> <input type="radio" name="gender" id="id_gender_1"
+                                        value="male" style="margin-bottom: 10px">Male</label>
+                                <label class="radio-inline"> <input type="radio" name="gender" id="id_gender_2"
+                                        value="female" style="margin-bottom: 10px">Female </label>
+                            </div>
+                        </div>
+                        <div id="div_id_company" class="form-group ">
+                            <label for="id_company" class="control-label col-md-4  requiredField">Area of intrest<span
+                                    class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+
+                                <select name="interest" id="">
+                                    <option value="">Select your area of interest</option>
+                                    <option value="IT">Information Technology</option>
+                                    <option value="edu">Education&service</option>
+                                    <option value="buisiness">Buisiness support</option>
+                                    <option value="science">science</option>
+                                    <option value="5">>5</option>
+                                </select>
+                                <p> </p>
+
+
+
+                            </div>
+                        </div>
+                       
+
+                        <div id="div_id_location" class="form-group ">
+                            <label for="id_location" class="control-label col-md-4  requiredField"> Your Location<span
+                                    class="">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md textinput textInput form-control" id="id_location" name="city"
+                                    placeholder="Your City name" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        <div id="div_id_number" class="form-group ">
+                            <label for="id_number" class="control-label col-md-4  requiredField"> password<span
+                                    class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md textinput textInput form-control" type="password" id="id_number" name="password"
+                                    placeholder="provide your password" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls col-md-offset-4 col-md-8 ">
+                                <div id="div_id_terms" class="checkbox ">
+                                    <label for="id_terms" class=" requiredField">
+                                        <input class="input-ms checkboxinput" id="id_terms" name="terms"
+                                            style="margin-bottom: 10px" type="checkbox" />
+                                        Agree with the terms and conditions
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="aab controls col-md-4 "></div>
+                            <div class="controls col-md-8 ">
+                                <input type="submit" name="Signup" value="Signup" class="btn btn-primary btn btn-info"
+                                    id="submit-id-signup" />
+
+
+                            </div>
+
+                        </div>
+
+
+                    </form>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</div>
+
+{{!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+
+
+
+<script>
+
+
+
+     $(document).ready(function () {
+
+        console.log("sdkfj")
+
+        $("#my_form").validate({
+            rules: {
+                full_name: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                 
+                    required: true
+                },
+                phonenumber: {
+                    minlength:10,
+                    maxlength:10,
+                    required: true
+                    
+                },
+                education: {
+                    required: true
+                    
+
+                },
+                experience: {
+                    required: true
+
+                   
+                },
+                terms:{
+                    required:true
+                },
+                password:{
+                    minlength:4,
+                    required:true
+                }
+               
+            },
+            messages:{
+                full_name:"*enter your full name",
+                terms: " * should accept the terms and conditions"
+           
+            }
+        });
+
+
+
+       
+
+    });
+
+
+
+    
+
+</script>
+
+
+<style>
+    .register {
+        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+        margin-top: 3%;
+        padding: 3%;
+    }
+
+    .register-left {
+        text-align: center;
+        color: #fff;
+        margin-top: 4%;
+    }
+
+    .register-left input {
+        border: none;
+        border-radius: 1.5rem;
+        padding: 2%;
+        width: 60%;
+        background: #f8f9fa;
+        font-weight: bold;
+        color: #383d41;
+        margin-top: 30%;
+        margin-bottom: 3%;
+        cursor: pointer;
+    }
+
+    .register-right {
+        background: #f8f9fa;
+        border-top-left-radius: 10% 50%;
+        border-bottom-left-radius: 10% 50%;
+    }
+
+    .register-left img {
+        margin-top: 15%;
+        margin-bottom: 5%;
+        width: 25%;
+        -webkit-animation: mover 2s infinite alternate;
+        animation: mover 1s infinite alternate;
+    }
+
+    @-webkit-keyframes mover {
+        0% {
+            transform: translateY(0);
+        }
+
+        100% {
+            transform: translateY(-20px);
+        }
+    }
+
+    @keyframes mover {
+        0% {
+            transform: translateY(0);
+        }
+
+        100% {
+            transform: translateY(-20px);
+        }
+    }
+
+    .register-left p {
+        font-weight: lighter;
+        padding: 12%;
+        margin-top: -9%;
+    }
+
+    .register .register-form {
+        padding: 10%;
+        margin-top: 10%;
+    }
+
+    .btnRegister {
+        float: right;
+        margin-top: 10%;
+        border: none;
+        border-radius: 1.5rem;
+        padding: 2%;
+        background: #0062cc;
+        color: #fff;
+        font-weight: 600;
+        width: 50%;
+        cursor: pointer;
+    }
+
+    .register .nav-tabs {
+        margin-top: 3%;
+        border: none;
+        background: #0062cc;
+        border-radius: 1.5rem;
+        width: 28%;
+        float: right;
+    }
+
+    .register .nav-tabs .nav-link {
+        padding: 2%;
+        height: 34px;
+        font-weight: 600;
+        color: #fff;
+        border-top-right-radius: 1.5rem;
+        border-bottom-right-radius: 1.5rem;
+    }
+
+    .register .nav-tabs .nav-link:hover {
+        border: none;
+    }
+
+    .register .nav-tabs .nav-link.active {
+        width: 100px;
+        color: #0062cc;
+        border: 2px solid #0062cc;
+        border-top-left-radius: 1.5rem;
+        border-bottom-left-radius: 1.5rem;
+    }
+
+    .register-heading {
+        text-align: center;
+        margin-top: 8%;
+        margin-bottom: -15%;
+        color: #495057;
+    }
+</style>
+
+
+

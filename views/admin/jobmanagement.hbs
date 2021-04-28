@@ -1,0 +1,190 @@
+<section id="main-content">
+	<section class="wrapper">
+		
+
+  {{#if message}}
+
+        <div class="alert alert-success" role="alert">
+            {{message}}
+        </div>
+        {{/if}}
+
+ 
+
+{{#if viewJob}}
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/10.8.1/build.css" />
+{{#each jobs}}
+<div class="Box m-4">
+  <div class="Box-row Box-row--unread">
+    <div class="CircleBadge CircleBadge--small bg-green float-left d-block mr-3 text-center">
+      <h1 class="text-white text-center text-shadow-dark d-flex flex-justify-center height-full mt-1">S</h1>
+</div>
+
+    <h4>{{this.jobTitle}}</h4>
+    <span>{{this.company_name}}f</span><br/>
+    <span>
+    <label class="Label Label--gray mr-1">{{this.tags}}</label> <label class="Label Label--gray mr-1"></label> <label class="Label Label--gray mr-1"></label>
+   </span>
+  </div>
+  <div class="Box-row">
+<ul class="lead ml-4 mb-0">
+  <li><b>
+   {{this.sallary}}</b> salary</li>
+<li>
+  Flexible hours</li>
+<li>
+Location: <b></b> {{this.location}}</li>
+<li>
+  <b></b> learning budget per year</li>
+<li>
+job type: {{this.jobtype}}
+  </li>
+<li>
+  <b>category</b> {{this.category}}</li>
+<li>
+
+
+  <li>qualification: {{this.qualification}}</li>
+  <li>
+ Experience:   {{this.experience}}
+  </li>
+  description: {{this.description}}</li>
+
+ </li>
+  closing Date: {{this.closingDate}}</li>
+   </li>
+  date Posted: {{this.dateposted}}</li>
+
+
+
+  </ul>
+
+
+  </div>
+</div>
+
+
+
+
+{{/each}}
+
+
+
+
+
+
+<style>
+  .Box {
+  width: 100%;
+  height: 100%;
+}
+body {
+  font-family: Roboto !important;
+}
+</style>
+
+
+
+
+
+
+{{else}}
+
+
+
+     <table class="table" ui-jq="footable" ui-options='{
+        "paging": {
+          "enabled": true
+        },
+        "filtering": {
+          "enabled": true
+        },
+        "sorting": {
+          "enabled": true
+        }}'>
+        <thead>
+   <tr>
+            <th data-breakpoints="xs">Job Position</th>
+            <th>Job type</th>
+            <th>Job category</th>
+            <th>job</th>
+            <th data-breakpoints="xs">Recruiter</th>
+           
+            <th data-breakpoints="xs sm md" data-title="DOB">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {{#each jobs}}
+             <tr data-expanded="true">
+            <td>{{this.jobTitle}}</td>
+            <td>{{this.jobType}}</td>
+            <td>{{this.category}}</td>
+            <td><button class="btn btn-primary" onclick="location.href='/admin/viewJob?job={{this._id}}'">View full Details</button> </td>
+            <td><button class="btn btn-primary" onClick="location.href='/admin/viewRecruiter?recrutier={{this.recruiter}}'">view recruiter</button></td>
+            
+            <td> <button class="btn btn-danger" onclick="deleteJob('{{this._id}}')">delete job </button></a></td>
+          </tr>
+         {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+ <!-- footer -->
+{{/if}}
+
+
+
+
+
+
+
+
+
+		  <div class="footer">
+			<div class="wthree-copyright">
+			  <p>© 2021 HireMe admin <a href="https//:ajaypradeep.ga">http://ajaypradeep.ga</a></p>
+			</div>
+		  </div>
+  <!-- / footer -->
+</section>
+
+<!--main content end-->
+</section>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.dcjqaccordion.2.7.js"></script>
+<script src="js/scripts.js"></script>
+<script src="js/jquery.slimscroll.js"></script>
+<script src="js/jquery.nicescroll.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
+<script src="js/jquery.scrollTo.js"></script>
+
+<script>
+  function deleteJob(id){
+let r=confirm("are you sure to delete this job")
+
+if(r)
+{
+console.log("hai",id)
+ $.ajax({
+   url:'/admin/deleteJob',
+   method:'POST',
+   data:{
+     id
+   },
+   success:(response)=>{
+     alert("job deleted")
+    location.reload()
+   }
+ })
+
+}
+  }
+
+</script>
+
+</body>
+</html>

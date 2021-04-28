@@ -1,0 +1,199 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<div class="container mt-5" id="quizbody">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10 col-lg-10">
+            <div class="border">
+                <div class="question bg-white p-3 border-bottom">
+                 
+                    <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                        <h4>Hire Me Skill Assessment</h4><span></span>
+                    </div>
+                </div>
+                <div class="question bg-white p-3 border-bottom">
+                   
+                    <div class="d-flex flex-row align-items-center question-title">
+                        <h3 class="text-danger" id="counter">Q.1</h3>
+                     <h2 style=" text-align: right;"> correct Answers: <span id="answerCorrect"></span> </h2>
+                        <h5 class="mt-1 ml-2" id="question">{{quizData.1.question}}</h5>
+                    </div>
+                    <form id="quizForm">
+                    <div class="ans ml-2">
+                        <label class="radio"> <input type="radio" name="answer" value="a" id='a'> <span id='aa'>{{quizData.1.a}}</span>
+                        </label>
+                    </div>
+                    <div class="ans ml-2"> 
+                        <label class="radio"> <input type="radio" name="answer" value="b" id='b'> <span id="bb"> {{quizData.1.b}}</span>
+                        </label>
+                    </div>
+                    <div class="ans ml-2">
+                        <label class="radio"> <input type="radio" name="answer" value="c" id='c'> <span id='cc'>{{quizData.1.c}}</span>
+                        </label>
+                    </div>
+                    <div class="ans ml-2">
+                        <label class="radio"> <input type="radio" name="answer" value="d" id='d'> <span id='dd'>{{quizData.1.d}}</span>
+                        </label>
+                    </div>
+            
+                </div>
+                <div>
+                  <button>submit</button>
+                </div>
+                </form>
+                        <input type="text" value="{{quizData.1._id}}" name="quizId" id="quizId"style="display:none">
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+  var counter=0;
+  var correctAnswers=0
+  var ArrayGlobal;
+  var question=1;
+window.onload = (event) => {
+ 
+fetch(`http://localhost:3000/getQuestion?q=${counter}`).then(async(response)=>{
+
+
+var arr=await response.json()
+ArrayGlobal=arr
+   console.log("array",arr)
+
+document.getElementById('question').innerHTML=arr.question
+document.getElementById('aa').innerHTML=arr.a
+document.getElementById('bb').innerHTML=arr.b
+document.getElementById('cc').innerHTML=arr.c
+document.getElementById('dd').innerHTML=arr.d
+
+counter++;
+document.getElementById('answerCorrect').innerHTML=0
+ })
+
+};
+
+   $(document).ready(function(){
+
+  	$("#quizForm").submit(function (e) {
+
+e.preventDefault()
+
+	var form_data = $(this).serialize()
+
+  if(!form_data)
+  {
+   alert("enter an answer")
+  }
+  else
+  {
+console.log('formdata',form_data)
+let answer=form_data
+
+  answer = answer.slice(7);
+  console.log("the answer",answer)
+
+if(answer==ArrayGlobal.correct)
+{
+ correctAnswers++;   
+ document.getElementById('answerCorrect').innerHTML=correctAnswers
+    alert("correct answer ")
+}
+
+
+
+    console.log("mm",counter)
+ fetch(`http://localhost:3000/getQuestion?q=${counter}`).then(async(response)=>{
+
+
+var arr=await response.json()
+
+if(arr==false)
+{
+    alert("Questions End")
+console.log("fjasjfsda",correctAnswers)
+
+
+quizbody.innerHTML=`<h2 style={color:red}>You have correctly answered ${correctAnswers} questions  </h2>
+
+        <button onclick="location.reload('/')">Reload</button>`
+
+}
+   console.log("array",arr)
+ArrayGlobal=arr
+
+document.getElementById('question').innerHTML=arr.question
+document.getElementById('aa').innerHTML=arr.a
+document.getElementById('bb').innerHTML=arr.b
+document.getElementById('cc').innerHTML=arr.c
+document.getElementById('dd').innerHTML=arr.d
+counter++;
+question++;
+document.getElementById('counter').innerHTML="Q."+question
+
+ })
+
+
+  }
+
+
+
+    })
+    })
+  
+
+</script>
+
+
+
+
+<style>
+  body {
+    background-color: #eee
+}
+
+label.radio {
+    cursor: pointer
+}
+
+label.radio input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    pointer-events: none
+}
+
+label.radio span {
+    padding: 4px 0px;
+    border: 1px solid red;
+    display: inline-block;
+    color: red;
+    width: 100px;
+    text-align: center;
+    border-radius: 3px;
+    margin-top: 7px;
+    text-transform: uppercase
+}
+
+label.radio input:checked+span {
+    border-color: red;
+    background-color: red;
+    color: #fff
+}
+
+.ans {
+    margin-left: 36px !important
+}
+
+.btn:focus {
+    outline: 0 !important;
+    box-shadow: none !important
+}
+
+.btn:active {
+    outline: 0 !important;
+    box-shadow: none !important
+}
+</style>
