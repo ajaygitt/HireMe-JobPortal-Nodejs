@@ -838,7 +838,7 @@ router.get("/ViewRecruiter", (req, res) => {
   });
 });
 
-router.post("/chat", async (req, res) => {
+router.post("/chat",verifyLoggedIn, async (req, res) => {
   let senderid = req.query.sender;
   let receiverid = req.query.receiver;
   console.log("sender id is ", senderid);
@@ -873,13 +873,19 @@ console.log("the message is",sendChat);
   let chatMessages=sendChat.conca
   console.log("the chat issisisiisisisisisi",chatMessages)
 
+
+  let allMessages=sendChat.concat(receivedchats) 
+
+  console.log("the all chats is ",allMessages);
+
   res.render("employee/chat", {
     userfound,
     recruiter: true,
     Recieverdetails,
     sendChat,
     receivedchats,
-    chatMessages
+    chatMessages,
+    allMessages
   });
 });
 

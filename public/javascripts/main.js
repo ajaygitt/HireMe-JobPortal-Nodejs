@@ -39,6 +39,7 @@ socket.on('file',data=>{
     {
         console.log("the data is and image and image is called");
         imageFile(data)
+        chatMessages.scrollTop=chatMessages.scrollHeight;
     }
     
 else if (data.extention=='.mp4'||data.extention=='.mkv'||data.extention=='.webm')
@@ -46,6 +47,7 @@ else if (data.extention=='.mp4'||data.extention=='.mkv'||data.extention=='.webm'
 console.log("this is video")
 
 videoFile(data)
+chatMessages.scrollTop=chatMessages.scrollHeight;
 }
 
 
@@ -95,7 +97,7 @@ if(message.senderis==myuserid)
 
     <div class="msg-bubble ">
       <div class="msg-info">
-        <div class="msg-info-name">Hireme test</div>
+        <div class="msg-info-name">You </div>
         <div class="msg-info-time">  ${message.time}</div>
       </div>
 
@@ -126,7 +128,7 @@ console.log("in the else condition >>>>>>>>>>>>");
 
     <div class="msg-bubble ">
       <div class="msg-info">
-        <div class="msg-info-name">Hireme test</div>
+        <div class="msg-info-name">Receiver</div>
         <div class="msg-info-time">  ${message.time}</div>
       </div>
 
