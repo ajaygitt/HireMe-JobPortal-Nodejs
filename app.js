@@ -199,15 +199,15 @@ io.to(user.sender).emit('file', msgFormat.formatFileMessage(user.sender,newimage
 
 
 })
-//server
-var port=3000;
+//server initialisation
+var port=process.env.CONNECTION_PORT;
 server.listen(port,(err)=>{
   if(err)
   {
     console.log("server connection err",err);
   }
   else{
-    console.log("connected to server at PORT",port);
+    console.log("connected to server ON PORT",port);
   }
 });
 app.set('port',port);
@@ -251,7 +251,7 @@ isOnline().then(online => {
 //db connect
 db.connect((err) => {
   if (err) {
-    console.log("Error in connection");
+    console.log("Error in connection",err);
   } else {
     console.log("Database connected successdully");
   }

@@ -5,7 +5,7 @@ const state = {
 }
 
 module.exports.connect = function(done){
-    const url = 'mongodb://localhost:27017'
+    const url =process.env.MONGO_DB_URL
     const dbname = 'jobPortal'
    
     mongoClient.connect(url,(err,data)=>{
