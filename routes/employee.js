@@ -15,21 +15,18 @@ const fs = require("fs");
 const PDFDocument = require("pdfkit");
 var base64ToImage = require("base64-to-image");
 const recruiterHelper = require("../Controllers/recruiterHelper");
-const adminHelper=require('../Controllers/adminHelpers')
+const adminHelper = require("../Controllers/adminHelpers");
 const messageController = require("../Controllers/messageController");
-var fetch=require('node-fetch');
+var fetch = require("node-fetch");
 const { send } = require("process");
 const { resolve } = require("path");
 
 // quizArray()
-var quizArray
-
+var quizArray;
 
 //middlevare for session checking
 
-
 const verifygoogleLogin = (req, res, next) => {
-
   var userfound = req.session.email;
   if (req.user) {
     req.session.email = req.user.email;
@@ -44,8 +41,6 @@ const verifygoogleLogin = (req, res, next) => {
   }
 };
 
-
-
 //middleware for checking session userside
 
 const verifyLoggedIn = (req, res, next) => {
@@ -53,31 +48,24 @@ const verifyLoggedIn = (req, res, next) => {
   if (userfound) {
     next();
   } else {
-    res.redirect("/");
+    res.redirect("/login");
   }
 };
 
 //verify if user didnt done captcha
 
-const verifyIfCaptcha=(req,res,next)=>{
-
-
-  let tempUser=req.session.temp
-  let userfound=req.session.user
-  if(tempUser)
-  {
-    next()
+const verifyIfCaptcha = (req, res, next) => {
+  let tempUser = req.session.temp;
+  let userfound = req.session.user;
+  if (tempUser) {
+    next();
+  } else {
+    res.redirect("/");
   }
-  else
-  {
-res.redirect('/')
-
+  if (userfound) {
+    res.redirect("/");
   }
-  if(userfound)
-  {
-    res.redirect('/')
-  }
-}
+};
 //middleware for check if premium
 
 const verifyIfPremium = (req, res, next) => {
@@ -103,45 +91,48 @@ function isLoggedIn(req, res, next) {
 //to home
 
 router.get("/", async (req, res) => {
-
-
-
-  if(req.session.tempUser)
-  {
-  if(req.session.temp)
-  {
-    req.session.user=req.session.temp
-    req.session.temp=null;
-  }
-
+  if (req.session.tempUser) {
+    if (req.session.temp) {
+      req.session.user = req.session.temp;
+      req.session.temp = null;
+    }
   }
 
   let userfound = req.session.user;
 
   if (userfound) {
-    if (userfound.type == "employee"|| !userfound.type) {
-      
-      let premium = await userHelper.isPremium(userfound._id).then(async(result) => {
-        console.log("premium", result);
-        let home = true;
-        let recentjobs=await userHelper.recentJobs()
-       
-        res.render("employee/home", { user: true, home, userfound, result,recentjobs });
+    if (userfound.type == "employee" || !userfound.type) {
+      let premium = await userHelper
+        .isPremium(userfound._id)
+        .then(async (result) => {
+          console.log("premium", result);
+          let home = true;
+          let recentjobs = await userHelper.recentJobs();
 
-      });
+          res.render("employee/home", {
+            user: true,
+            home,
+            userfound,
+            result,
+            recentjobs,
+          });
+        });
     } else if (userfound.type == "recruiter") {
       let home = 1;
       res.render("recruiter/home", { recruiter: true, userfound, home });
-    }
-    
-    else if (userfound.type == "admin") {
-  
-  let usersCount=await    adminHelper.getUsersCount()
-  let premiumUsers= await adminHelper.premiumUsers()
-  let revenue=await premiumUsers*199
-  let JobsCount=await adminHelper.JobsCount()
+    } else if (userfound.type == "admin") {
+      let usersCount = await adminHelper.getUsersCount();
+      let premiumUsers = await adminHelper.premiumUsers();
+      let revenue = (await premiumUsers) * 199;
+      let JobsCount = await adminHelper.JobsCount();
 
-      res.render("admin/home", { admin: true,usersCount,premiumUsers,revenue,JobsCount });
+      res.render("admin/home", {
+        admin: true,
+        usersCount,
+        premiumUsers,
+        revenue,
+        JobsCount,
+      });
     }
   } else {
     let nouser = 1;
@@ -184,51 +175,38 @@ router.post("/login", (req, res) => {
   });
 });
 
-
-router.get('/captcha',verifyIfCaptcha,(req,res)=>{
-
+router.get("/captcha", verifyIfCaptcha, (req, res) => {
   console.log("to captcha");
- 
-  res.render('employee/captcha',{user:true})
 
+  res.render("employee/captcha", { user: true });
+});
 
-})
+router.post("/captcha", async (req, res) => {
+  console.log("this is body", req.body);
 
+  const captchaVerified = await fetch(
+    `https://www.google.com/recaptcha/api/siteverify?secret=6LcmvLIaAAAAAIm2IxB_l9kesqNsJNGD5vcaY7s_&response=${req.body.recaptcha}`,
+    {
+      method: "post",
+    }
+  ).then((_res) => _res.json());
 
-router.post('/captcha',async (req,res)=>{
-
-  console.log("this is body",req.body);
-
-  const captchaVerified=await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=6LcmvLIaAAAAAIm2IxB_l9kesqNsJNGD5vcaY7s_&response=${req.body.recaptcha}`,{
-
-  method:'post'
-  }).then(_res=>_res.json())
-
-let success=true
-  console.log("this is res",captchaVerified);
-if(captchaVerified.success)
-{
-  console.log("yes i got it");
-  req.session.tempUser=true;
-  res.send(success)
-}
-else{
-res.send(success)
-}
-
-})
-
-
-
-
+  let success = true;
+  console.log("this is res", captchaVerified);
+  if (captchaVerified.success) {
+    console.log("yes i got it");
+    req.session.tempUser = true;
+    res.send(success);
+  } else {
+    res.send(success);
+  }
+});
 
 //google get page
 router.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
-
-
 
 //userhome defalult router
 router.get("/home", isLoggedIn, (req, res) => {
@@ -237,8 +215,6 @@ router.get("/home", isLoggedIn, (req, res) => {
   res.render("employee/index", { user: true, userfound });
 });
 
-
-
 router.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -246,9 +222,6 @@ router.get(
     failureRedirect: "/failure",
   })
 );
-
-
-
 
 router.get("/failure", (req, res) => {
   res.send("failed");
@@ -312,15 +285,13 @@ router.get("/otpLogin", (req, res) => {
   res.render("employee/otpLogin", { user: true, nouser, no });
 });
 
-
-
 router.post("/otpLogin", async (req, res) => {
   console.log("reqboody", req.body);
-  await userHelper.verifyPhoneNumber(req.body).then(async(response) => {
+  await userHelper.verifyPhoneNumber(req.body).then(async (response) => {
     if (response.status == true) {
       req.session.phone = req.body.phone;
 
-   await   client.verify
+      await client.verify
         .services(config.serviceID)
         .verifications.create({
           to: `+91${req.body.phone}`,
@@ -504,7 +475,7 @@ router.get("/jobPage", verifyLoggedIn, (req, res) => {
 router.post("/searchJob", verifyLoggedIn, (req, res) => {
   let keyword = req.body.keyword;
 
-console.log("###############",keyword);
+  console.log("###############", keyword);
 
   let location = req.body.city;
   userHelper.seachJob(keyword, location).then((jobs) => {
@@ -628,12 +599,12 @@ router.post("/addResume", verifyLoggedIn, async (req, res) => {
   let insta = req.body.insta;
   let linkedin = req.body.linkedin;
   let skype = req.body.skype;
-  let description=req.body.description
+  let description = req.body.description;
 
   //make pdf copy of resume
   const bio = [
     { Fullname: Fullname },
-    {About_Me:description},
+    { About_Me: description },
     { email: email },
     { gender: userfound.gender },
 
@@ -647,7 +618,6 @@ router.post("/addResume", verifyLoggedIn, async (req, res) => {
     { insta: insta },
     { linkedin: linkedin },
     { skype: skype },
-
   ];
 
   let id = userfound._id;
@@ -794,17 +764,9 @@ router.get(
 router.get("/notifications", verifyLoggedIn, (req, res) => {
   let userfound = req.session.user;
   notificationHelper.getNotification(userfound._id).then((notifications) => {
- 
     res.render("employee/notifications", { user: true, notifications });
   });
 });
-
-
-
-
-
-
-
 
 router.post("/removeNotification", verifyLoggedIn, (req, res) => {
   let userfound = req.session.user;
@@ -813,7 +775,7 @@ router.post("/removeNotification", verifyLoggedIn, (req, res) => {
   });
 });
 
-router.get("/browseRecruiter", verifyIfPremium, verifyLoggedIn, (req, res) => {
+router.get("/browseRecruiter", verifyLoggedIn, verifyIfPremium, (req, res) => {
   userHelper.browseAllRecruiter().then((recruiters) => {
     console.log(recruiters);
     let userfound = req.session.user;
@@ -838,7 +800,7 @@ router.get("/ViewRecruiter", (req, res) => {
   });
 });
 
-router.post("/chat",verifyLoggedIn, async (req, res) => {
+router.post("/chat", verifyLoggedIn, async (req, res) => {
   let senderid = req.query.sender;
   let receiverid = req.query.receiver;
   console.log("sender id is ", senderid);
@@ -853,15 +815,13 @@ router.post("/chat",verifyLoggedIn, async (req, res) => {
   let senderis = senderid.slice(0, first);
   let receiveris = receiverid.slice(0, first);
 
- console.log("sender is this @@@@@@@@@@@@@@@@@@@@###########",senderis);
- console.log("the receiver is %%%%%%%%%%%%%%%%%%",receiveris);
-
+  console.log("sender is this @@@@@@@@@@@@@@@@@@@@###########", senderis);
+  console.log("the receiver is %%%%%%%%%%%%%%%%%%", receiveris);
 
   let sendChat = await messageController.sendChat(senderis, receiveris);
 
+  console.log("the message is", sendChat);
 
-console.log("the message is",sendChat);
-  
   let receivedchats = await messageController.receivedChat(
     receiveris,
     senderis
@@ -870,13 +830,12 @@ console.log("the message is",sendChat);
 
   console.log("senderchat", Recieverdetails);
 
-  let chatMessages=sendChat.conca
-  console.log("the chat issisisiisisisisisi",chatMessages)
+  let chatMessages = sendChat.conca;
+  console.log("the chat issisisiisisisisisi", chatMessages);
 
+  let allMessages = sendChat.concat(receivedchats);
 
-  let allMessages=sendChat.concat(receivedchats) 
-
-  console.log("the all chats is ",allMessages);
+  console.log("the all chats is ", allMessages);
 
   res.render("employee/chat", {
     userfound,
@@ -885,34 +844,27 @@ console.log("the message is",sendChat);
     sendChat,
     receivedchats,
     chatMessages,
-    allMessages
+    allMessages,
   });
 });
 
-
-
-
-router.get('/quiz',(req,res)=>{
-
-  const quiz= {
-    question: 'Which country produces the most coffee in the world?',
-    a: 'Columbia',
-    b: 'Indonesia',
-    c: 'Ethiopia',
-    d: 'Brazil',
-    correct: 'd',
-  }
+router.get("/quiz", (req, res) => {
+  const quiz = {
+    question: "Which country produces the most coffee in the world?",
+    a: "Columbia",
+    b: "Indonesia",
+    c: "Ethiopia",
+    d: "Brazil",
+    correct: "d",
+  };
 
   // userHelper.insertquestion(quizData)
-userHelper.loadQuestions().then((quizData)=>{
+  userHelper.loadQuestions().then((quizData) => {
+    quizArray = quizData;
 
-  quizArray=quizData
-
-  res.render('employee/quiz',{user:true,quizData})
-})
-
-})
-
+    res.render("employee/quiz", { user: true, quizData });
+  });
+});
 
 // router.post('/quiz',(req,res)=>{
 //   console.log("entered",req.body.form_data);
@@ -923,8 +875,6 @@ userHelper.loadQuestions().then((quizData)=>{
 // console.log("this is quiz is",quizId);
 
 // userHelper.checkAnswer(quizId,answer).then((answ)=>{
-
-
 
 // let quiz=quizArray.slice(1)
 
@@ -938,33 +888,21 @@ userHelper.loadQuestions().then((quizData)=>{
 // })
 // })
 
-
-router.get('/getQuestion',(req,res)=>{
-
+router.get("/getQuestion", (req, res) => {
   console.log("reached");
 
-let limit=req.query.q
+  let limit = req.query.q;
 
-  userHelper.loadQuestions().then((quizData)=>{
+  userHelper.loadQuestions().then((quizData) => {
+    console.log("!@!!", quizData[limit]);
 
-console.log("!@!!",quizData[limit]);
-
-if(!quizData[limit])
-{
-  console.log("no");
-  res.json(false)
-}
-
-else
-{
-  res.json(quizData[limit])
-
-}
-
-
-})
-})
-
+    if (!quizData[limit]) {
+      console.log("no");
+      res.json(false);
+    } else {
+      res.json(quizData[limit]);
+    }
+  });
+});
 
 module.exports = router;
-

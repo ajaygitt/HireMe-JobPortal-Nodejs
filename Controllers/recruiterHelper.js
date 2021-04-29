@@ -332,42 +332,46 @@ module.exports = {
     });
   },
 
-
-  getRecruiterById:(id)=>{
-    return new Promise(async(resolve,reject)=>{
-  let result=   await db.get().collection(USER_COLLECTION).findOne({_id:ObjectID(id)})
-  resolve(result)
-    })
+  getRecruiterById: (id) => {
+    return new Promise(async (resolve, reject) => {
+      let result = await db
+        .get()
+        .collection(USER_COLLECTION)
+        .findOne({ _id: ObjectID(id) });
+      resolve(result);
+    });
   },
 
+  //   manageApplications: (id) => {
+  //     console.log("id is ", id);
+  //     return new Promise(async (resolve, reject) => {
+  //       let result = await db
+  //         .get()
+  //         .collection(JOB_COLLECTION)
+  //         .aggregate([
+  //           {
+  //             $match: {
+  //               recruiter: id,
+  //             },
+  //           }
+  //       console.log("$", result);
+  //     });
+  //   },
 
-
-
-
-//   manageApplications: (id) => {
-//     console.log("id is ", id);
-//     return new Promise(async (resolve, reject) => {
-//       let result = await db
-//         .get()
-//         .collection(JOB_COLLECTION)
-//         .aggregate([
-//           {
-//             $match: {
-//               recruiter: id,
-//             },
-//           }
-//       console.log("$", result);
-//     });
-//   },
-
-searchEmployee:(keyword)=>{
-
-  return new Promise(async(resolve,reject)=>{
- let result=await   db.get().collection(USER_COLLECTION).find({$or:[{full_name:{$regex:keyword}},{education:{$regex:keyword}}]}).toArray()
-resolve(result)
-
-
-  })
-  // find({$or:[{jobTitle:{$regex:keyword}},{tags:{$regex:keyword}},{description:{$regex:keyword}},{company_name:{$regex:keyword}},{company_name:{$regex:key2}},{jobTitle:{$regex:key2}}]}).toArray().then((result)=>{
-}
+  searchEmployee: (keyword) => {
+    return new Promise(async (resolve, reject) => {
+      let result = await db
+        .get()
+        .collection(USER_COLLECTION)
+        .find({
+          $or: [
+            { full_name: { $regex: keyword } },
+            { education: { $regex: keyword } },
+          ],
+        })
+        .toArray();
+      resolve(result);
+    });
+    // find({$or:[{jobTitle:{$regex:keyword}},{tags:{$regex:keyword}},{description:{$regex:keyword}},{company_name:{$regex:keyword}},{company_name:{$regex:key2}},{jobTitle:{$regex:key2}}]}).toArray().then((result)=>{
+  },
 };
