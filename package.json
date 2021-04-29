@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon app"
+    "start": "nodemon app",
+    "heroku-postbuild":"npm run build"
   },
   "dependencies": {
     "alert": "^5.0.10",
