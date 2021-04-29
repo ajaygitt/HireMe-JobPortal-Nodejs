@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon app",
-    "heroku-postbuild":"npm run build"
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "alert": "^5.0.10",
