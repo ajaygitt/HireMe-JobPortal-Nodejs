@@ -5,8 +5,8 @@ const state = {
 }
 
 module.exports.connect = function(done){
-    const url =process.env.MONGO_DB_URL
-    // const url = 'mongodb+srv://ajay:gamechanger1-@cluster0.s6tin.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+    // const url =process.env.MONGO_DB_URL
+    const url = 'mongodb+srv://ajay:gamechanger1-@cluster0.s6tin.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
     const dbname = 'jobPortal'
    
     mongoClient.connect(url,(err,data)=>{
