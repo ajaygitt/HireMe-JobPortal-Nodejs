@@ -200,7 +200,7 @@ io.to(user.sender).emit('file', msgFormat.formatFileMessage(user.sender,newimage
 
 })
 //server initialisation
-var port=process.env.CONNECTION_PORT;
+var port=3000;
 server.listen(port,(err)=>{
   if(err)
   {
